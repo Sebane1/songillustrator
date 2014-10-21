@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SongIllustrator", "SongIllustrator\SongIllustrator.csproj", "{6905BB09-1364-4880-9942-7801E4AC110E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AB38D42D-FF5A-46B0-A48A-630CA4BC8221}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Song Illustrator Launcher", "Song Illustrator Launcher\Song Illustrator Launcher.csproj", "{48CCE5A3-F66C-437D-88CA-DF90BAA50684}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6905BB09-1364-4880-9942-7801E4AC110E}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{6905BB09-1364-4880-9942-7801E4AC110E}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{6905BB09-1364-4880-9942-7801E4AC110E}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{6905BB09-1364-4880-9942-7801E4AC110E}.Debug|x86.ActiveCfg = Debug|x86
+		{6905BB09-1364-4880-9942-7801E4AC110E}.Debug|x86.Build.0 = Debug|x86
+		{6905BB09-1364-4880-9942-7801E4AC110E}.Release|Any CPU.ActiveCfg = Release|x86
+		{6905BB09-1364-4880-9942-7801E4AC110E}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{6905BB09-1364-4880-9942-7801E4AC110E}.Release|Mixed Platforms.Build.0 = Release|x86
+		{6905BB09-1364-4880-9942-7801E4AC110E}.Release|x86.ActiveCfg = Release|x86
+		{6905BB09-1364-4880-9942-7801E4AC110E}.Release|x86.Build.0 = Release|x86
+		{48CCE5A3-F66C-437D-88CA-DF90BAA50684}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{48CCE5A3-F66C-437D-88CA-DF90BAA50684}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{48CCE5A3-F66C-437D-88CA-DF90BAA50684}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{48CCE5A3-F66C-437D-88CA-DF90BAA50684}.Debug|x86.ActiveCfg = Debug|x86
+		{48CCE5A3-F66C-437D-88CA-DF90BAA50684}.Debug|x86.Build.0 = Debug|x86
+		{48CCE5A3-F66C-437D-88CA-DF90BAA50684}.Release|Any CPU.ActiveCfg = Release|x86
+		{48CCE5A3-F66C-437D-88CA-DF90BAA50684}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{48CCE5A3-F66C-437D-88CA-DF90BAA50684}.Release|Mixed Platforms.Build.0 = Release|x86
+		{48CCE5A3-F66C-437D-88CA-DF90BAA50684}.Release|x86.ActiveCfg = Release|x86
+		{48CCE5A3-F66C-437D-88CA-DF90BAA50684}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
