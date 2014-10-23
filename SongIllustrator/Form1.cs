@@ -72,15 +72,15 @@ namespace SongIllustrator {
 		List<FrameData> frames = new List<FrameData>();
 		private bool _shiftDown;
 		private Thread _thread;
-		private bool _controlEditor = true;
+		private bool passiveMode = true;
 		private bool _listenToMidi = true;
 
 		public bool ControlEditor {
 			get {
-				return _controlEditor;
+				return passiveMode;
 			}
 			set {
-				_controlEditor = value;
+				passiveMode = value;
 			}
 		}
 
@@ -680,7 +680,10 @@ namespace SongIllustrator {
 				int frameIndex = 0;
 				List<FrameData> tempFrames = new List<FrameData>();
 				FrameData data = new FrameData();
-				data.TimeStamp = (frameListBox.CheckedItems[0] as FrameData).TimeStamp - decimal.Parse(textBox2.Text);
+				try {
+					data.TimeStamp = (frameListBox.CheckedItems[0] as FrameData).TimeStamp - decimal.Parse(textBox2.Text);
+				} catch {
+				}
 				tempFrames.Add(data);
 				foreach (FrameData item in frameListBox.CheckedItems) {
 					tempFrames.Add(item);
@@ -761,6 +764,7 @@ namespace SongIllustrator {
 						string note = NoteIdentifier.GetNoteFromInt(key);
 						int notePos = NoteIdentifier.GetNotePosition(note);
 						//MessageBox.Show(process + "|" + key + "|" + velocity + "     " + stringCommand);
+						#region MIDI Logic
 						switch (process) {
 							case 128:
 								DisplayButton button;
@@ -772,11 +776,13 @@ namespace SongIllustrator {
 											} else {
 												button = (DisplayButton) display.PadLights.Controls[NoteIdentifier.GetNotePosition(note)];
 											}
-											if (!_controlEditor) {
+											if (!passiveMode) {
 												button.Reset();
-												//	button.CanSendMessage = false;
+												button.CanSendMessage = false;
 											} else {
 												if (velocity == 64) {
+													button.CanSendMessage = true;
+													button.ChangeColor();
 													button.SendMessage();
 												}
 											}
@@ -810,33 +816,11 @@ namespace SongIllustrator {
 										}));
 								}
 								break;
-							case 176:
-								switch (key) {
-									case 123:
-										//foreach (DisplayButton buttons in panel1.Controls) {
-										//buttons.CanSendMessage = false;
-										//_controlEditor = false;
-										//}
-										break;
-									case 101:
-										break;
-									case 100:
-										break;
-									case 6:
-										break;
-									case 10:
-										break;
-									case 7:
-										break;
-									default:
-
-										break;
-								}
-								break;
 						}
-					} else {
-
 					}
+						#endregion MIDI Logic
+				} else {
+					_port.getCommand();
 				}
 			}
 		}
@@ -867,6 +851,7 @@ namespace SongIllustrator {
 
 		private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
 			_thread.Abort();
+			_port.shutdown();
 		}
 
 		private void panel1_Paint(object sender, PaintEventArgs e) {
@@ -889,11 +874,16 @@ namespace SongIllustrator {
 		}
 
 		private void controlEditorToolStripMenuItem_Click(object sender, EventArgs e) {
-			_controlEditor = !_controlEditor;
+			passiveMode = !passiveMode;
+			if (passiveMode) {
+				controlEditorToolStripMenuItem.Text = "Enable Passive Mode";
+			} else {
+				controlEditorToolStripMenuItem.Text = "Disable Passive Mode";
+			}
 		}
 
 		private void Form1_MouseDown(object sender, MouseEventArgs e) {
-			_controlEditor = false;
+			passiveMode = false;
 		}
 	}
 }

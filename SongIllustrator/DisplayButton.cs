@@ -92,6 +92,7 @@ namespace SongIllustrator {
 		Point cursorLocation = new Point(0, 0);
 		public event EventHandler Interact;
 		private void DisplayButton_Click(object sender, EventArgs e) {
+			CanSendMessage = true;
 			ChangeColor();
 			if (rightClick) {
 				foreach (DisplayButton button in buttons) {
@@ -190,8 +191,8 @@ namespace SongIllustrator {
 			graphics.DrawString(_text, new Font(new FontFamily("Arial"), 12), Brushes.Black, new PointF(0, 0));
 		}
 		public void SendMessage() {
-			if (port != null) {
-				if (_canSendMessage) {
+			//if (_canSendMessage) {
+				if (port != null) {
 					byte[] message = new byte[3];
 					byte velocity = 0;
 					switch (_colorCount) {
@@ -212,20 +213,19 @@ namespace SongIllustrator {
 							SendOff();
 							break;
 					}
-					if (_lastMessage == null ? true: !CompareMessage(_lastMessage, message)) {
-							message[0] = 128;
-							message[1] = (byte) NoteIdentifier.GetIntFromNote(NoteIdentifier.GetNoteFromPosition(_index));
-							message[2] = _lastVelocity;
-							port.sendCommand(message);
-							message[0] = 144;
-							message[1] = (byte) NoteIdentifier.GetIntFromNote(NoteIdentifier.GetNoteFromPosition(_index));
-							message[2] = velocity;
-							port.sendCommand(message);
-						}
+
+					message[0] = 128;
+					message[1] = (byte) NoteIdentifier.GetIntFromNote(NoteIdentifier.GetNoteFromPosition(_index));
+					message[2] = _lastVelocity;
+					port.sendCommand(message);
+					message[0] = 144;
+					message[1] = (byte) NoteIdentifier.GetIntFromNote(NoteIdentifier.GetNoteFromPosition(_index));
+					message[2] = velocity;
+					port.sendCommand(message);
 					_lastMessage = message;
 					_lastVelocity = velocity;
 				}
-			}
+		//	}
 		}
 
 		private bool CompareMessage(byte[] _lastMessage, byte[] message) {
