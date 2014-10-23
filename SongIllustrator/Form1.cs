@@ -18,16 +18,7 @@ namespace SongIllustrator {
 			InitializeComponent();
 		}
 		private Stream _overlayImage;
-		private TeVirtualMIDI _port = new TeVirtualMIDI("Song Illustrator");
-
-		public TeVirtualMIDI Port {
-			get {
-				return _port;
-			}
-			set {
-				_port = value;
-			}
-		}
+		int _portCount = 0;
 
 		public Stream OverlayImage {
 			get {
@@ -69,12 +60,29 @@ namespace SongIllustrator {
 		bool shiftDown = false;
 		ShowDisplay display = new ShowDisplay();
 		MilliStopWatch stopwatch = new MilliStopWatch();
-		List<FrameData> frames = new List<FrameData>();
+		List<LightData> launchPads = new List<LightData>();
+
+		public List<LightData> LaunchPads1 {
+			get {
+				return launchPads;
+			}
+			set {
+				launchPads = value;
+			}
+		}
 		private bool _shiftDown;
 		private Thread _thread;
 		private bool passiveMode = true;
 		private bool _listenToMidi = true;
 
+		public List<LightData> LaunchPads {
+			get {
+				return launchPads;
+			}
+			set {
+				launchPads = value;
+			}
+		}
 		public bool ControlEditor {
 			get {
 				return passiveMode;
@@ -100,14 +108,7 @@ namespace SongIllustrator {
 				textBox1.Text = value;
 			}
 		}
-		public List<FrameData> Frames {
-			get {
-				return frames;
-			}
-			set {
-				frames = value;
-			}
-		}
+
 		public int Density {
 			get {
 				return pixelBar.Value;
@@ -146,60 +147,61 @@ namespace SongIllustrator {
 		}
 		private void timer1_Tick(object sender, EventArgs e) {
 			stopwatch.Stop();
-			foreach (FrameData time in frames) {
-				decimal currentPos = (decimal) axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
-				if (currentPos * 100 <= time.TimeStamp) {
-					time.Fired = false;
-				}
-				if (currentPos * 100 >= time.TimeStamp) {
-					if (!time.Fired) {
-						frameLabel.Text = "Frame: " + time.TimeStamp;
-						for (int i = 0; i < panel1.Controls.Count; i++) {
-							panel1.Controls[i].BackColor = time.Colours[i];
-							if (display.PadLights.Controls.Count > 0) {
-								try {
-									display.PadLights.Controls[i].BackColor = time.Colours[i];
-								} catch {
+			for (int z = 0; z < launchPads.Count; z++) {
+				foreach (FrameData time in launchPads[z].FrameData) {
+					decimal currentPos = (decimal) axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+					if (currentPos * 100 <= time.TimeStamp) {
+						time.Fired = false;
+					}
+					if (currentPos * 100 >= time.TimeStamp) {
+						if (!time.Fired) {
+							frameLabel.Text = "Frame: " + time.TimeStamp;
+							for (int i = 0; i < (panel1.Controls[z] as LightPad).LightCanvas.Controls.Count; i++) {
+								(panel1.Controls[z] as LightPad).LightCanvas.Controls[i].BackColor = time.Colours[i];
+								if (display.PadLights.Controls.Count > 0) {
+									try {
+										display.PadLights.Controls[i].BackColor = time.Colours[i];
+									} catch {
 
+									}
 								}
 							}
+							time.Fired = true;
+							frameProgress++;
 						}
-						time.Fired = true;
-						frameProgress++;
 					}
 				}
-			}
-			if (frameProgress >= frames.Count && frameProgress >= frameListBox.Items.Count && frameCheckbox.Checked) {
-				stopwatch.Reset();
-				stopwatch.Start();
-				frameProgress = 0;
 			}
 			stopwatch.Start();
 		}
 
 		private void button39_Click(object sender, EventArgs e) {
 			FrameData data = new FrameData();
-			try {
-				decimal currentCount = 0;
-				if (frames.Count != 0) {
-					currentCount = frames[frames.Count - 1].TimeStamp;
+			for (int i = 0; i < launchPads.Count; i++) {
+				try {
+					decimal currentCount = 0;
+					if (launchPads[i].FrameData.Count != 0) {
+						currentCount = launchPads[i].FrameData[launchPads[i].FrameData.Count - 1].TimeStamp;
+					}
+					data.TimeStamp = currentCount + decimal.Parse(textBox2.Text);
+				} catch (FormatException) {
 				}
-				data.TimeStamp = currentCount + decimal.Parse(textBox2.Text);
-			} catch (FormatException) {
+				foreach (DisplayButton button in panel1.Controls) {
+					data.Colours.Add(button.BackColor);
+				}
+				launchPads[i].FrameData.Add(data);
 			}
-			foreach (DisplayButton button in panel1.Controls) {
-				data.Colours.Add(button.BackColor);
-			}
-			frames.Add(data);
 			UpdateFrames();
 		}
 		private void UpdateFrames() {
 			frameListBox.Items.Clear();
-			frames.Sort(delegate(FrameData data1, FrameData data2) {
-				return (int) data1.TimeStamp - (int) data2.TimeStamp;
-			});
-			foreach (FrameData frame in frames) {
-				frameListBox.Items.Add(frame);
+			for (int i = 0; i < launchPads.Count; i++) {
+				launchPads[i].FrameData.Sort(delegate(FrameData data1, FrameData data2) {
+					return (int) data1.TimeStamp - (int) data2.TimeStamp;
+				});
+				foreach (FrameData frame in launchPads[i].FrameData) {
+					frameListBox.Items.Add(frame);
+				}
 			}
 			if (frameListBox.Items.Count > 0) {
 				pixelBar.Enabled = false;
@@ -293,23 +295,25 @@ namespace SongIllustrator {
 		private void duplicateButton_Click(object sender, EventArgs e) {
 			decimal currentCount = 0;
 			decimal difference = 0;
-			if (frames.Count != 0) {
-				currentCount = frames[frames.Count - 1].TimeStamp;
-			}
-			for (int i = 0; i < frameListBox.CheckedItems.Count; i++) {
-				FrameData item = frameListBox.CheckedItems[i] as FrameData;
-				FrameData data = new FrameData();
-				try {
-					data.Colours = item.Colours;
-					if (i < frameListBox.CheckedItems.Count - 1) {
-						FrameData frame2 = (frameListBox.CheckedItems[i + 1] as FrameData);
-						difference = frame2.TimeStamp - item.TimeStamp;
+			for (int z = 0; z < launchPads.Count; z++) {
+				if (launchPads[z].FrameData.Count != 0) {
+					currentCount = launchPads[z].FrameData[launchPads[z].FrameData.Count - 1].TimeStamp;
+				}
+				for (int i = 0; i < frameListBox.CheckedItems.Count; i++) {
+					FrameData item = frameListBox.CheckedItems[i] as FrameData;
+					FrameData data = new FrameData();
+					try {
+						data.Colours = item.Colours;
+						if (i < frameListBox.CheckedItems.Count - 1) {
+							FrameData frame2 = (frameListBox.CheckedItems[i + 1] as FrameData);
+							difference = frame2.TimeStamp - item.TimeStamp;
+						}
+						currentCount += difference;
+						data.TimeStamp = currentCount;
+						launchPads[i].FrameData.Add(data);
+					} catch {
+						MessageBox.Show("Nothing is selected.");
 					}
-					currentCount += difference;
-					data.TimeStamp = currentCount;
-					frames.Add(data);
-				} catch {
-					MessageBox.Show("Nothing is selected.");
 				}
 			}
 			UpdateFrames();
@@ -330,142 +334,30 @@ namespace SongIllustrator {
 			SaveFileDialog dialog = new SaveFileDialog();
 			dialog.Filter = "Song Illustrator Files (*.slif)|*.slif";
 			if (dialog.ShowDialog() == DialogResult.OK) {
-				SaveFileDialog(dialog.FileName);
+				SaveFileDialog(dialog.FileName, launchPads);
 			}
 		}
 		private void OpenFileDialog(string filepath) {
-			frames.Clear();
+			launchPads.Clear();
 			frameProgress = 0;
-			panel1.Controls.Clear();
-			GeneratePixels(Density);
 			timer1.Stop();
 			stopwatch.Stop();
 			stopwatch.Reset();
 			pixelBar.Enabled = false;
 			using (FileStream openStream = new FileStream(filepath, FileMode.Open, FileAccess.Read)) {
-				using (BinaryReader reader = new BinaryReader(openStream)) {
-					string version = reader.ReadString();
-					if (version.Contains("v")) {
-						GeneratePixels(display.Pixels = pixelBar.Value = display.Pixels = reader.ReadInt32());
-						int frameCount;
-						frameCount = reader.ReadInt32();
-						for (int i = 0; i < frameCount; i++) {
-							FrameData frame = new FrameData();
-							if (version.Contains("v1")) {
-								frame.TimeStamp = reader.ReadInt32();
-							} else {
-								if (version.Contains("v2")) {
-									frame.TimeStamp = reader.ReadDecimal();
-								}
-							}
-							int colourCount = reader.ReadInt32();
-							for (int colorNumber = 0; colorNumber < colourCount; colorNumber++) {
-								try {
-									frame.Colours.Add(Color.FromArgb(reader.ReadInt32()));
-								} catch {
-									object test;
-								}
-							}
-							frames.Add(frame);
-						}
-						try {
-							axWindowsMediaPlayer1.URL = reader.ReadString();
-						} catch {
-
-						}
-					}
+				List<LightData> padData = SongIO.OpenFile(openStream);
+				foreach (LightData lightData in padData) {
+					LightPad lightPad = new LightPad();
+					lightPad.LightData = lightData;
 				}
+				launchPads = padData;
+				axWindowsMediaPlayer1.URL = SongIO.Url;
 			}
 			//timeline1.UpdateTimeline();
 			UpdateFrames();
 		}
-		private void FixFile(List<FrameData> corruptFrames) {
-			foreach (FrameData frame in corruptFrames) {
-				Color[] data = new Color[frame.Colours.Count];
-				data[0] = frame.Colours[0];
-				data[1] = frame.Colours[1];
-				data[2] = frame.Colours[3];
-				data[3] = frame.Colours[2];
-				data[4] = frame.Colours[24];
-				data[5] = frame.Colours[5];
-				data[6] = frame.Colours[4];
-				data[7] = frame.Colours[7];
-				data[8] = frame.Colours[6];
-				data[9] = frame.Colours[23];
-				data[10] = frame.Colours[15];
-				data[11] = frame.Colours[14];
-				data[12] = frame.Colours[13];
-				data[13] = frame.Colours[12];
-				data[14] = frame.Colours[22];
-				data[15] = frame.Colours[11];
-				data[16] = frame.Colours[10];
-				data[17] = frame.Colours[9];
-				data[18] = frame.Colours[8];
-				data[19] = frame.Colours[21];
-				data[20] = frame.Colours[19];
-				data[21] = frame.Colours[18];
-				data[22] = frame.Colours[17];
-				data[23] = frame.Colours[16];
-				data[24] = frame.Colours[20];
-				data[25] = frame.Colours[25];
-				data[26] = frame.Colours[27];
-				data[27] = frame.Colours[26];
-				data[28] = frame.Colours[28];
-				data[29] = frame.Colours[30];
-				data[30] = frame.Colours[39];
-				data[31] = frame.Colours[31];
-				data[32] = frame.Colours[63];
-				data[33] = frame.Colours[62];
-				data[34] = frame.Colours[61];
-				data[35] = frame.Colours[60];
-				data[36] = frame.Colours[43];
-				data[37] = frame.Colours[59];
-				data[38] = frame.Colours[58];
-				data[39] = frame.Colours[57];
-				data[40] = frame.Colours[56];
-				data[41] = frame.Colours[43];
-				data[42] = frame.Colours[56];
-				data[43] = frame.Colours[54];
-				data[44] = frame.Colours[53];
-				data[45] = frame.Colours[52];
-				data[46] = frame.Colours[41];
-				data[47] = frame.Colours[51];
-				data[48] = frame.Colours[50];
-				data[49] = frame.Colours[49];
-				data[50] = frame.Colours[48];
-				data[51] = frame.Colours[40];
-				data[52] = frame.Colours[47];
-				data[53] = frame.Colours[46];
-				data[54] = frame.Colours[45];
-				data[55] = frame.Colours[44];
-				data[56] = frame.Colours[39];
-				data[57] = frame.Colours[38];
-				data[58] = frame.Colours[37];
-				data[59] = frame.Colours[35];
-				data[60] = frame.Colours[33];
-				data[61] = frame.Colours[34];
-				data[62] = frame.Colours[32];
-				data[63] = frame.Colours[32];
-				frame.Colours = new List<Color>();
-				frame.Colours.AddRange(data);
-			}
-		}
-		private void SaveFileDialog(string filepath) {
-			using (FileStream saveStream = new FileStream(filepath, FileMode.Create, FileAccess.Write)) {
-				using (BinaryWriter writer = new BinaryWriter(saveStream)) {
-					writer.Write("v2");
-					writer.Write(pixelBar.Value);
-					writer.Write(frames.Count);
-					foreach (FrameData data in frames) {
-						writer.Write(data.TimeStamp);
-						writer.Write(data.Colours.Count);
-						foreach (Color color in data.Colours) {
-							writer.Write(color.ToArgb());
-						}
-					}
-					writer.Write(axWindowsMediaPlayer1.URL);
-				}
-			}
+		private void SaveFileDialog(string filePath, List<LightData> padData) {
+			SongIO.SaveFile(filePath, padData, axWindowsMediaPlayer1.URL);
 		}
 
 		private void openDisplayFileButton_Click(object sender, EventArgs e) {
@@ -528,7 +420,9 @@ namespace SongIllustrator {
 		}
 
 		private void displayButton65_Click(object sender, EventArgs e) {
-			frames = new List<FrameData>();
+			foreach (LightData padData in launchPads) {
+				padData.FrameData = new List<FrameData>();
+			}
 			frameListBox.Items.Clear();
 			axWindowsMediaPlayer1.URL = "";
 			pixelBar.Enabled = true;
@@ -541,7 +435,9 @@ namespace SongIllustrator {
 		private void deleteButton_Click(object sender, EventArgs e) {
 			if (MessageBox.Show("Are you sure you want to delete these frames? (" + frameListBox.CheckedItems.Count + ")", "Delete Item?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
 				for (int i = frameListBox.CheckedItems.Count - 1; i >= 0; i--) {
-					frames.Remove(frameListBox.CheckedItems[i] as FrameData);
+					foreach (LightData padData in launchPads) {
+						padData.FrameData.Remove(frameListBox.CheckedItems[i] as FrameData);
+					}
 					frameListBox.Items.Remove(frameListBox.CheckedItems[i]);
 				}
 				if (frameListBox.Items.Count < 1) {
@@ -559,7 +455,9 @@ namespace SongIllustrator {
 
 		}
 		private void OpenPlaylist(string filepath) {
-			frames.Clear();
+			foreach (LightData padData in launchPads) {
+				padData.FrameData.Clear();
+			}
 			playlist.Clear();
 			playlist = new List<string>();
 			playlistPosition = 1;
@@ -616,35 +514,56 @@ namespace SongIllustrator {
 		}
 
 		private void Form1_Load(object sender, EventArgs e) {
-			GeneratePixels(8);
+			//GeneratePixels(8);
+			if (launchPads.Count < 1) {
+				LightData lightData = new LightData();
+				lightData.Density = 8;
+				launchPads.Add(lightData);
+			}
+			GeneratePads(launchPads);
 		}
-		private void GeneratePixels(int pixels) {
-			panel1.Controls.Clear();
-			int arrayPos = 0;
-			Size buttonSize = new Size(panel1.Width / pixels, panel1.Height / pixels);
-			for (int heightProgression = 0; heightProgression < pixels; heightProgression++) {
-
-				for (int widthProgression = 0; widthProgression < pixels; widthProgression++) {
-					DisplayButton button = new DisplayButton();
-					button.ArrayPos = arrayPos++;
-					button.Port = _port;
-					button.Size = buttonSize;
-					button.Location = new Point(buttonSize.Width * widthProgression, buttonSize.Height * heightProgression);
-					panel1.Controls.Add(button);
+		private void GeneratePads(List<LightData> lightDataList) {
+			int widthHeight = panel1.Width / ((lightDataList.Count % 2 == 0 || lightDataList.Count == 1) ? lightDataList.Count : lightDataList.Count - 1);
+			int widthProgression = 0;
+			int heightProgression = 0;
+			for (int i = 0; i < lightDataList.Count; i++) {
+				LightPad lightPad = new LightPad();
+				lightPad.LightData = lightDataList[i];
+				lightPad.Size = new Size(widthHeight, widthHeight);
+				if (i * widthHeight > panel1.Width) {
+					heightProgression++;
 				}
-			}
-			if (_overlayImage != null) {
-				OverlayButtons(_overlayImage, panel1.Controls);
-			}
-			if (display.Visible) {
-				display.Show();
-				display.GeneratePixels(pixels);
-			} else {
-				display.Show();
-				display.GeneratePixels(pixels);
-				display.Hide();
+				lightPad.Location = new Point(lightPad.Size.Width * widthProgression++, lightPad.Size.Width * heightProgression);
+				panel1.Controls.Add(lightPad);
 			}
 		}
+		//private void GeneratePixels(int pixels) {
+		//  panel1.Controls.Clear();
+		//  int arrayPos = 0;
+		//  Size buttonSize = new Size(panel1.Width / pixels, panel1.Height / pixels);
+		//  for (int heightProgression = 0; heightProgression < pixels; heightProgression++) {
+
+		//    for (int widthProgression = 0; widthProgression < pixels; widthProgression++) {
+		//      DisplayButton button = new DisplayButton();
+		//      button.ArrayPos = arrayPos++;
+		//      button.Port = _port;
+		//      button.Size = buttonSize;
+		//      button.Location = new Point(buttonSize.Width * widthProgression, buttonSize.Height * heightProgression);
+		//      panel1.Controls.Add(button);
+		//    }
+		//  }
+		//  if (_overlayImage != null) {
+		//    OverlayButtons(_overlayImage, panel1.Controls);
+		//  }
+		//  if (display.Visible) {
+		//    display.Show();
+		//    display.GeneratePixels(pixels);
+		//  } else {
+		//    display.Show();
+		//    display.GeneratePixels(pixels);
+		//    display.Hide();
+		//  }
+		//}
 		private void displayButton66_Click(object sender, EventArgs e) {
 			display.ShowDialog();
 		}
@@ -654,21 +573,21 @@ namespace SongIllustrator {
 		}
 
 		private void pixelBar_ValueChanged(object sender, EventArgs e) {
-			display.Pixels = pixelBar.Value;
-			GeneratePixels(pixelBar.Value);
+			//display.Pixels = pixelBar.Value;
+			//GeneratePixels(pixelBar.Value);
 		}
 
-		private void panel1_SizeChanged(object sender, EventArgs e) {
-			List<Color> colours = new List<Color>();
-			foreach (DisplayButton button in panel1.Controls) {
-				colours.Add(button.BackColor);
-			}
-			panel1.Width = this.Width - 140;
-			GeneratePixels(pixelBar.Value);
-			for (int i = 0; i < colours.Count; i++) {
-				panel1.Controls[i].BackColor = colours[i];
-			}
-		}
+		//private void panel1_SizeChanged(object sender, EventArgs e) {
+		//  List<Color> colours = new List<Color>();
+		//  foreach (DisplayButton button in panel1.Controls) {
+		//    colours.Add(button.BackColor);
+		//  }
+		//  panel1.Width = this.Width - 140;
+		//  GeneratePixels(pixelBar.Value);
+		//  for (int i = 0; i < colours.Count; i++) {
+		//    panel1.Controls[i].BackColor = colours[i];
+		//  }
+		//}
 
 		private void displayButton1_Click_1(object sender, EventArgs e) {
 
@@ -701,8 +620,8 @@ namespace SongIllustrator {
 		}
 
 		private void Form1_Shown(object sender, EventArgs e) {
-			_thread = new Thread(new ThreadStart(MidiDataCoordinator));
-			_thread.Start();
+			//_thread = new Thread(new ThreadStart(MidiDataCoordinator));
+			//_thread.Start();
 		}
 
 		private void refreshButton_Load(object sender, EventArgs e) {
@@ -753,83 +672,83 @@ namespace SongIllustrator {
 			_refFrame2 = null;
 		}
 
-		private void MidiDataCoordinator() {
-			while (true) {
-				if (_listenToMidi) {
-					byte[] command = _port.getCommand();
-					if (command.Length >= 3) {
-						int process = command[0];
-						int key = command[1];
-						int velocity = command[2];
-						string note = NoteIdentifier.GetNoteFromInt(key);
-						int notePos = NoteIdentifier.GetNotePosition(note);
-						//MessageBox.Show(process + "|" + key + "|" + velocity + "     " + stringCommand);
-						#region MIDI Logic
-						switch (process) {
-							case 128:
-								DisplayButton button;
-								if (notePos >= 0) {
-									Invoke(new MethodInvoker(
-										delegate() {
-											if (display.Visible == false) {
-												button = (DisplayButton) panel1.Controls[NoteIdentifier.GetNotePosition(note)];
-											} else {
-												button = (DisplayButton) display.PadLights.Controls[NoteIdentifier.GetNotePosition(note)];
-											}
-											if (!passiveMode) {
-												button.Reset();
-												button.CanSendMessage = false;
-											} else {
-												if (velocity == 64) {
-													button.CanSendMessage = true;
-													button.ChangeColor();
-													button.SendMessage();
-												}
-											}
-										}));
-								}
-								break;
-							case 144:
-								if (notePos >= 0) {
-									Invoke(new MethodInvoker(
-										delegate() {
-											button = panel1.Controls[notePos] as DisplayButton;
-											if (display.Visible == false) {
-												button = (DisplayButton) panel1.Controls[NoteIdentifier.GetNotePosition(note)];
-											} else {
-												button = (DisplayButton) display.PadLights.Controls[NoteIdentifier.GetNotePosition(note)];
-											}
-											switch (velocity) {
-												case 7:
-													button.BackColor = Color.Red;
-													break;
-												case 83:
-													button.BackColor = Color.Orange;
-													break;
-												case 124:
-													button.BackColor = Color.Green;
-													break;
-												case 127:
-													button.BackColor = Color.Yellow;
-													break;
-											}
-										}));
-								}
-								break;
-						}
-					}
-						#endregion MIDI Logic
-				} else {
-					_port.getCommand();
-				}
-			}
-		}
+		//private void MidiDataCoordinator() {
+		//  while (true) {
+		//    if (_listenToMidi) {
+		//      byte[] command = _port.getCommand();
+		//      if (command.Length >= 3) {
+		//        int process = command[0];
+		//        int key = command[1];
+		//        int velocity = command[2];
+		//        string note = NoteIdentifier.GetNoteFromInt(key);
+		//        int notePos = NoteIdentifier.GetNotePosition(note);
+		//        //MessageBox.Show(process + "|" + key + "|" + velocity + "     " + stringCommand);
+		//        #region MIDI Logic
+		//        switch (process) {
+		//          case 128:
+		//            DisplayButton button;
+		//            if (notePos >= 0) {
+		//              Invoke(new MethodInvoker(
+		//                delegate() {
+		//                  if (display.Visible == false) {
+		//                    button = (DisplayButton) panel1.Controls[NoteIdentifier.GetNotePosition(note)];
+		//                  } else {
+		//                    button = (DisplayButton) display.PadLights.Controls[NoteIdentifier.GetNotePosition(note)];
+		//                  }
+		//                  if (!passiveMode) {
+		//                    button.Reset();
+		//                    button.CanSendMessage = false;
+		//                  } else {
+		//                    if (velocity == 64) {
+		//                      button.CanSendMessage = true;
+		//                      button.ChangeColor();
+		//                      button.SendMessage();
+		//                    }
+		//                  }
+		//                }));
+		//            }
+		//            break;
+		//          case 144:
+		//            if (notePos >= 0) {
+		//              Invoke(new MethodInvoker(
+		//                delegate() {
+		//                  button = panel1.Controls[notePos] as DisplayButton;
+		//                  if (display.Visible == false) {
+		//                    button = (DisplayButton) panel1.Controls[NoteIdentifier.GetNotePosition(note)];
+		//                  } else {
+		//                    button = (DisplayButton) display.PadLights.Controls[NoteIdentifier.GetNotePosition(note)];
+		//                  }
+		//                  switch (velocity) {
+		//                    case 7:
+		//                      button.BackColor = Color.Red;
+		//                      break;
+		//                    case 83:
+		//                      button.BackColor = Color.Orange;
+		//                      break;
+		//                    case 124:
+		//                      button.BackColor = Color.Green;
+		//                      break;
+		//                    case 127:
+		//                      button.BackColor = Color.Yellow;
+		//                      break;
+		//                  }
+		//                }));
+		//            }
+		//            break;
+		//        }
+		//      }
+		//        #endregion MIDI Logic
+		//    } else {
+		//      _port.getCommand();
+		//    }
+		//  }
+		//}
 		private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
 
 		}
 
 		private void midiCheck_Tick(object sender, EventArgs e) {
-			MidiDataCoordinator();
+			//MidiDataCoordinator();
 		}
 
 		private void shiftButton_Click(object sender, EventArgs e) {
@@ -850,8 +769,8 @@ namespace SongIllustrator {
 		}
 
 		private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
-			_thread.Abort();
-			_port.shutdown();
+			//_thread.Abort();
+			//_port.shutdown();
 		}
 
 		private void panel1_Paint(object sender, PaintEventArgs e) {
@@ -859,7 +778,9 @@ namespace SongIllustrator {
 		}
 
 		private void toMIDIToolStripMenuItem_Click(object sender, EventArgs e) {
-			ExportMidi(frames);
+			foreach (LightData padData in launchPads) {
+				ExportMidi(padData.FrameData);
+			}
 		}
 
 		private void ExportMidi(List<FrameData> midiFrames) {
@@ -870,7 +791,9 @@ namespace SongIllustrator {
 		}
 
 		private void toMIDIToolStripMenuItem1_Click(object sender, EventArgs e) {
-			ExportMidi(frames);
+			foreach (LightData padData in launchPads) {
+				ExportMidi(padData.FrameData);
+			}
 		}
 
 		private void controlEditorToolStripMenuItem_Click(object sender, EventArgs e) {

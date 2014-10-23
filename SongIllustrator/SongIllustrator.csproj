@@ -65,11 +65,18 @@
     </Compile>
     <Compile Include="FrameData.cs" />
     <Compile Include="ImageSlicer.cs" />
+    <Compile Include="LightPad.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LightPad.Designer.cs">
+      <DependentUpon>LightPad.cs</DependentUpon>
+    </Compile>
     <Compile Include="MidiWriter.cs" />
     <Compile Include="MilliStopWatch.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="NoteIdentifier.cs" />
+    <Compile Include="PadData.cs" />
     <Compile Include="Properties\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShowDisplay.cs">
@@ -78,6 +85,7 @@
     <Compile Include="ShowDisplay.Designer.cs">
       <DependentUpon>ShowDisplay.cs</DependentUpon>
     </Compile>
+    <Compile Include="SongIO.cs" />
     <Compile Include="teVirtualMIDI.cs" />
     <Compile Include="TeVirtualMIDITest.cs" />
     <Compile Include="Timeline.cs">
@@ -97,6 +105,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LightPad.resx">
+      <DependentUpon>LightPad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -45,6 +45,7 @@
 			this.frameCheckbox = new System.Windows.Forms.CheckBox();
 			this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.timeline1 = new SongIllustrator.Timeline();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fILEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.newToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,12 +58,11 @@
 			this.pLaylistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.openPlaylistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.createPlaylistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.midiCheck = new System.Windows.Forms.Timer(this.components);
-			this.frameLabel = new System.Windows.Forms.Label();
 			this.launchpadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.controlEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.midiCheck = new System.Windows.Forms.Timer(this.components);
+			this.frameLabel = new System.Windows.Forms.Label();
 			this.shiftButton = new SongIllustrator.DisplayButton();
-			this.timeline1 = new SongIllustrator.Timeline();
 			this.imageButton = new SongIllustrator.DisplayButton();
 			this.displayButton2 = new SongIllustrator.DisplayButton();
 			this.fullscreenButton = new SongIllustrator.DisplayButton();
@@ -90,7 +90,6 @@
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(552, 479);
 			this.panel1.TabIndex = 68;
-			this.panel1.SizeChanged += new System.EventHandler(this.panel1_SizeChanged);
 			this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
 			// 
 			// frameListBox
@@ -231,6 +230,16 @@
 			this.splitContainer1.SplitterDistance = 479;
 			this.splitContainer1.TabIndex = 88;
 			// 
+			// timeline1
+			// 
+			this.timeline1.AutoScroll = true;
+			this.timeline1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.timeline1.Location = new System.Drawing.Point(0, 0);
+			this.timeline1.MinimumSize = new System.Drawing.Size(0, 75);
+			this.timeline1.Name = "timeline1";
+			this.timeline1.Size = new System.Drawing.Size(552, 103);
+			this.timeline1.TabIndex = 85;
+			// 
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -330,6 +339,21 @@
 			this.createPlaylistToolStripMenuItem.Text = "Create Playlist";
 			this.createPlaylistToolStripMenuItem.Click += new System.EventHandler(this.createListButton_Click);
 			// 
+			// launchpadToolStripMenuItem
+			// 
+			this.launchpadToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.controlEditorToolStripMenuItem});
+			this.launchpadToolStripMenuItem.Name = "launchpadToolStripMenuItem";
+			this.launchpadToolStripMenuItem.Size = new System.Drawing.Size(78, 20);
+			this.launchpadToolStripMenuItem.Text = "Launchpad";
+			// 
+			// controlEditorToolStripMenuItem
+			// 
+			this.controlEditorToolStripMenuItem.Name = "controlEditorToolStripMenuItem";
+			this.controlEditorToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+			this.controlEditorToolStripMenuItem.Text = "Control Editor";
+			this.controlEditorToolStripMenuItem.Click += new System.EventHandler(this.controlEditorToolStripMenuItem_Click);
+			// 
 			// midiCheck
 			// 
 			this.midiCheck.Interval = 1;
@@ -344,21 +368,6 @@
 			this.frameLabel.Size = new System.Drawing.Size(39, 13);
 			this.frameLabel.TabIndex = 90;
 			this.frameLabel.Text = "Frame:";
-			// 
-			// launchpadToolStripMenuItem
-			// 
-			this.launchpadToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.controlEditorToolStripMenuItem});
-			this.launchpadToolStripMenuItem.Name = "launchpadToolStripMenuItem";
-			this.launchpadToolStripMenuItem.Size = new System.Drawing.Size(78, 20);
-			this.launchpadToolStripMenuItem.Text = "Launchpad";
-			// 
-			// controlEditorToolStripMenuItem
-			// 
-			this.controlEditorToolStripMenuItem.Name = "controlEditorToolStripMenuItem";
-			this.controlEditorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.controlEditorToolStripMenuItem.Text = "Control Editor";
-			this.controlEditorToolStripMenuItem.Click += new System.EventHandler(this.controlEditorToolStripMenuItem_Click);
 			// 
 			// shiftButton
 			// 
@@ -377,16 +386,6 @@
 			this.shiftButton.Size = new System.Drawing.Size(49, 20);
 			this.shiftButton.TabIndex = 91;
 			this.shiftButton.Click += new System.EventHandler(this.shiftButton_Click);
-			// 
-			// timeline1
-			// 
-			this.timeline1.AutoScroll = true;
-			this.timeline1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.timeline1.Location = new System.Drawing.Point(0, 0);
-			this.timeline1.MinimumSize = new System.Drawing.Size(0, 75);
-			this.timeline1.Name = "timeline1";
-			this.timeline1.Size = new System.Drawing.Size(552, 103);
-			this.timeline1.TabIndex = 85;
 			// 
 			// imageButton
 			// 
