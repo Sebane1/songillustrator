@@ -11,6 +11,16 @@ namespace SongIllustrator
         List<Color> _colours = new List<Color>();
         decimal _timeStamp;
 				bool _fired = false;
+				private int _index;
+
+				public int Index {
+					get {
+						return _index;
+					}
+					set {
+						_index = value;
+					}
+				}
 
 				public bool Fired {
 					get {

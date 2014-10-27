@@ -27,7 +27,7 @@ namespace SongIllustrator {
 			if (!DesignMode) {
 				panel1.Controls.Clear();
 				Form1 form = (Form1) this.Parent.Parent.Parent;
-				foreach (LightData padData in form.LaunchPads) {
+				foreach (Launchpad padData in form.LaunchPads) {
 					if (padData.FrameData.Count > 0) {
 						decimal maxMilliseconds = padData.FrameData[padData.FrameData.Count - 1].TimeStamp;
 						int lastXPosition = 0;
@@ -54,11 +54,11 @@ namespace SongIllustrator {
 										}
 									}
 								}
-								for (int z = 0; z < form.Canvas.Controls.Count; z++) {
-									try {
-										form.Canvas.Controls[z].BackColor = frameData.Colours[z];
-										form.Timestamp = frameData.TimeStamp.ToString();
-									} catch {
+								for (int y = 0; y < form.Canvas.Controls.Count; y++) {
+									LightPad pad = (form.Canvas.Controls[y] as LightPad);
+									if (pad != null) {
+										pad.SetFrame(form.FrameList.SelectedIndex);
+										form.Timestamp = (form.FrameList.SelectedItem as FrameData).TimeStamp.ToString();
 									}
 								}
 							});
@@ -113,7 +113,7 @@ namespace SongIllustrator {
 		//}
 
 		private void trackBar1_ValueChanged(object sender, EventArgs e) {
-		//	UpdateTimeline(trackBar1.Value);
+			//	UpdateTimeline(trackBar1.Value);
 		}
 	}
 }

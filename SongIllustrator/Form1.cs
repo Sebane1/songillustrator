@@ -60,9 +60,9 @@ namespace SongIllustrator {
 		bool shiftDown = false;
 		ShowDisplay display = new ShowDisplay();
 		MilliStopWatch stopwatch = new MilliStopWatch();
-		List<LightData> launchPads = new List<LightData>();
+		List<Launchpad> launchPads = new List<Launchpad>();
 
-		public List<LightData> LaunchPads1 {
+		public List<Launchpad> LaunchPads1 {
 			get {
 				return launchPads;
 			}
@@ -74,8 +74,9 @@ namespace SongIllustrator {
 		private Thread _thread;
 		private bool passiveMode = true;
 		private bool _listenToMidi = true;
+		private int _lowestDivisor;
 
-		public List<LightData> LaunchPads {
+		public List<Launchpad> LaunchPads {
 			get {
 				return launchPads;
 			}
@@ -147,37 +148,55 @@ namespace SongIllustrator {
 		}
 		private void timer1_Tick(object sender, EventArgs e) {
 			stopwatch.Stop();
-			for (int z = 0; z < launchPads.Count; z++) {
-				foreach (FrameData time in launchPads[z].FrameData) {
-					decimal currentPos = (decimal) axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+			for (int i = 0; i < launchPads.Count; i++) {
+				decimal currentPos = (decimal) axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+				for (int z = 0; z < launchPads[i].FrameData.Count; z++) {
+					FrameData time = launchPads[i].FrameData[z];
 					if (currentPos * 100 <= time.TimeStamp) {
 						time.Fired = false;
 					}
 					if (currentPos * 100 >= time.TimeStamp) {
 						if (!time.Fired) {
 							frameLabel.Text = "Frame: " + time.TimeStamp;
-							for (int i = 0; i < (panel1.Controls[z] as LightPad).LightCanvas.Controls.Count; i++) {
-								(panel1.Controls[z] as LightPad).LightCanvas.Controls[i].BackColor = time.Colours[i];
-								if (display.PadLights.Controls.Count > 0) {
-									try {
-										display.PadLights.Controls[i].BackColor = time.Colours[i];
-									} catch {
-
-									}
-								}
-							}
+							(panel1.Controls[i] as LightPad).SetFrame(z);
 							time.Fired = true;
-							frameProgress++;
 						}
 					}
 				}
 			}
+			//for (int z = 0; z < launchPads.Count; z++) {
+			//  foreach (FrameData time in launchPads[z].FrameData) {
+			//    decimal currentPos = (decimal) axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+			//    if (currentPos * 100 <= time.TimeStamp) {
+			//      time.Fired = false;
+			//    }
+			//    if (currentPos * 100 >= time.TimeStamp) {
+			//      if (!time.Fired) {
+			//        frameLabel.Text = "Frame: " + time.TimeStamp;
+			//        if (panel1.Controls.Count > 0) {
+			//          for (int i = 0; i < (panel1.Controls[z] as LightPad).LightCanvas.Controls.Count; i++) {
+			//            (panel1.Controls[z] as LightPad).SetFrame(
+			//            if (display.PadLights.Controls.Count > 0) {
+			//              try {
+			//                display.PadLights.Controls[i].BackColor = time.Colours[i];
+			//              } catch {
+
+			//              }
+			//            }
+			//          }
+			//        }
+			//        time.Fired = true;
+			//        frameProgress++;
+			//      }
+			//    }
+			//  }
+			//}
 			stopwatch.Start();
 		}
 
 		private void button39_Click(object sender, EventArgs e) {
-			FrameData data = new FrameData();
 			for (int i = 0; i < launchPads.Count; i++) {
+				FrameData data = new FrameData();
 				try {
 					decimal currentCount = 0;
 					if (launchPads[i].FrameData.Count != 0) {
@@ -186,9 +205,10 @@ namespace SongIllustrator {
 					data.TimeStamp = currentCount + decimal.Parse(textBox2.Text);
 				} catch (FormatException) {
 				}
-				foreach (DisplayButton button in panel1.Controls) {
+				foreach (DisplayButton button in (panel1.Controls[i] as LightPad).LightCanvas.Controls) {
 					data.Colours.Add(button.BackColor);
 				}
+				data.Index = launchPads[i].FrameData.Count - 1;
 				launchPads[i].FrameData.Add(data);
 			}
 			UpdateFrames();
@@ -199,22 +219,20 @@ namespace SongIllustrator {
 				launchPads[i].FrameData.Sort(delegate(FrameData data1, FrameData data2) {
 					return (int) data1.TimeStamp - (int) data2.TimeStamp;
 				});
-				foreach (FrameData frame in launchPads[i].FrameData) {
-					frameListBox.Items.Add(frame);
-				}
+			}
+			foreach (FrameData frame in launchPads[0].FrameData) {
+				frameListBox.Items.Add(frame);
 			}
 			if (frameListBox.Items.Count > 0) {
 				pixelBar.Enabled = false;
 			}
 			timeline1.UpdateTimeline();
 		}
+
 		private void checkedListBox1_Click(object sender, EventArgs e) {
 			for (int i = 0; i < panel1.Controls.Count; i++) {
-				try {
-					panel1.Controls[i].BackColor = (frameListBox.SelectedItem as FrameData).Colours[i];
-					textBox1.Text = (frameListBox.SelectedItem as FrameData).TimeStamp.ToString();
-				} catch {
-				}
+				(panel1.Controls[i] as LightPad).SetFrame(frameListBox.SelectedIndex);
+				textBox1.Text = (frameListBox.SelectedItem as FrameData).TimeStamp.ToString();
 			}
 		}
 
@@ -293,16 +311,15 @@ namespace SongIllustrator {
 		}
 
 		private void duplicateButton_Click(object sender, EventArgs e) {
-			decimal currentCount = 0;
-			decimal difference = 0;
-			for (int z = 0; z < launchPads.Count; z++) {
-				if (launchPads[z].FrameData.Count != 0) {
-					currentCount = launchPads[z].FrameData[launchPads[z].FrameData.Count - 1].TimeStamp;
-				}
+			foreach (Launchpad launchPad in launchPads) {
+				decimal currentCount = 0;
+				decimal difference = 0;
+				currentCount = launchPad.FrameData[launchPad.FrameData.Count - 1].TimeStamp;
 				for (int i = 0; i < frameListBox.CheckedItems.Count; i++) {
-					FrameData item = frameListBox.CheckedItems[i] as FrameData;
+					int index = (frameListBox.CheckedItems[i] as FrameData).Index;
+					FrameData item = launchPad.FrameData[(index - 1) < 0 ? 0 : (index - 1)];
 					FrameData data = new FrameData();
-					try {
+				//	try {
 						data.Colours = item.Colours;
 						if (i < frameListBox.CheckedItems.Count - 1) {
 							FrameData frame2 = (frameListBox.CheckedItems[i + 1] as FrameData);
@@ -310,10 +327,10 @@ namespace SongIllustrator {
 						}
 						currentCount += difference;
 						data.TimeStamp = currentCount;
-						launchPads[i].FrameData.Add(data);
-					} catch {
-						MessageBox.Show("Nothing is selected.");
-					}
+						launchPad.FrameData.Add(data);
+				//	} catch {
+					//	MessageBox.Show("Nothing is selected.");
+					//}
 				}
 			}
 			UpdateFrames();
@@ -338,25 +355,55 @@ namespace SongIllustrator {
 			}
 		}
 		private void OpenFileDialog(string filepath) {
-			launchPads.Clear();
+			_lowestDivisor = 1;
 			frameProgress = 0;
 			timer1.Stop();
 			stopwatch.Stop();
 			stopwatch.Reset();
+			launchPads.Clear();
+			panel1.Controls.Clear();
 			pixelBar.Enabled = false;
 			using (FileStream openStream = new FileStream(filepath, FileMode.Open, FileAccess.Read)) {
-				List<LightData> padData = SongIO.OpenFile(openStream);
-				foreach (LightData lightData in padData) {
+				List<Launchpad> padData = SongIO.OpenFile(openStream);
+				foreach (Launchpad lightData in padData) {
 					LightPad lightPad = new LightPad();
 					lightPad.LightData = lightData;
 				}
-				launchPads = padData;
+				launchPads = MergeLightPads(padData, launchPads);
 				axWindowsMediaPlayer1.URL = SongIO.Url;
 			}
 			//timeline1.UpdateTimeline();
+			GeneratePads(launchPads);
 			UpdateFrames();
 		}
-		private void SaveFileDialog(string filePath, List<LightData> padData) {
+
+		private List<Launchpad> MergeLightPads(List<Launchpad> newList, List<Launchpad> existingList) {
+			for (int i = 0; i < Math.Max(newList.Count, existingList.Count); i++) {
+				Launchpad newLaunchPad = null;
+				Launchpad existingLaunchPad = null;
+				if (newList.Count < existingList.Count && i < newList.Count) {
+					newLaunchPad = newList[i];
+				} else if (newList.Count < existingList.Count && i >= newList.Count) {
+					existingLaunchPad.Port.shutdown();
+					existingLaunchPad.Thread.Abort();
+					existingLaunchPad.Thread = null;
+					existingLaunchPad.Port = null;
+				}
+				if (newList.Count > existingList.Count && i < existingList.Count) {
+					existingLaunchPad = existingList[i];
+				}
+
+				if (newLaunchPad != null && existingLaunchPad != null) {
+					newLaunchPad.Port = existingLaunchPad.Port;
+					newLaunchPad.ListenToMidi = existingLaunchPad.ListenToMidi;
+					existingLaunchPad.ListenToMidi = false;
+					existingLaunchPad.Thread.Abort();
+					existingLaunchPad.Thread = null;
+				}
+			}
+			return newList;
+		}
+		private void SaveFileDialog(string filePath, List<Launchpad> padData) {
 			SongIO.SaveFile(filePath, padData, axWindowsMediaPlayer1.URL);
 		}
 
@@ -389,7 +436,10 @@ namespace SongIllustrator {
 								}
 							}
 						}
-						frameListBox.SetItemChecked(frameListBox.SelectedIndex, true);
+						try {
+							frameListBox.SetItemChecked(frameListBox.SelectedIndex, true);
+						} catch {
+						}
 					} else {
 						_refFrame1 = frameListBox.SelectedItem as FrameData;
 						if (frameListBox.SelectedIndex != -1) {
@@ -420,7 +470,7 @@ namespace SongIllustrator {
 		}
 
 		private void displayButton65_Click(object sender, EventArgs e) {
-			foreach (LightData padData in launchPads) {
+			foreach (Launchpad padData in launchPads) {
 				padData.FrameData = new List<FrameData>();
 			}
 			frameListBox.Items.Clear();
@@ -435,7 +485,7 @@ namespace SongIllustrator {
 		private void deleteButton_Click(object sender, EventArgs e) {
 			if (MessageBox.Show("Are you sure you want to delete these frames? (" + frameListBox.CheckedItems.Count + ")", "Delete Item?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
 				for (int i = frameListBox.CheckedItems.Count - 1; i >= 0; i--) {
-					foreach (LightData padData in launchPads) {
+					foreach (Launchpad padData in launchPads) {
 						padData.FrameData.Remove(frameListBox.CheckedItems[i] as FrameData);
 					}
 					frameListBox.Items.Remove(frameListBox.CheckedItems[i]);
@@ -455,7 +505,7 @@ namespace SongIllustrator {
 
 		}
 		private void OpenPlaylist(string filepath) {
-			foreach (LightData padData in launchPads) {
+			foreach (Launchpad padData in launchPads) {
 				padData.FrameData.Clear();
 			}
 			playlist.Clear();
@@ -516,26 +566,50 @@ namespace SongIllustrator {
 		private void Form1_Load(object sender, EventArgs e) {
 			//GeneratePixels(8);
 			if (launchPads.Count < 1) {
-				LightData lightData = new LightData();
-				lightData.Density = 8;
-				launchPads.Add(lightData);
+				AddLightPad();
 			}
+			_lowestDivisor = 1;
 			GeneratePads(launchPads);
 		}
-		private void GeneratePads(List<LightData> lightDataList) {
-			int widthHeight = panel1.Width / ((lightDataList.Count % 2 == 0 || lightDataList.Count == 1) ? lightDataList.Count : lightDataList.Count - 1);
+
+		private void AddLightPad() {
+			Launchpad lightData = new Launchpad();
+			lightData.Density = 8;
+			launchPads.Add(lightData);
+		}
+		private void GeneratePads(List<Launchpad> lightDataList) {
+			if (lightDataList.Count > _lowestDivisor * _lowestDivisor) {
+				_lowestDivisor++;
+			}
+			int widthHeight = panel1.Height / _lowestDivisor;
 			int widthProgression = 0;
 			int heightProgression = 0;
 			for (int i = 0; i < lightDataList.Count; i++) {
 				LightPad lightPad = new LightPad();
+				if (lightDataList[i].Port == null) {
+					lightDataList[i].Port = new TeVirtualMIDI("Virtual Launchpad " + (i + 1));
+				}
 				lightPad.LightData = lightDataList[i];
 				lightPad.Size = new Size(widthHeight, widthHeight);
-				if (i * widthHeight > panel1.Width) {
+				if (widthProgression >= _lowestDivisor) {
 					heightProgression++;
+					widthProgression = 0;
 				}
-				lightPad.Location = new Point(lightPad.Size.Width * widthProgression++, lightPad.Size.Width * heightProgression);
+				lightPad.Location = new Point(lightPad.Size.Height * widthProgression++, lightPad.Size.Height * heightProgression);
 				panel1.Controls.Add(lightPad);
 			}
+		}
+
+		private int GetLowestDivisor(int number) {
+			int result = 0;
+			for (int i = number; i > 0; i--) {
+				if (number % i == 0) {
+					if (i > 1) {
+						result = i;
+					}
+				}
+			}
+			return result;
 		}
 		//private void GeneratePixels(int pixels) {
 		//  panel1.Controls.Clear();
@@ -622,6 +696,7 @@ namespace SongIllustrator {
 		private void Form1_Shown(object sender, EventArgs e) {
 			//_thread = new Thread(new ThreadStart(MidiDataCoordinator));
 			//_thread.Start();
+
 		}
 
 		private void refreshButton_Load(object sender, EventArgs e) {
@@ -778,7 +853,7 @@ namespace SongIllustrator {
 		}
 
 		private void toMIDIToolStripMenuItem_Click(object sender, EventArgs e) {
-			foreach (LightData padData in launchPads) {
+			foreach (Launchpad padData in launchPads) {
 				ExportMidi(padData.FrameData);
 			}
 		}
@@ -791,7 +866,7 @@ namespace SongIllustrator {
 		}
 
 		private void toMIDIToolStripMenuItem1_Click(object sender, EventArgs e) {
-			foreach (LightData padData in launchPads) {
+			foreach (Launchpad padData in launchPads) {
 				ExportMidi(padData.FrameData);
 			}
 		}
@@ -807,6 +882,12 @@ namespace SongIllustrator {
 
 		private void Form1_MouseDown(object sender, MouseEventArgs e) {
 			passiveMode = false;
+		}
+
+		private void addLaunchpadToolStripMenuItem_Click(object sender, EventArgs e) {
+			AddLightPad();
+			panel1.Controls.Clear();
+			GeneratePads(launchPads);
 		}
 	}
 }

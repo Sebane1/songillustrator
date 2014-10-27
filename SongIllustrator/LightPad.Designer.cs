@@ -41,7 +41,9 @@
 			this.Controls.Add(this.lightCanvas);
 			this.Name = "LightPad";
 			this.Size = new System.Drawing.Size(566, 462);
+			this.Load += new System.EventHandler(this.LightPad_Load);
 			this.SizeChanged += new System.EventHandler(this.panel1_SizeChanged);
+			this.Enter += new System.EventHandler(this.LightPad_Enter);
 			this.ResumeLayout(false);
 
 		}

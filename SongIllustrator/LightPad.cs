@@ -7,16 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using TobiasErichsen.teVirtualMIDI;
+using System.Threading;
 
 namespace SongIllustrator {
 	public partial class LightPad : UserControl {
 		public LightPad() {
 			InitializeComponent();
 		}
-		private LightData lightData = new LightData();
-		TeVirtualMIDI _port;
-		private bool passiveMode;
-		private bool _listenToMidi;
+		private Launchpad lightData = new Launchpad();
+		private bool passiveMode = false;
+		private bool _listenToMidi = true;
 		public Panel LightCanvas {
 			get {
 				return lightCanvas;
@@ -42,7 +42,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		public LightData LightData {
+		public Launchpad LightData {
 			get {
 				return lightData;
 			}
@@ -54,12 +54,13 @@ namespace SongIllustrator {
 		}
 		public TeVirtualMIDI Port {
 			get {
-				return _port;
+				return lightData.Port;
 			}
 			set {
-				_port = value;
+				lightData.Port = value;
 			}
 		}
+		Thread _thread = null;
 		private void panel1_SizeChanged(object sender, EventArgs e) {
 			List<Color> colours = new List<Color>();
 			foreach (DisplayButton button in lightCanvas.Controls) {
@@ -71,6 +72,12 @@ namespace SongIllustrator {
 				lightCanvas.Controls[i].BackColor = colours[i];
 			}
 		}
+		public void SetFrame(int frameIndex) {
+			FrameData frameData = lightData.FrameData[frameIndex];
+			for (int i = 0; i < frameData.Colours.Count; i++) {
+				lightCanvas.Controls[i].BackColor = frameData.Colours[i];
+			}
+		}
 		private void GeneratePixels(int pixels) {
 			lightCanvas.Controls.Clear();
 			int arrayPos = 0;
@@ -79,7 +86,7 @@ namespace SongIllustrator {
 				for (int widthProgression = 0; widthProgression < pixels; widthProgression++) {
 					DisplayButton button = new DisplayButton();
 					button.ArrayPos = arrayPos++;
-					button.Port = _port;
+					button.Port = lightData.Port;
 					button.Size = buttonSize;
 					button.Location = new Point(buttonSize.Width * widthProgression, buttonSize.Height * heightProgression);
 					lightCanvas.Controls.Add(button);
@@ -101,8 +108,11 @@ namespace SongIllustrator {
 		}
 		private void MidiDataCoordinator() {
 			while (true) {
+				if (!lightData.ListenToMidi) {
+					object test;
+				}
 				if (_listenToMidi) {
-					byte[] command = _port.getCommand();
+					byte[] command = lightData.Port.getCommand();
 					if (command.Length >= 3) {
 						int process = command[0];
 						int key = command[1];
@@ -158,9 +168,20 @@ namespace SongIllustrator {
 					}
 						#endregion MIDI Logic
 				} else {
-					_port.getCommand();
+					lightData.Port.getCommand();
 				}
 			}
+		}
+
+		private void LightPad_Load(object sender, EventArgs e) {
+			if (lightData.Thread == null) {
+				lightData.Thread = new Thread(MidiDataCoordinator);
+				lightData.Thread.Start();
+			}
+		}
+
+		private void LightPad_Enter(object sender, EventArgs e) {
+
 		}
 	}
 }

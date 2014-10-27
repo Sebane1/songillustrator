@@ -17,8 +17,8 @@ namespace SongIllustrator {
 				SongIO._url = value;
 			}
 		}
-		public static List<LightData> OpenFile(Stream openStream) {
-			List<LightData> padData = new List<LightData>();
+		public static List<Launchpad> OpenFile(Stream openStream) {
+			List<Launchpad> padData = new List<Launchpad>();
 			using (BinaryReader reader = new BinaryReader(openStream)) {
 				string version = reader.ReadString();
 				if (version.Contains("v")) {
@@ -35,8 +35,8 @@ namespace SongIllustrator {
 			return padData;
 		}
 
-		private static LightData LoadFrames(BinaryReader reader, string version) {
-			LightData padData = new LightData();
+		private static Launchpad LoadFrames(BinaryReader reader, string version) {
+			Launchpad padData = new Launchpad();
 			List<FrameData> frameData = new List<FrameData>();
 			padData.Density = reader.ReadInt32();
 			//GeneratePixels(display.Pixels = pixelBar.Value = display.Pixels = reader.ReadInt32());
@@ -46,7 +46,7 @@ namespace SongIllustrator {
 				if (version.Contains("v1")) {
 					frame.TimeStamp = reader.ReadInt32();
 				} else {
-					if (version.Contains("v2")) {
+					if (version.Contains("v2") || version.Contains("v3")) {
 						frame.TimeStamp = reader.ReadDecimal();
 					}
 				}
@@ -58,18 +58,19 @@ namespace SongIllustrator {
 						object test;
 					}
 				}
+				frame.Index = i;
 				frameData.Add(frame);
 			}
 			padData.FrameData = frameData;
 			return padData;
 		}
 
-		internal static void SaveFile(string filePath, List<LightData> padData, string songURL) {
+		internal static void SaveFile(string filePath, List<Launchpad> padData, string songURL) {
 			using (FileStream saveStream = new FileStream(filePath, FileMode.Create, FileAccess.Write)) {
 				using (BinaryWriter writer = new BinaryWriter(saveStream)) {
 					writer.Write("v3");
 					writer.Write(padData.Count);
-					foreach (LightData pad in padData) {
+					foreach (Launchpad pad in padData) {
 						writer.Write(pad.Density);
 						writer.Write(pad.FrameData.Count);
 						foreach (FrameData data in pad.FrameData) {

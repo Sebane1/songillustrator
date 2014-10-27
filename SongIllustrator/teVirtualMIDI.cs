@@ -110,7 +110,7 @@ namespace TobiasErichsen.teVirtualMIDI {
 
 			exception.reasonCode = reasonCode;
 
-			throw exception;
+			//throw exception;
 
 		}
 
