@@ -119,7 +119,6 @@ namespace SongIllustrator {
 						int velocity = command[2];
 						string note = NoteIdentifier.GetNoteFromInt(key);
 						int notePos = NoteIdentifier.GetNotePosition(note);
-						//MessageBox.Show(process + "|" + key + "|" + velocity + "     " + stringCommand);
 						#region MIDI Logic
 						switch (process) {
 							case 128:
@@ -176,6 +175,7 @@ namespace SongIllustrator {
 		private void LightPad_Load(object sender, EventArgs e) {
 			if (lightData.Thread == null) {
 				lightData.Thread = new Thread(MidiDataCoordinator);
+				lightData.Thread.IsBackground = true;
 				lightData.Thread.Start();
 			}
 		}
