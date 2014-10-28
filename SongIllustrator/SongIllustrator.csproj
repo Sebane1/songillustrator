@@ -76,7 +76,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="NoteIdentifier.cs" />
-    <Compile Include="PadData.cs" />
+    <Compile Include="LaunchPad.cs" />
     <Compile Include="Properties\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShowDisplay.cs">

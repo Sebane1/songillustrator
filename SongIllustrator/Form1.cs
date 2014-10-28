@@ -11,6 +11,7 @@ using System.IO;
 using System.Threading;
 using TobiasErichsen.teVirtualMIDI;
 using TypingConnector;
+using System.Drawing.Imaging;
 
 namespace SongIllustrator {
 	public partial class Form1 : Form {
@@ -111,17 +112,6 @@ namespace SongIllustrator {
 		}
 
 		private void refreshButton_Click(object sender, EventArgs e) {
-			/*try {
-				frameListBox.Items.Clear();
-				frames.Sort(delegate(FrameData data1, FrameData data2) {
-					return data1.TimeStamp - data2.TimeStamp;
-				});
-				foreach (FrameData frame in frames) {
-					frameListBox.Items.Add(frame);
-				}
-			} catch {
-
-			}*/
 			UpdateFrames();
 		}
 		private void NoteToButton(string note) {
@@ -168,7 +158,7 @@ namespace SongIllustrator {
 				foreach (DisplayButton button in (panel1.Controls[i] as LightPad).LightCanvas.Controls) {
 					data.Colours.Add(button.BackColor);
 				}
-				data.Index = launchPads[i].FrameData.Count - 1;
+				data.Index = launchPads[i].FrameData.Count;
 				launchPads[i].FrameData.Add(data);
 			}
 			UpdateFrames();
@@ -192,34 +182,12 @@ namespace SongIllustrator {
 		private void checkedListBox1_Click(object sender, EventArgs e) {
 			for (int i = 0; i < panel1.Controls.Count; i++) {
 				(panel1.Controls[i] as LightPad).SetFrame(frameListBox.SelectedIndex);
-				textBox1.Text = (frameListBox.SelectedItem as FrameData).TimeStamp.ToString();
+				FrameData item = (frameListBox.SelectedItem as FrameData);
+				frameLabel.Text = "Frame " + item.Index;
+				if (item != null) {
+					textBox1.Text = item.TimeStamp.ToString();
+				}
 			}
-		}
-
-		private void displayButton1_Click(object sender, EventArgs e) {
-			//try
-			//{
-			//    (frameListBox.SelectedItem as FrameData).Colours.Clear();
-			//}
-			//catch
-			//{
-
-			//}
-			//foreach (DisplayButton button in panel1.Controls)
-			//{
-			//    try
-			//    {
-			//        (frameListBox.SelectedItem as FrameData).Colours.Add(button.BackColor);
-			//    }
-			//    catch
-			//    {
-
-			//    }
-			//}
-		}
-
-		private void displayButton1_Load(object sender, EventArgs e) {
-
 		}
 
 		private void songButton_Click(object sender, EventArgs e) {
@@ -277,27 +245,12 @@ namespace SongIllustrator {
 		}
 
 		private void duplicateButton_Click(object sender, EventArgs e) {
+			List<FrameData> frameTimes = new List<FrameData>();
+			foreach (FrameData item in frameListBox.Items) {
+				frameTimes.Add(item);
+			}
 			foreach (Launchpad launchPad in launchPads) {
-				decimal currentCount = 0;
-				decimal difference = 0;
-				currentCount = launchPad.FrameData[launchPad.FrameData.Count - 1].TimeStamp;
-				for (int i = 0; i < frameListBox.CheckedItems.Count; i++) {
-					int index = (frameListBox.CheckedItems[i] as FrameData).Index;
-					FrameData item = launchPad.FrameData[(index - 1) < 0 ? 0 : (index - 1)];
-					FrameData data = new FrameData();
-					//	try {
-					data.Colours = item.Colours;
-					if (i < frameListBox.CheckedItems.Count - 1) {
-						FrameData frame2 = (frameListBox.CheckedItems[i + 1] as FrameData);
-						difference = frame2.TimeStamp - item.TimeStamp;
-					}
-					currentCount += difference;
-					data.TimeStamp = currentCount;
-					launchPad.FrameData.Add(data);
-					//	} catch {
-					//	MessageBox.Show("Nothing is selected.");
-					//}
-				}
+				launchPad.DuplicateFrames(decimal.Parse(textBox2.Text), frameTimes);
 			}
 			UpdateFrames();
 		}
@@ -339,7 +292,7 @@ namespace SongIllustrator {
 				axWindowsMediaPlayer1.URL = SongIO.Url;
 			}
 			//timeline1.UpdateTimeline();
-			GeneratePads(launchPads);
+			GeneratePads(launchPads, panel1);
 			UpdateFrames();
 		}
 
@@ -439,6 +392,7 @@ namespace SongIllustrator {
 			frameListBox.Items.Clear();
 			axWindowsMediaPlayer1.URL = "";
 			pixelBar.Enabled = true;
+			UpdateFrames();
 		}
 
 		private void deleteButton_DoubleClick(object sender, EventArgs e) {
@@ -532,7 +486,7 @@ namespace SongIllustrator {
 				AddLightPad();
 			}
 			_lowestDivisor = 1;
-			GeneratePads(launchPads);
+			GeneratePads(launchPads, panel1);
 		}
 
 		private void AddLightPad() {
@@ -540,11 +494,11 @@ namespace SongIllustrator {
 			lightData.Density = 8;
 			launchPads.Add(lightData);
 		}
-		private void GeneratePads(List<Launchpad> lightDataList) {
+		public void GeneratePads(List<Launchpad> lightDataList, Control control) {
 			if (lightDataList.Count > _lowestDivisor * _lowestDivisor) {
 				_lowestDivisor++;
 			}
-			int widthHeight = panel1.Height / _lowestDivisor;
+			int widthHeight = control.Height / _lowestDivisor;
 			int widthProgression = 0;
 			int heightProgression = 0;
 			for (int i = 0; i < lightDataList.Count; i++) {
@@ -559,7 +513,7 @@ namespace SongIllustrator {
 					widthProgression = 0;
 				}
 				lightPad.Location = new Point(lightPad.Size.Height * widthProgression++, lightPad.Size.Height * heightProgression);
-				panel1.Controls.Add(lightPad);
+				control.Controls.Add(lightPad);
 			}
 		}
 
@@ -574,33 +528,7 @@ namespace SongIllustrator {
 			}
 			return result;
 		}
-		//private void GeneratePixels(int pixels) {
-		//  panel1.Controls.Clear();
-		//  int arrayPos = 0;
-		//  Size buttonSize = new Size(panel1.Width / pixels, panel1.Height / pixels);
-		//  for (int heightProgression = 0; heightProgression < pixels; heightProgression++) {
 
-		//    for (int widthProgression = 0; widthProgression < pixels; widthProgression++) {
-		//      DisplayButton button = new DisplayButton();
-		//      button.ArrayPos = arrayPos++;
-		//      button.Port = _port;
-		//      button.Size = buttonSize;
-		//      button.Location = new Point(buttonSize.Width * widthProgression, buttonSize.Height * heightProgression);
-		//      panel1.Controls.Add(button);
-		//    }
-		//  }
-		//  if (_overlayImage != null) {
-		//    OverlayButtons(_overlayImage, panel1.Controls);
-		//  }
-		//  if (display.Visible) {
-		//    display.Show();
-		//    display.GeneratePixels(pixels);
-		//  } else {
-		//    display.Show();
-		//    display.GeneratePixels(pixels);
-		//    display.Hide();
-		//  }
-		//}
 		private void displayButton66_Click(object sender, EventArgs e) {
 			display.ShowDialog();
 		}
@@ -608,23 +536,6 @@ namespace SongIllustrator {
 		private void openDisplayFileButton_Load(object sender, EventArgs e) {
 
 		}
-
-		private void pixelBar_ValueChanged(object sender, EventArgs e) {
-			//display.Pixels = pixelBar.Value;
-			//GeneratePixels(pixelBar.Value);
-		}
-
-		//private void panel1_SizeChanged(object sender, EventArgs e) {
-		//  List<Color> colours = new List<Color>();
-		//  foreach (DisplayButton button in panel1.Controls) {
-		//    colours.Add(button.BackColor);
-		//  }
-		//  panel1.Width = this.Width - 140;
-		//  GeneratePixels(pixelBar.Value);
-		//  for (int i = 0; i < colours.Count; i++) {
-		//    panel1.Controls[i].BackColor = colours[i];
-		//  }
-		//}
 
 		private void displayButton1_Click_1(object sender, EventArgs e) {
 
@@ -634,67 +545,55 @@ namespace SongIllustrator {
 			//Sync Button.
 			if (MessageBox.Show("Are you sure you want to syncronize frames? It will re-increment the selected frames based on a delay of " + textBox2.Text + ".", "Song Illustrator", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes) {
 				int frameIndex = 0;
-				List<FrameData> tempFrames = new List<FrameData>();
-				FrameData data = new FrameData();
-				try {
-					data.TimeStamp = (frameListBox.CheckedItems[0] as FrameData).TimeStamp - decimal.Parse(textBox2.Text);
-				} catch {
+				List<FrameData> frameTimes = new List<FrameData>();
+				foreach (FrameData item in frameListBox.Items) {
+					frameTimes.Add(item);
 				}
-				tempFrames.Add(data);
-				foreach (FrameData item in frameListBox.CheckedItems) {
-					tempFrames.Add(item);
-				}
-				for (int i = 0; i < frameListBox.Items.Count; i++) {
-					if (tempFrames[0] == frameListBox.Items[i]) {
-						frameIndex = i > 0 ? i - 1 : 0;
-						break;
-					}
-				}
-				for (int i = 0; i < frameListBox.CheckedItems.Count; i++) {
-					(frameListBox.CheckedItems[i] as FrameData).TimeStamp = (tempFrames[frameIndex] as FrameData).TimeStamp + (decimal.Parse(textBox2.Text) * (i + 1));
+				foreach (Launchpad launchPad in launchPads) {
+					launchPad.SyncFrames(decimal.Parse(textBox2.Text), frameTimes);
 				}
 			}
-		}
-
-		private void Form1_Shown(object sender, EventArgs e) {
-			//_thread = new Thread(new ThreadStart(MidiDataCoordinator));
-			//_thread.Start();
-
-		}
-
-		private void refreshButton_Load(object sender, EventArgs e) {
-
+			UpdateFrames();
 		}
 
 		private void imageButton_Click(object sender, EventArgs e) {
 			ImageList imagelist = new ImageList();
 			OpenFileDialog dialog = new OpenFileDialog();
+			List<List<DisplayButton>> displayButtonsList = new List<List<DisplayButton>>();
 			if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
 				using (FileStream stream = new FileStream(dialog.FileName, FileMode.Open, FileAccess.Read)) {
 					OverlayImage = new MemoryStream();
 					stream.CopyTo(OverlayImage);
 					stream.CopyTo(display.OverlayImage);
-					OverlayButtons(OverlayImage, panel1.Controls);
+					foreach (LightPad launchPad in panel1.Controls) {
+						List<DisplayButton> displayButtons = new List<DisplayButton>();
+						foreach (DisplayButton displayButton in launchPad.LightCanvas.Controls) {
+							displayButtons.Add(displayButton);
+						}
+						displayButtonsList.Add(displayButtons);
+					}
+					OverlayButtons(OverlayImage, displayButtonsList);
 				}
 			}
 		}
-		public void OverlayButtons(Stream bitmapStream, Control.ControlCollection controls) {
+		public void OverlayButtons(Stream bitmapStream, List<DisplayButton> controls) {
 			List<Image> images = ImageSlicer.SliceImage(new Bitmap(bitmapStream), panel1.Size, new Size(pixelBar.Value, pixelBar.Value));
 			for (int i = 0; i < controls.Count; i++) {
 				controls[i].BackgroundImage = images[i];
 			}
 		}
 
+		public void OverlayButtons(Stream bitmapStream, List<List<DisplayButton>> controls) {
+			List<Image> images = ImageSlicer.SliceImage(new Bitmap(bitmapStream), panel1.Size, new Size(_lowestDivisor, _lowestDivisor));
+			for (int i = 0; i < controls.Count; i++) {
+				Stream imageStream = new MemoryStream();
+				images[i].Save(imageStream, ImageFormat.Png);
+				OverlayButtons(imageStream, controls[i]);
+			}
+		}
+
 		private void Form1_Resize(object sender, EventArgs e) {
 			timeline1.UpdateTimeline();
-		}
-
-		private void pixelBar_Scroll(object sender, EventArgs e) {
-
-		}
-
-		private void duplicateButton_Load(object sender, EventArgs e) {
-
 		}
 
 		private void checkedListBox1_KeyDown(object sender, KeyEventArgs e) {
@@ -710,100 +609,19 @@ namespace SongIllustrator {
 			_refFrame2 = null;
 		}
 
-		//private void MidiDataCoordinator() {
-		//  while (true) {
-		//    if (_listenToMidi) {
-		//      byte[] command = _port.getCommand();
-		//      if (command.Length >= 3) {
-		//        int process = command[0];
-		//        int key = command[1];
-		//        int velocity = command[2];
-		//        string note = NoteIdentifier.GetNoteFromInt(key);
-		//        int notePos = NoteIdentifier.GetNotePosition(note);
-		//        //MessageBox.Show(process + "|" + key + "|" + velocity + "     " + stringCommand);
-		//        #region MIDI Logic
-		//        switch (process) {
-		//          case 128:
-		//            DisplayButton button;
-		//            if (notePos >= 0) {
-		//              Invoke(new MethodInvoker(
-		//                delegate() {
-		//                  if (display.Visible == false) {
-		//                    button = (DisplayButton) panel1.Controls[NoteIdentifier.GetNotePosition(note)];
-		//                  } else {
-		//                    button = (DisplayButton) display.PadLights.Controls[NoteIdentifier.GetNotePosition(note)];
-		//                  }
-		//                  if (!passiveMode) {
-		//                    button.Reset();
-		//                    button.CanSendMessage = false;
-		//                  } else {
-		//                    if (velocity == 64) {
-		//                      button.CanSendMessage = true;
-		//                      button.ChangeColor();
-		//                      button.SendMessage();
-		//                    }
-		//                  }
-		//                }));
-		//            }
-		//            break;
-		//          case 144:
-		//            if (notePos >= 0) {
-		//              Invoke(new MethodInvoker(
-		//                delegate() {
-		//                  button = panel1.Controls[notePos] as DisplayButton;
-		//                  if (display.Visible == false) {
-		//                    button = (DisplayButton) panel1.Controls[NoteIdentifier.GetNotePosition(note)];
-		//                  } else {
-		//                    button = (DisplayButton) display.PadLights.Controls[NoteIdentifier.GetNotePosition(note)];
-		//                  }
-		//                  switch (velocity) {
-		//                    case 7:
-		//                      button.BackColor = Color.Red;
-		//                      break;
-		//                    case 83:
-		//                      button.BackColor = Color.Orange;
-		//                      break;
-		//                    case 124:
-		//                      button.BackColor = Color.Green;
-		//                      break;
-		//                    case 127:
-		//                      button.BackColor = Color.Yellow;
-		//                      break;
-		//                  }
-		//                }));
-		//            }
-		//            break;
-		//        }
-		//      }
-		//        #endregion MIDI Logic
-		//    } else {
-		//      _port.getCommand();
-		//    }
-		//  }
-		//}
-		private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
-
-		}
-
-		private void midiCheck_Tick(object sender, EventArgs e) {
-			//MidiDataCoordinator();
-		}
-
 		private void shiftButton_Click(object sender, EventArgs e) {
 			//Shift Button.
 			if (MessageBox.Show("Are you sure you want to shift the frames? It will place the selected frames starting from " + textBox1.Text + "ms.", "Song Illustrator", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes) {
 				decimal baseStamp = decimal.Parse(textBox1.Text);
-				for (int i = 0; i < frameListBox.CheckedItems.Count; i++) {
-					decimal difference = 0;
-					FrameData frame = (frameListBox.CheckedItems[i] as FrameData);
-					if (i < frameListBox.CheckedItems.Count - 1) {
-						FrameData frame2 = (frameListBox.CheckedItems[i + 1] as FrameData);
-						difference = frame2.TimeStamp - frame.TimeStamp;
-					}
-					frame.TimeStamp -= frame.TimeStamp - baseStamp;
-					baseStamp += difference;
+				List<FrameData> frameTimes = new List<FrameData>();
+				foreach (FrameData item in frameListBox.Items) {
+					frameTimes.Add(item);
+				}
+				foreach (Launchpad launchPad in launchPads) {
+					launchPad.ShiftFrames(decimal.Parse(textBox2.Text), frameTimes);
 				}
 			}
+			UpdateFrames();
 		}
 
 		private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
@@ -847,10 +665,16 @@ namespace SongIllustrator {
 			passiveMode = false;
 		}
 
-		private void addLaunchpadToolStripMenuItem_Click(object sender, EventArgs e) {
-			AddLightPad();
-			panel1.Controls.Clear();
-			GeneratePads(launchPads);
+		public void addLaunchpadToolStripMenuItem_Click(object sender, EventArgs e) {
+			if (launchPads[0].FrameData.Count < 1) {
+				AddLightPad();
+				panel1.Controls.Clear();
+				display.Creator = this;
+				//GeneratePads(launchPads, display.Canvas);
+				GeneratePads(launchPads, panel1);
+			} else {
+				MessageBox.Show("Cannot add launchpads once frames have been added.", "Song Illustrator", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
 		}
 	}
 }

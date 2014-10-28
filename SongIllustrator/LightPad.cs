@@ -73,9 +73,11 @@ namespace SongIllustrator {
 			}
 		}
 		public void SetFrame(int frameIndex) {
-			FrameData frameData = lightData.FrameData[frameIndex];
-			for (int i = 0; i < frameData.Colours.Count; i++) {
-				lightCanvas.Controls[i].BackColor = frameData.Colours[i];
+			if (frameIndex >= 0) {
+				FrameData frameData = lightData.FrameData[frameIndex];
+				for (int i = 0; i < frameData.Colours.Count; i++) {
+					lightCanvas.Controls[i].BackColor = frameData.Colours[i];
+				}
 			}
 		}
 		private void GeneratePixels(int pixels) {

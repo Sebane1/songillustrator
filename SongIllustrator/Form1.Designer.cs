@@ -45,6 +45,7 @@
 			this.frameCheckbox = new System.Windows.Forms.CheckBox();
 			this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.timeline1 = new SongIllustrator.Timeline();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fILEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.newToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,16 +60,15 @@
 			this.createPlaylistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.launchpadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.controlEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.addLaunchpadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.midiCheck = new System.Windows.Forms.Timer(this.components);
 			this.frameLabel = new System.Windows.Forms.Label();
 			this.shiftButton = new SongIllustrator.DisplayButton();
-			this.timeline1 = new SongIllustrator.Timeline();
 			this.imageButton = new SongIllustrator.DisplayButton();
 			this.displayButton2 = new SongIllustrator.DisplayButton();
 			this.fullscreenButton = new SongIllustrator.DisplayButton();
 			this.button39 = new SongIllustrator.DisplayButton();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.addLaunchpadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.contextMenuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pixelBar)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
@@ -187,8 +187,6 @@
 			this.pixelBar.TabIndex = 80;
 			this.pixelBar.Value = 8;
 			this.pixelBar.Visible = false;
-			this.pixelBar.Scroll += new System.EventHandler(this.pixelBar_Scroll);
-			this.pixelBar.ValueChanged += new System.EventHandler(this.pixelBar_ValueChanged);
 			// 
 			// frameCheckbox
 			// 
@@ -217,6 +215,9 @@
 			// 
 			// splitContainer1
 			// 
+			this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.splitContainer1.Location = new System.Drawing.Point(2, 25);
 			this.splitContainer1.Name = "splitContainer1";
 			this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -232,6 +233,16 @@
 			this.splitContainer1.SplitterDistance = 479;
 			this.splitContainer1.TabIndex = 88;
 			// 
+			// timeline1
+			// 
+			this.timeline1.AutoScroll = true;
+			this.timeline1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.timeline1.Location = new System.Drawing.Point(0, 0);
+			this.timeline1.MinimumSize = new System.Drawing.Size(0, 75);
+			this.timeline1.Name = "timeline1";
+			this.timeline1.Size = new System.Drawing.Size(552, 103);
+			this.timeline1.TabIndex = 85;
+			// 
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -244,7 +255,6 @@
 			this.menuStrip1.Size = new System.Drawing.Size(684, 24);
 			this.menuStrip1.TabIndex = 89;
 			this.menuStrip1.Text = "menuStrip1";
-			this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
 			// 
 			// fILEToolStripMenuItem
 			// 
@@ -348,10 +358,21 @@
 			this.controlEditorToolStripMenuItem.Text = "Enable Passive Mode";
 			this.controlEditorToolStripMenuItem.Click += new System.EventHandler(this.controlEditorToolStripMenuItem_Click);
 			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(181, 6);
+			// 
+			// addLaunchpadToolStripMenuItem
+			// 
+			this.addLaunchpadToolStripMenuItem.Name = "addLaunchpadToolStripMenuItem";
+			this.addLaunchpadToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+			this.addLaunchpadToolStripMenuItem.Text = "Add Launchpad";
+			this.addLaunchpadToolStripMenuItem.Click += new System.EventHandler(this.addLaunchpadToolStripMenuItem_Click);
+			// 
 			// midiCheck
 			// 
 			this.midiCheck.Interval = 1;
-			this.midiCheck.Tick += new System.EventHandler(this.midiCheck_Tick);
 			// 
 			// frameLabel
 			// 
@@ -380,16 +401,6 @@
 			this.shiftButton.Size = new System.Drawing.Size(49, 20);
 			this.shiftButton.TabIndex = 91;
 			this.shiftButton.Click += new System.EventHandler(this.shiftButton_Click);
-			// 
-			// timeline1
-			// 
-			this.timeline1.AutoScroll = true;
-			this.timeline1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.timeline1.Location = new System.Drawing.Point(0, 0);
-			this.timeline1.MinimumSize = new System.Drawing.Size(0, 75);
-			this.timeline1.Name = "timeline1";
-			this.timeline1.Size = new System.Drawing.Size(552, 103);
-			this.timeline1.TabIndex = 85;
 			// 
 			// imageButton
 			// 
@@ -464,18 +475,6 @@
 			this.button39.Load += new System.EventHandler(this.button39_Load);
 			this.button39.Click += new System.EventHandler(this.button39_Click);
 			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(181, 6);
-			// 
-			// addLaunchpadToolStripMenuItem
-			// 
-			this.addLaunchpadToolStripMenuItem.Name = "addLaunchpadToolStripMenuItem";
-			this.addLaunchpadToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
-			this.addLaunchpadToolStripMenuItem.Text = "Add Launchpad";
-			this.addLaunchpadToolStripMenuItem.Click += new System.EventHandler(this.addLaunchpadToolStripMenuItem_Click);
-			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -502,7 +501,6 @@
 			this.Text = "Song Illustrator";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
 			this.Load += new System.EventHandler(this.Form1_Load);
-			this.Shown += new System.EventHandler(this.Form1_Shown);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
 			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
 			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
