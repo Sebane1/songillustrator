@@ -46,8 +46,8 @@ namespace SongIllustrator {
 					int octave1 = int.Parse(note[1] + "");
 					return GetIntFromNoteAndOctave(noteValue1, octave1);
 				case 3:
-					string noteValue2 = note[1] == '#' ? (note[0] + "" + note[1]) : note[0]+"";
-					int octave2 = int.Parse(note[1] == '-' ? note[1] + "" + note[2]: note[2] + "");
+					string noteValue2 = note[1] == '#' ? (note[0] + "" + note[1]) : note[0] + "";
+					int octave2 = int.Parse(note[1] == '-' ? note[1] + "" + note[2] : note[2] + "");
 					return GetIntFromNoteAndOctave(noteValue2, octave2);
 				case 4:
 					string noteValue3 = note[0] + "" + note[1];

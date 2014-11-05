@@ -170,7 +170,7 @@ namespace File_Encryptor_Launcher {
 						break;
 					case 1: {
 							this.textBox1.AppendText("Looking for updates.\r\n");
-							Stream stream = this.webClient.OpenRead("http://ombstats.x10.mx/Song Illustrator/version.txt");
+							Stream stream = this.webClient.OpenRead("http://sebastianlawe.com/apps/si/version.txt");
 							string b = null;
 							try {
 								FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(Program.RecentFileLog);
@@ -244,7 +244,7 @@ namespace File_Encryptor_Launcher {
 			rijndaelManaged.BlockSize = 128;
 			rijndaelManaged.Padding = PaddingMode.PKCS7;
 			using (ICryptoTransform cryptoTransform = rijndaelManaged.CreateDecryptor(rijndaelManaged.Key, rijndaelManaged.IV)) {
-				using (Stream stream = this.webClient.OpenRead("http://ombstats.x10.mx/Song Illustrator/updatepackage.ecrb")) {
+				using (Stream stream = this.webClient.OpenRead("http://sebastianlawe.com/apps/si/updatepackage.ecrb")) {
 					using (CryptoStream cryptoStream = new CryptoStream(stream, cryptoTransform, CryptoStreamMode.Read)) {
 						using (GZipStream gZipStream = new GZipStream(cryptoStream, CompressionMode.Decompress)) {
 							if (flag) {

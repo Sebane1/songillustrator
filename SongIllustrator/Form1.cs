@@ -20,7 +20,17 @@ namespace SongIllustrator {
 		}
 		private Stream _overlayImage;
 		int _portCount = 0;
+		string filePath = "";
+		bool _changed = true;
 
+		public bool Changed {
+			get {
+				return _changed;
+			}
+			set {
+				_changed = value;
+			}
+		}
 		public Stream OverlayImage {
 			get {
 				return _overlayImage;
@@ -65,7 +75,19 @@ namespace SongIllustrator {
 		private bool passiveMode = true;
 		private int _lowestDivisor;
 		private bool shiftDown;
-
+		private void CheckImage() {
+			List<List<DisplayButton>> displayButtonsList = new List<List<DisplayButton>>();
+			foreach (LightPad launchPad in panel1.Controls) {
+				List<DisplayButton> displayButtons = new List<DisplayButton>();
+				foreach (DisplayButton displayButton in launchPad.LightCanvas.Controls) {
+					displayButtons.Add(displayButton);
+				}
+				displayButtonsList.Add(displayButtons);
+			}
+			if (displayButtonsList.Count > 0) {
+				OverlayButtons(_overlayImage, displayButtonsList);
+			}
+		}
 		public List<Launchpad> LaunchPads {
 			get {
 				return launchPads;
@@ -136,7 +158,15 @@ namespace SongIllustrator {
 					if (currentPos * 100 >= time.TimeStamp) {
 						if (!time.Fired) {
 							frameLabel.Text = "Frame: " + time.TimeStamp;
-							(panel1.Controls[i] as LightPad).SetFrame(z);
+							if (panel1.Controls.Count > 0) {
+								(panel1.Controls[i] as LightPad).SetFrame(z);
+							}
+							if (display.Canvas.Controls.Count > 0) {
+								LightPad pad = (display.Canvas.Controls[i] as LightPad);
+								if (pad != null) {
+									pad.SetFrame(z);
+								}
+							}
 							time.Fired = true;
 						}
 					}
@@ -145,6 +175,7 @@ namespace SongIllustrator {
 		}
 
 		private void button39_Click(object sender, EventArgs e) {
+			_changed = true;
 			for (int i = 0; i < launchPads.Count; i++) {
 				FrameData data = new FrameData();
 				try {
@@ -159,7 +190,7 @@ namespace SongIllustrator {
 					data.Colours.Add(button.BackColor);
 				}
 				data.Index = launchPads[i].FrameData.Count;
-				launchPads[i].FrameData.Add(data);
+				(panel1.Controls[i] as LightPad).LightData.FrameData.Add(data);
 			}
 			UpdateFrames();
 		}
@@ -180,17 +211,19 @@ namespace SongIllustrator {
 		}
 
 		private void checkedListBox1_Click(object sender, EventArgs e) {
+			_changed = true;
 			for (int i = 0; i < panel1.Controls.Count; i++) {
 				(panel1.Controls[i] as LightPad).SetFrame(frameListBox.SelectedIndex);
 				FrameData item = (frameListBox.SelectedItem as FrameData);
-				frameLabel.Text = "Frame " + item.Index;
 				if (item != null) {
+					frameLabel.Text = "Frame " + item.Index;
 					textBox1.Text = item.TimeStamp.ToString();
 				}
 			}
 		}
 
 		private void songButton_Click(object sender, EventArgs e) {
+			_changed = true;
 			OpenFileDialog dialog = new OpenFileDialog();
 			if (dialog.ShowDialog() == DialogResult.OK) {
 				axWindowsMediaPlayer1.URL = dialog.FileName;
@@ -245,8 +278,9 @@ namespace SongIllustrator {
 		}
 
 		private void duplicateButton_Click(object sender, EventArgs e) {
+			_changed = true;
 			List<FrameData> frameTimes = new List<FrameData>();
-			foreach (FrameData item in frameListBox.Items) {
+			foreach (FrameData item in frameListBox.CheckedItems) {
 				frameTimes.Add(item);
 			}
 			foreach (Launchpad launchPad in launchPads) {
@@ -267,20 +301,34 @@ namespace SongIllustrator {
 		}
 
 		private void saveButton_Click(object sender, EventArgs e) {
+			Save();
+		}
+
+		private DialogResult Save() {
 			SaveFileDialog dialog = new SaveFileDialog();
 			dialog.Filter = "Song Illustrator Files (*.slif)|*.slif";
-			if (dialog.ShowDialog() == DialogResult.OK) {
-				SaveFileDialog(dialog.FileName, launchPads);
+			if (string.IsNullOrEmpty(filePath)) {
+				if (dialog.ShowDialog() == DialogResult.OK) {
+					SaveFileDialog(dialog.FileName, launchPads);
+					filePath = dialog.FileName;
+					_changed = false;
+					return DialogResult.OK;
+				}
+			} else {
+				_changed = false;
+				SaveFileDialog(filePath, launchPads);
+				return DialogResult.OK;
 			}
+			return DialogResult.None;
 		}
 		private void OpenFileDialog(string filepath) {
+			int oldCount = launchPads.Count;
+			int newCount = 0;
 			_lowestDivisor = 1;
 			frameProgress = 0;
 			timer1.Stop();
 			stopwatch.Stop();
 			stopwatch.Reset();
-			launchPads.Clear();
-			panel1.Controls.Clear();
 			pixelBar.Enabled = false;
 			using (FileStream openStream = new FileStream(filepath, FileMode.Open, FileAccess.Read)) {
 				List<Launchpad> padData = SongIO.OpenFile(openStream);
@@ -288,19 +336,34 @@ namespace SongIllustrator {
 					LightPad lightPad = new LightPad();
 					lightPad.LightData = lightData;
 				}
+				newCount = padData.Count;
 				launchPads = MergeLightPads(padData, launchPads);
 				axWindowsMediaPlayer1.URL = SongIO.Url;
 			}
 			//timeline1.UpdateTimeline();
-			GeneratePads(launchPads, panel1);
+			if (oldCount != newCount) {
+				panel1.Controls.Clear();
+				GeneratePads(launchPads, panel1);
+			} else {
+				OverWritePadFrame(launchPads, panel1);
+			}
 			UpdateFrames();
+		}
+
+		private void OverWritePadFrame(List<Launchpad> launchPads, Panel panel1) {
+			for (int i = 0; i < panel1.Controls.Count; i++) {
+				(panel1.Controls[i] as LightPad).LightData.FrameData = launchPads[i].FrameData;
+			}
 		}
 
 		private List<Launchpad> MergeLightPads(List<Launchpad> newList, List<Launchpad> existingList) {
 			for (int i = 0; i < Math.Max(newList.Count, existingList.Count); i++) {
 				Launchpad newLaunchPad = null;
 				Launchpad existingLaunchPad = null;
-				if (newList.Count < existingList.Count && i < newList.Count) {
+				if (newList.Count > -existingList.Count && i < existingList.Count) {
+					existingLaunchPad = existingList[i];
+				}
+				if (newList.Count <= existingList.Count && i < newList.Count) {
 					newLaunchPad = newList[i];
 				} else if (newList.Count < existingList.Count && i >= newList.Count) {
 					existingLaunchPad.Port.shutdown();
@@ -308,13 +371,10 @@ namespace SongIllustrator {
 					existingLaunchPad.Thread = null;
 					existingLaunchPad.Port = null;
 				}
-				if (newList.Count > existingList.Count && i < existingList.Count) {
-					existingLaunchPad = existingList[i];
-				}
-
 				if (newLaunchPad != null && existingLaunchPad != null) {
-					newLaunchPad.Port = existingLaunchPad.Port;
-					newLaunchPad.ListenToMidi = existingLaunchPad.ListenToMidi;
+					existingLaunchPad.FrameData.Clear();
+					existingLaunchPad.FrameData.AddRange(newLaunchPad.FrameData);
+					newLaunchPad = existingLaunchPad;
 				}
 			}
 			return newList;
@@ -324,10 +384,35 @@ namespace SongIllustrator {
 		}
 
 		private void openDisplayFileButton_Click(object sender, EventArgs e) {
-			OpenFileDialog dialog = new OpenFileDialog();
-			dialog.Filter = "Song Illustrator Files (*.slif)|*.slif";
-			if (dialog.ShowDialog() == DialogResult.OK) {
-				OpenFileDialog(dialog.FileName);
+			bool continueWithNewFile = true;
+			bool saveDeniedOrDone = false;
+			_changed = false;
+			if (launchPads[0].FrameData.Count > 0 && _changed) {
+
+				while (!saveDeniedOrDone) {
+					switch (MessageBox.Show("You have unsaved changes. Would you like to save them?", "Song Illustrator", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information)) {
+						case DialogResult.Yes:
+							if (Save() == DialogResult.OK) {
+								saveDeniedOrDone = true;
+							}
+							break;
+						case DialogResult.No:
+							saveDeniedOrDone = true;
+							break;
+						case DialogResult.Cancel:
+							saveDeniedOrDone = true;
+							continueWithNewFile = false;
+							break;
+					}
+				}
+			}
+			if (continueWithNewFile) {
+				OpenFileDialog dialog = new OpenFileDialog();
+				dialog.Filter = "Song Illustrator Files (*.slif)|*.slif";
+				if (dialog.ShowDialog() == DialogResult.OK) {
+					OpenFileDialog(dialog.FileName);
+					filePath = dialog.FileName;
+				}
 			}
 		}
 
@@ -385,14 +470,39 @@ namespace SongIllustrator {
 
 		}
 
-		private void displayButton65_Click(object sender, EventArgs e) {
-			foreach (Launchpad padData in launchPads) {
-				padData.FrameData = new List<FrameData>();
+		private void new_Click(object sender, EventArgs e) {
+			bool continueWithNewFile = true;
+			bool saveDeniedOrDone = false;
+			_changed = false;
+			if (launchPads[0].FrameData.Count > 0 && _changed) {
+
+				while (!saveDeniedOrDone) {
+					switch (MessageBox.Show("You have unsaved changes. Would you like to save them?", "Song Illustrator", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information)) {
+						case DialogResult.Yes:
+							if (Save() == DialogResult.OK) {
+								saveDeniedOrDone = true;
+							}
+							break;
+						case DialogResult.No:
+							saveDeniedOrDone = true;
+							break;
+						case DialogResult.Cancel:
+							saveDeniedOrDone = true;
+							continueWithNewFile = false;
+							break;
+					}
+				}
 			}
-			frameListBox.Items.Clear();
-			axWindowsMediaPlayer1.URL = "";
-			pixelBar.Enabled = true;
-			UpdateFrames();
+			if (continueWithNewFile) {
+				for (int i = 0; i < launchPads.Count; i++) {
+					launchPads[i].FrameData.Clear();
+					(panel1.Controls[i] as LightPad).LightData.FrameData.Clear();
+				}
+				frameListBox.Items.Clear();
+				axWindowsMediaPlayer1.URL = "";
+				pixelBar.Enabled = true;
+				UpdateFrames();
+			}
 		}
 
 		private void deleteButton_DoubleClick(object sender, EventArgs e) {
@@ -400,12 +510,16 @@ namespace SongIllustrator {
 		}
 
 		private void deleteButton_Click(object sender, EventArgs e) {
+			_changed = true;
 			if (MessageBox.Show("Are you sure you want to delete these frames? (" + frameListBox.CheckedItems.Count + ")", "Delete Item?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
 				for (int i = frameListBox.CheckedItems.Count - 1; i >= 0; i--) {
 					foreach (Launchpad launchpad in launchPads) {
 						launchpad.FrameData.Remove(launchpad.FrameData[(frameListBox.CheckedItems[i] as FrameData).Index]);
 					}
 					frameListBox.Items.Remove(frameListBox.CheckedItems[i]);
+					foreach (LightPad lightPad in panel1.Controls) {
+						lightPad.IndexFrames();
+					}
 					if (frameListBox.Items.Count < 1) {
 						pixelBar.Enabled = false;
 					}
@@ -506,7 +620,12 @@ namespace SongIllustrator {
 				if (lightDataList[i].Port == null) {
 					lightDataList[i].Port = new TeVirtualMIDI("Virtual Launchpad " + (i + 1));
 				}
+				if (i > panel1.Controls.Count) {
+					(panel1.Controls[i] as LightPad).Port = lightDataList[i].Port;
+				}
 				lightPad.LightData = lightDataList[i];
+				lightPad.Index = i;
+				lightPad.Display = display;
 				lightPad.Size = new Size(widthHeight, widthHeight);
 				if (widthProgression >= _lowestDivisor) {
 					heightProgression++;
@@ -514,6 +633,9 @@ namespace SongIllustrator {
 				}
 				lightPad.Location = new Point(lightPad.Size.Height * widthProgression++, lightPad.Size.Height * heightProgression);
 				control.Controls.Add(lightPad);
+				if (_overlayImage != null) {
+					CheckImage();
+				}
 			}
 		}
 
@@ -530,6 +652,7 @@ namespace SongIllustrator {
 		}
 
 		private void displayButton66_Click(object sender, EventArgs e) {
+			display.Creator = this;
 			display.ShowDialog();
 		}
 
@@ -543,10 +666,11 @@ namespace SongIllustrator {
 
 		private void displayButton2_Click(object sender, EventArgs e) {
 			//Sync Button.
+			_changed = true;
 			if (MessageBox.Show("Are you sure you want to syncronize frames? It will re-increment the selected frames based on a delay of " + textBox2.Text + ".", "Song Illustrator", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes) {
 				int frameIndex = 0;
 				List<FrameData> frameTimes = new List<FrameData>();
-				foreach (FrameData item in frameListBox.Items) {
+				foreach (FrameData item in frameListBox.CheckedItems) {
 					frameTimes.Add(item);
 				}
 				foreach (Launchpad launchPad in launchPads) {
@@ -611,22 +735,37 @@ namespace SongIllustrator {
 
 		private void shiftButton_Click(object sender, EventArgs e) {
 			//Shift Button.
-			if (MessageBox.Show("Are you sure you want to shift the frames? It will place the selected frames starting from " + textBox1.Text + "ms.", "Song Illustrator", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes) {
-				decimal baseStamp = decimal.Parse(textBox1.Text);
-				List<FrameData> frameTimes = new List<FrameData>();
-				foreach (FrameData item in frameListBox.Items) {
-					frameTimes.Add(item);
+			_changed = true;
+			if (frameListBox.CheckedItems.Count > 0) {
+				if (MessageBox.Show("Are you sure you want to shift the frames? It will place the selected frames starting from " + textBox1.Text + "ms.", "Song Illustrator", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes) {
+					if (!string.IsNullOrEmpty(textBox1.Text)) {
+						try {
+							decimal baseStamp = decimal.Parse(textBox1.Text);
+							List<FrameData> frameTimes = new List<FrameData>();
+							foreach (FrameData item in frameListBox.CheckedItems) {
+								frameTimes.Add(item);
+							}
+							foreach (Launchpad launchPad in launchPads) {
+								launchPad.ShiftFrames(decimal.Parse(textBox1.Text), frameTimes);
+							}
+							UpdateFrames();
+						} catch {
+							MessageBox.Show("Invalid number!", "Song Illustrator", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+						}
+					} else {
+						MessageBox.Show("Can't shift frames by an empty value!", "Song Illustrator", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					}
 				}
-				foreach (Launchpad launchPad in launchPads) {
-					launchPad.ShiftFrames(decimal.Parse(textBox2.Text), frameTimes);
-				}
+			} else {
+				MessageBox.Show("You haven't checked off any frames to shift!", "Song Illustrator", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
-			UpdateFrames();
 		}
 
 		private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
-			//_thread.Abort();
-			//_port.shutdown();
+			foreach (Launchpad launchpad in launchPads) {
+				launchpad.Port.shutdown();
+				launchpad.Thread.Abort();
+			}
 		}
 
 		private void panel1_Paint(object sender, PaintEventArgs e) {
@@ -638,17 +777,26 @@ namespace SongIllustrator {
 				ExportMidi(padData.FrameData);
 			}
 		}
-
-		private void ExportMidi(List<FrameData> midiFrames) {
+		private DialogResult ExportMidi(List<FrameData> midiFrames) {
+#if DEBUG
 			SaveFileDialog dialog = new SaveFileDialog();
 			if (dialog.ShowDialog() == DialogResult.OK) {
-				MidiIO.WriteMidi(dialog.FileName, midiFrames, 120, 4);
+				MidiIO.WriteMidi(dialog.FileName, midiFrames, 120, 480);
+				return DialogResult.OK;
+			} else {
+				return DialogResult.Cancel;
 			}
+#else
+			MessageBox.Show("Incomplete Feature", "Song Illustrator", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			return DialogResult.Cancel;
+#endif
 		}
 
 		private void toMIDIToolStripMenuItem1_Click(object sender, EventArgs e) {
 			foreach (Launchpad padData in launchPads) {
-				ExportMidi(padData.FrameData);
+				if (ExportMidi(padData.FrameData) != DialogResult.OK) {
+					break;
+				}
 			}
 		}
 
@@ -670,11 +818,121 @@ namespace SongIllustrator {
 				AddLightPad();
 				panel1.Controls.Clear();
 				display.Creator = this;
-				//GeneratePads(launchPads, display.Canvas);
 				GeneratePads(launchPads, panel1);
 			} else {
-				MessageBox.Show("Cannot add launchpads once frames have been added.", "Song Illustrator", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show("Cannot add Launchpads once frames have been added.", "Song Illustrator", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
+		}
+
+		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e) {
+			SaveAs();
+		}
+
+		private void SaveAs() {
+			SaveFileDialog dialog = new SaveFileDialog();
+			dialog.Filter = "Song Illustrator Files (*.slif)|*.slif";
+			if (dialog.ShowDialog() == DialogResult.OK) {
+				SaveFileDialog(dialog.FileName, launchPads);
+				filePath = dialog.FileName;
+				_changed = false;
+			}
+		}
+
+		private void removeLaunchpadToolStripMenuItem_Click(object sender, EventArgs e) {
+			if (launchPads.Count > 1) {
+				if (frameListBox.Items.Count <= 0) {
+					panel1.Controls.Clear();
+					_lowestDivisor--;
+					launchPads[launchPads.Count - 1].Port.shutdown();
+					launchPads[launchPads.Count - 1].ListenToMidi = false;
+					launchPads[launchPads.Count - 1].FrameData = null;
+					launchPads[launchPads.Count - 1].Thread.Abort();
+					launchPads.Remove(launchPads[launchPads.Count - 1]);
+					GeneratePads(launchPads, panel1);
+				} else {
+					MessageBox.Show("Cannot remove Launchpads once frames have been added.", "Song Illustrator", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				}
+			} else {
+				MessageBox.Show("Cannot remove any more Launchpads.", "Song Illustrator", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
+		}
+
+		private void launchpadToolStripMenuItem_Click(object sender, EventArgs e) {
+
+		}
+
+		private void useWithFLStudioToolStripMenuItem_Click(object sender, EventArgs e) {
+			TutorialForm tutForm = new TutorialForm();
+			tutForm.TutorialPages = TutorialPage.FLPages();
+			tutForm.ShowDialog();
+		}
+
+		private void addAFrameToolStripMenuItem_Click(object sender, EventArgs e) {
+			FigurePainter figurePainter = new FigurePainter();
+			figurePainter.Creator = this;
+			figurePainter.TutorialFigures.Add(new TutorialFigure(panel1.Controls, "Create an image on the canvas here by double clicking the virtual buttons."));
+			figurePainter.TutorialFigures.Add(new TutorialFigure(addFrameButton, "Once you're done making a frame, click the add frame button."));
+			figurePainter.ShowDialog();
+		}
+
+		private void changeSpeedToolStripMenuItem_Click(object sender, EventArgs e) {
+			FigurePainter figurePainter = new FigurePainter();
+			figurePainter.Creator = this;
+			figurePainter.TutorialFigures.Add(new TutorialFigure(frameListBox, "Check off the frames you want to change the speed on."));
+			figurePainter.TutorialFigures.Add(new TutorialFigure(textBox2, "Enter the millsecond delay you want between the selected frames."));
+			figurePainter.TutorialFigures.Add(new TutorialFigure(syncButton, "Click the sync button."));
+			figurePainter.ShowDialog();
+		}
+
+		private void shiftFramesToolStripMenuItem_Click(object sender, EventArgs e) {
+			FigurePainter figurePainter = new FigurePainter();
+			figurePainter.Creator = this;
+			figurePainter.TutorialFigures.Add(new TutorialFigure(frameListBox, "Check off the frames you want to shift"));
+			figurePainter.TutorialFigures.Add(new TutorialFigure(textBox1, "Enter the millisecond position you want to shift the frames to."));
+			figurePainter.TutorialFigures.Add(new TutorialFigure(shiftButton, "Click the shift button."));
+			figurePainter.ShowDialog();
+		}
+
+		private void deleteFramesToolStripMenuItem_Click(object sender, EventArgs e) {
+			FigurePainter figurePainter = new FigurePainter();
+			figurePainter.Creator = this;
+			figurePainter.TutorialFigures.Add(new TutorialFigure(frameListBox, "Check off the frames you want to delete"));
+			figurePainter.TutorialFigures.Add(new TutorialFigure(frameListBox, "Right click, then click delete"));
+			figurePainter.ShowDialog();
+		}
+
+		private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
+			if (launchPads[0].FrameData.Count > 0 && _changed) {
+				bool saveDeniedOrDone = false;
+				while (!saveDeniedOrDone) {
+					if (launchPads[0].FrameData.Count > 0) {
+						switch (MessageBox.Show("You have unsaved changes. Would you like to save them?", "Song Illustrator", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information)) {
+							case DialogResult.Yes:
+								if (Save() == DialogResult.OK) {
+									saveDeniedOrDone = true;
+								}
+								break;
+							case DialogResult.No:
+								saveDeniedOrDone = true;
+								break;
+							case DialogResult.Cancel:
+								saveDeniedOrDone = true;
+								e.Cancel = true;
+								break;
+						}
+					}
+				}
+			}
+		}
+
+		private void howDoIToolStripMenuItem_Click(object sender, EventArgs e) {
+
+		}
+
+		private void useWithAbletonToolStripMenuItem_Click(object sender, EventArgs e) {
+			TutorialForm tutForm = new TutorialForm();
+			tutForm.TutorialPages = TutorialPage.AbletonPages();
+			tutForm.ShowDialog();
 		}
 	}
 }

@@ -20,7 +20,7 @@ namespace SongIllustrator {
 		private bool _launchpadEdit = false;
 		private DateTime _lastColorChange = new DateTime();
 		DateTime _lastButtonPush = DateTime.Now;
-
+		Color lastColour = new Color();
 		public bool LaunchpadEdit {
 			get {
 				return _launchpadEdit;
@@ -103,7 +103,6 @@ namespace SongIllustrator {
 			}
 		}
 		public void Reset() {
-			_colorCount = 4;
 			BackColor = Color.Gray;
 			/*if (port != null) {
 				byte[] message = new byte[3];
@@ -192,40 +191,50 @@ namespace SongIllustrator {
 		}
 		public void SendMessage() {
 			//if (_canSendMessage) {
-				if (port != null) {
-					byte[] message = new byte[3];
-					byte velocity = 0;
-					switch (_colorCount) {
-						case 0:
-							velocity = 7;
-							break;
-						case 1:
-							velocity = 83;
-							break;
-						case 2:
-							velocity = 124;
-							break;
-						case 3:
-							velocity = 127;
-							break;
-						case 4:
-							Reset();
-							SendOff();
-							break;
-					}
-
-					message[0] = 128;
-					message[1] = (byte) NoteIdentifier.GetIntFromNote(NoteIdentifier.GetNoteFromPosition(_index));
-					message[2] = _lastVelocity;
-					port.sendCommand(message);
-					message[0] = 144;
-					message[1] = (byte) NoteIdentifier.GetIntFromNote(NoteIdentifier.GetNoteFromPosition(_index));
-					message[2] = velocity;
-					port.sendCommand(message);
-					_lastMessage = message;
-					_lastVelocity = velocity;
+			if (port != null) {
+				byte[] message = new byte[3];
+				byte[] sysMessage = new byte[2];
+				byte velocity = 0;
+				switch (_colorCount) {
+					case 0:
+						velocity = 7;
+						break;
+					case 1:
+						velocity = 83;
+						break;
+					case 2:
+						velocity = 124;
+						break;
+					case 3:
+						velocity = 127;
+						break;
+					case 4:
+						Reset();
+						//SendOff();
+						break;
 				}
-		//	}
+				sysMessage[0] = 240;
+				sysMessage[1] = 2;
+				port.sendCommand(sysMessage);
+				//..............
+				message[0] = 128;
+				message[1] = (byte) NoteIdentifier.GetIntFromNote(NoteIdentifier.GetNoteFromPosition(_index));
+				message[2] = _lastVelocity;
+				port.sendCommand(message);
+				//..............
+				sysMessage[0] = 240;
+				sysMessage[1] =  2;
+				port.sendCommand(sysMessage);
+				//..............
+				message[0] = 144;
+				message[1] = (byte) NoteIdentifier.GetIntFromNote(NoteIdentifier.GetNoteFromPosition(_index));
+				message[2] = velocity;
+				port.sendCommand(message);
+				//..............
+				_lastMessage = message;
+				_lastVelocity = velocity;
+			}
+			//	}
 		}
 
 		private bool CompareMessage(byte[] _lastMessage, byte[] message) {
@@ -240,32 +249,34 @@ namespace SongIllustrator {
 				port.sendCommand(message);
 			}
 		}
-		private bool CheckEqualColor(Color a, Color b) {
+		public bool CheckEqualColor(Color a, Color b) {
 			return (a.A == b.A && a.R == b.R && a.G == b.G && a.B == b.B);
 		}
 		bool hitAlready = false;
 		private void DisplayButton_BackColorChanged(object sender, EventArgs e) {
-			if (CheckEqualColor(BackColor, Color.Red)) {
-				_colorCount = 0;
-				SendMessage();
-			} else if (CheckEqualColor(BackColor, Color.Orange)) {
-				_colorCount = 1;
-				SendMessage();
-			} else if (CheckEqualColor(BackColor, Color.Green)) {
-				_colorCount = 2;
-				SendMessage();
-			} else if (CheckEqualColor(BackColor, Color.Yellow)) {
-				_colorCount = 3;
-				SendMessage();
-			} else if (CheckEqualColor(BackColor, Color.Aqua) || CheckEqualColor(BackColor, Color.Blue)) {
-				_colorCount = 2;
-				hitAlready = true;
-				SendMessage();
-			} else if (CheckEqualColor(BackColor, Color.Black) || CheckEqualColor(BackColor, Color.Gray) || CheckEqualColor(BackColor, Color.Purple)) {
-				_colorCount = 4;
-				hitAlready = true;
-				Reset();
-				SendOff();
+			if (!CheckEqualColor(lastColour, BackColor)) {
+				if (CheckEqualColor(BackColor, Color.Red)) {
+					_colorCount = 0;
+					SendMessage();
+				} else if (CheckEqualColor(BackColor, Color.Orange)) {
+					_colorCount = 1;
+					SendMessage();
+				} else if (CheckEqualColor(BackColor, Color.Green)) {
+					_colorCount = 2;
+					SendMessage();
+				} else if (CheckEqualColor(BackColor, Color.Yellow)) {
+					_colorCount = 3;
+					SendMessage();
+				} else if (CheckEqualColor(BackColor, Color.Aqua) || CheckEqualColor(BackColor, Color.Blue)) {
+					_colorCount = 2;
+					hitAlready = true;
+					SendMessage();
+				} else if (CheckEqualColor(BackColor, Color.Black) || CheckEqualColor(BackColor, Color.Gray) || CheckEqualColor(BackColor, Color.Purple)) {
+					_colorCount = 4;
+					hitAlready = true;
+					Reset();
+					SendOff();
+				}
 			}
 		}
 	}

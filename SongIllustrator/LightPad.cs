@@ -17,6 +17,16 @@ namespace SongIllustrator {
 		private Launchpad lightData = new Launchpad();
 		private bool passiveMode = false;
 		private bool _listenToMidi = true;
+		ShowDisplay _display;
+
+		public ShowDisplay Display {
+			get {
+				return _display;
+			}
+			set {
+				_display = value;
+			}
+		}
 		public Panel LightCanvas {
 			get {
 				return lightCanvas;
@@ -48,8 +58,10 @@ namespace SongIllustrator {
 			}
 			set {
 				lightData = value;
-				lightCanvas.Controls.Clear();
-				GeneratePixels(lightData.Density);
+				if (lightData.Density * lightData.Density != lightCanvas.Controls.Count) {
+					lightCanvas.Controls.Clear();
+					GeneratePixels(lightData.Density);
+				}
 			}
 		}
 		public TeVirtualMIDI Port {
@@ -60,7 +72,13 @@ namespace SongIllustrator {
 				lightData.Port = value;
 			}
 		}
+		public void IndexFrames() {
+			for (int i = 0; i < lightData.FrameData.Count; i++) {
+				lightData.FrameData[i].Index = i;
+			}
+		}
 		Thread _thread = null;
+		public int Index;
 		private void panel1_SizeChanged(object sender, EventArgs e) {
 			List<Color> colours = new List<Color>();
 			foreach (DisplayButton button in lightCanvas.Controls) {
@@ -73,25 +91,30 @@ namespace SongIllustrator {
 			}
 		}
 		public void SetFrame(int frameIndex) {
-			if (frameIndex >= 0) {
-				FrameData frameData = lightData.FrameData[frameIndex];
-				for (int i = 0; i < frameData.Colours.Count; i++) {
-					lightCanvas.Controls[i].BackColor = frameData.Colours[i];
+			if (frameIndex >= 0 && frameIndex < lightData.FrameData.Count) {
+				if (lightData.FrameData.Count > 0) {
+					FrameData frameData = lightData.FrameData[frameIndex];
+					for (int i = 0; i < frameData.Colours.Count; i++) {
+						lightCanvas.Controls[i].BackColor = frameData.Colours[i];
+					}
 				}
 			}
 		}
+
 		private void GeneratePixels(int pixels) {
-			lightCanvas.Controls.Clear();
-			int arrayPos = 0;
-			Size buttonSize = new Size(lightCanvas.Width / pixels, lightCanvas.Height / pixels);
-			for (int heightProgression = 0; heightProgression < pixels; heightProgression++) {
-				for (int widthProgression = 0; widthProgression < pixels; widthProgression++) {
-					DisplayButton button = new DisplayButton();
-					button.ArrayPos = arrayPos++;
-					button.Port = lightData.Port;
-					button.Size = buttonSize;
-					button.Location = new Point(buttonSize.Width * widthProgression, buttonSize.Height * heightProgression);
-					lightCanvas.Controls.Add(button);
+			if (pixels > 0) {
+				lightCanvas.Controls.Clear();
+				int arrayPos = 0;
+				Size buttonSize = new Size(lightCanvas.Width / pixels, lightCanvas.Height / pixels);
+				for (int heightProgression = 0; heightProgression < pixels; heightProgression++) {
+					for (int widthProgression = 0; widthProgression < pixels; widthProgression++) {
+						DisplayButton button = new DisplayButton();
+						button.ArrayPos = arrayPos++;
+						button.Port = lightData.Port;
+						button.Size = buttonSize;
+						button.Location = new Point(buttonSize.Width * widthProgression, buttonSize.Height * heightProgression);
+						lightCanvas.Controls.Add(button);
+					}
 				}
 			}
 			/*
@@ -128,17 +151,13 @@ namespace SongIllustrator {
 								if (notePos >= 0) {
 									Invoke(new MethodInvoker(
 										delegate() {
-											button = (DisplayButton) lightCanvas.Controls[NoteIdentifier.GetNotePosition(note)];
-											if (!passiveMode) {
-												button.Reset();
-												button.CanSendMessage = false;
-											} else {
-												if (velocity == 64) {
-													button.CanSendMessage = true;
-													button.ChangeColor();
-													button.SendMessage();
-												}
+											try {
+												button = !_display.Visible ? lightCanvas.Controls[notePos] as DisplayButton : (_display.Canvas.Controls[Index] as LightPad).LightCanvas.Controls[notePos] as DisplayButton;
+											} catch {
+												button = lightCanvas.Controls[notePos] as DisplayButton;
 											}
+											button.Reset();
+											button.CanSendMessage = true;
 										}));
 								}
 								break;
@@ -146,30 +165,52 @@ namespace SongIllustrator {
 								if (notePos >= 0) {
 									Invoke(new MethodInvoker(
 										delegate() {
-											button = lightCanvas.Controls[notePos] as DisplayButton;
-											button = (DisplayButton) lightCanvas.Controls[NoteIdentifier.GetNotePosition(note)];
-											switch (velocity) {
-												case 7:
-													button.BackColor = Color.Red;
-													break;
-												case 83:
-													button.BackColor = Color.Orange;
-													break;
-												case 124:
-													button.BackColor = Color.Green;
-													break;
-												case 127:
-													button.BackColor = Color.Yellow;
-													break;
+											try {
+												button = !_display.Visible ? lightCanvas.Controls[notePos] as DisplayButton : (_display.Canvas.Controls[Index] as LightPad).LightCanvas.Controls[notePos] as DisplayButton;
+											} catch {
+												button = lightCanvas.Controls[notePos] as DisplayButton;
+											}
+											if (button != null) {
+												switch (velocity) {
+													case 7:
+														if (!button.CheckEqualColor(button.BackColor, Color.Red)) {
+															button.BackColor = Color.Red;
+														}
+														break;
+													case 83:
+														if (!button.CheckEqualColor(button.BackColor, Color.Orange)) {
+															button.BackColor = Color.Orange;
+														}
+														break;
+													case 124:
+														if (!button.CheckEqualColor(button.BackColor, Color.Green)) {
+															button.BackColor = Color.Green;
+														}
+														break;
+													case 127:
+														if (!button.CheckEqualColor(button.BackColor, Color.Yellow)) {
+															button.BackColor = Color.Yellow;
+														}
+														break;
+												}
 											}
 										}));
 								}
+								break;
+							case 240:
+								if (key == 2) {
+									_listenToMidi = false;
+								}
+								break;
+							default:
+								object test = new object();
 								break;
 						}
 					}
 						#endregion MIDI Logic
 				} else {
 					lightData.Port.getCommand();
+					_listenToMidi = true;
 				}
 			}
 		}

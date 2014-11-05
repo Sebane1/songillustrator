@@ -51,6 +51,7 @@
 			this.newToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toMIDIToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,13 +63,23 @@
 			this.controlEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.addLaunchpadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.removeLaunchpadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.fLPortSetupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.useWithFLStudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.howDoIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.addAFrameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.changeSpeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.shiftFramesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.deleteFramesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.midiCheck = new System.Windows.Forms.Timer(this.components);
 			this.frameLabel = new System.Windows.Forms.Label();
 			this.shiftButton = new SongIllustrator.DisplayButton();
 			this.imageButton = new SongIllustrator.DisplayButton();
-			this.displayButton2 = new SongIllustrator.DisplayButton();
+			this.syncButton = new SongIllustrator.DisplayButton();
 			this.fullscreenButton = new SongIllustrator.DisplayButton();
-			this.button39 = new SongIllustrator.DisplayButton();
+			this.addFrameButton = new SongIllustrator.DisplayButton();
+			this.useWithAbletonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.contextMenuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pixelBar)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
@@ -86,7 +97,7 @@
 			// 
 			// panel1
 			// 
-			this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+			this.panel1.BackColor = System.Drawing.Color.Black;
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel1.Location = new System.Drawing.Point(0, 0);
 			this.panel1.Name = "panel1";
@@ -98,6 +109,7 @@
 			// 
 			this.frameListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.frameListBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
 			this.frameListBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.frameListBox.ContextMenuStrip = this.contextMenuStrip1;
 			this.frameListBox.FormattingEnabled = true;
@@ -236,6 +248,7 @@
 			// timeline1
 			// 
 			this.timeline1.AutoScroll = true;
+			this.timeline1.BackColor = System.Drawing.Color.Black;
 			this.timeline1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.timeline1.Location = new System.Drawing.Point(0, 0);
 			this.timeline1.MinimumSize = new System.Drawing.Size(0, 75);
@@ -245,11 +258,13 @@
 			// 
 			// menuStrip1
 			// 
+			this.menuStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fILEToolStripMenuItem,
             this.projectToolStripMenuItem,
             this.pLaylistToolStripMenuItem,
-            this.launchpadToolStripMenuItem});
+            this.launchpadToolStripMenuItem,
+            this.helpToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(684, 24);
@@ -262,6 +277,7 @@
             this.newToolStripMenuItem1,
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
+            this.saveAsToolStripMenuItem,
             this.exportToolStripMenuItem});
 			this.fILEToolStripMenuItem.Name = "fILEToolStripMenuItem";
 			this.fILEToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -270,36 +286,43 @@
 			// newToolStripMenuItem1
 			// 
 			this.newToolStripMenuItem1.Name = "newToolStripMenuItem1";
-			this.newToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
+			this.newToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
 			this.newToolStripMenuItem1.Text = "&New";
-			this.newToolStripMenuItem1.Click += new System.EventHandler(this.displayButton65_Click);
+			this.newToolStripMenuItem1.Click += new System.EventHandler(this.new_Click);
 			// 
 			// openToolStripMenuItem
 			// 
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.openToolStripMenuItem.Text = "&Open";
 			this.openToolStripMenuItem.Click += new System.EventHandler(this.openDisplayFileButton_Click);
 			// 
 			// saveToolStripMenuItem
 			// 
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.saveToolStripMenuItem.Text = "&Save";
 			this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveButton_Click);
+			// 
+			// saveAsToolStripMenuItem
+			// 
+			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.saveAsToolStripMenuItem.Text = "Save &As";
+			this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
 			// 
 			// exportToolStripMenuItem
 			// 
 			this.exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toMIDIToolStripMenuItem1});
 			this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-			this.exportToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+			this.exportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.exportToolStripMenuItem.Text = "Export";
 			// 
 			// toMIDIToolStripMenuItem1
 			// 
 			this.toMIDIToolStripMenuItem1.Name = "toMIDIToolStripMenuItem1";
-			this.toMIDIToolStripMenuItem1.Size = new System.Drawing.Size(116, 22);
+			this.toMIDIToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
 			this.toMIDIToolStripMenuItem1.Text = "To MIDI";
 			this.toMIDIToolStripMenuItem1.Click += new System.EventHandler(this.toMIDIToolStripMenuItem1_Click);
 			// 
@@ -346,10 +369,12 @@
 			this.launchpadToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.controlEditorToolStripMenuItem,
             this.toolStripSeparator1,
-            this.addLaunchpadToolStripMenuItem});
+            this.addLaunchpadToolStripMenuItem,
+            this.removeLaunchpadToolStripMenuItem});
 			this.launchpadToolStripMenuItem.Name = "launchpadToolStripMenuItem";
 			this.launchpadToolStripMenuItem.Size = new System.Drawing.Size(78, 20);
 			this.launchpadToolStripMenuItem.Text = "Launchpad";
+			this.launchpadToolStripMenuItem.Click += new System.EventHandler(this.launchpadToolStripMenuItem_Click);
 			// 
 			// controlEditorToolStripMenuItem
 			// 
@@ -369,6 +394,78 @@
 			this.addLaunchpadToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
 			this.addLaunchpadToolStripMenuItem.Text = "Add Launchpad";
 			this.addLaunchpadToolStripMenuItem.Click += new System.EventHandler(this.addLaunchpadToolStripMenuItem_Click);
+			// 
+			// removeLaunchpadToolStripMenuItem
+			// 
+			this.removeLaunchpadToolStripMenuItem.Name = "removeLaunchpadToolStripMenuItem";
+			this.removeLaunchpadToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+			this.removeLaunchpadToolStripMenuItem.Text = "Remove Launchpad";
+			this.removeLaunchpadToolStripMenuItem.Click += new System.EventHandler(this.removeLaunchpadToolStripMenuItem_Click);
+			// 
+			// helpToolStripMenuItem
+			// 
+			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fLPortSetupToolStripMenuItem});
+			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+			this.helpToolStripMenuItem.Text = "Help";
+			// 
+			// fLPortSetupToolStripMenuItem
+			// 
+			this.fLPortSetupToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.useWithFLStudioToolStripMenuItem,
+            this.useWithAbletonToolStripMenuItem,
+            this.howDoIToolStripMenuItem});
+			this.fLPortSetupToolStripMenuItem.Name = "fLPortSetupToolStripMenuItem";
+			this.fLPortSetupToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.fLPortSetupToolStripMenuItem.Text = "FAQ";
+			// 
+			// useWithFLStudioToolStripMenuItem
+			// 
+			this.useWithFLStudioToolStripMenuItem.Name = "useWithFLStudioToolStripMenuItem";
+			this.useWithFLStudioToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+			this.useWithFLStudioToolStripMenuItem.Text = "Use With FL Studio";
+			this.useWithFLStudioToolStripMenuItem.Click += new System.EventHandler(this.useWithFLStudioToolStripMenuItem_Click);
+			// 
+			// howDoIToolStripMenuItem
+			// 
+			this.howDoIToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addAFrameToolStripMenuItem,
+            this.changeSpeedToolStripMenuItem,
+            this.shiftFramesToolStripMenuItem,
+            this.deleteFramesToolStripMenuItem});
+			this.howDoIToolStripMenuItem.Name = "howDoIToolStripMenuItem";
+			this.howDoIToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+			this.howDoIToolStripMenuItem.Text = "How do I...";
+			this.howDoIToolStripMenuItem.Click += new System.EventHandler(this.howDoIToolStripMenuItem_Click);
+			// 
+			// addAFrameToolStripMenuItem
+			// 
+			this.addAFrameToolStripMenuItem.Name = "addAFrameToolStripMenuItem";
+			this.addAFrameToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+			this.addAFrameToolStripMenuItem.Text = "Add a frame";
+			this.addAFrameToolStripMenuItem.Click += new System.EventHandler(this.addAFrameToolStripMenuItem_Click);
+			// 
+			// changeSpeedToolStripMenuItem
+			// 
+			this.changeSpeedToolStripMenuItem.Name = "changeSpeedToolStripMenuItem";
+			this.changeSpeedToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+			this.changeSpeedToolStripMenuItem.Text = "Change speed";
+			this.changeSpeedToolStripMenuItem.Click += new System.EventHandler(this.changeSpeedToolStripMenuItem_Click);
+			// 
+			// shiftFramesToolStripMenuItem
+			// 
+			this.shiftFramesToolStripMenuItem.Name = "shiftFramesToolStripMenuItem";
+			this.shiftFramesToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+			this.shiftFramesToolStripMenuItem.Text = "Shift frames";
+			this.shiftFramesToolStripMenuItem.Click += new System.EventHandler(this.shiftFramesToolStripMenuItem_Click);
+			// 
+			// deleteFramesToolStripMenuItem
+			// 
+			this.deleteFramesToolStripMenuItem.Name = "deleteFramesToolStripMenuItem";
+			this.deleteFramesToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+			this.deleteFramesToolStripMenuItem.Text = "Delete frames";
+			this.deleteFramesToolStripMenuItem.Click += new System.EventHandler(this.deleteFramesToolStripMenuItem_Click);
 			// 
 			// midiCheck
 			// 
@@ -420,23 +517,23 @@
 			this.imageButton.TabIndex = 84;
 			this.imageButton.Click += new System.EventHandler(this.imageButton_Click);
 			// 
-			// displayButton2
+			// syncButton
 			// 
-			this.displayButton2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.displayButton2.ArrayPos = 0;
-			this.displayButton2.BackColor = System.Drawing.Color.Gray;
-			this.displayButton2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("displayButton2.BackgroundImage")));
-			this.displayButton2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.displayButton2.CanSendMessage = true;
-			this.displayButton2.DisplayText = "Sync";
-			this.displayButton2.LaunchpadEdit = false;
-			this.displayButton2.Location = new System.Drawing.Point(623, 504);
-			this.displayButton2.Name = "displayButton2";
-			this.displayButton2.Port = null;
-			this.displayButton2.ShiftDown = false;
-			this.displayButton2.Size = new System.Drawing.Size(49, 20);
-			this.displayButton2.TabIndex = 82;
-			this.displayButton2.Click += new System.EventHandler(this.displayButton2_Click);
+			this.syncButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.syncButton.ArrayPos = 0;
+			this.syncButton.BackColor = System.Drawing.Color.Gray;
+			this.syncButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("syncButton.BackgroundImage")));
+			this.syncButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.syncButton.CanSendMessage = true;
+			this.syncButton.DisplayText = "Sync";
+			this.syncButton.LaunchpadEdit = false;
+			this.syncButton.Location = new System.Drawing.Point(623, 504);
+			this.syncButton.Name = "syncButton";
+			this.syncButton.Port = null;
+			this.syncButton.ShiftDown = false;
+			this.syncButton.Size = new System.Drawing.Size(49, 20);
+			this.syncButton.TabIndex = 82;
+			this.syncButton.Click += new System.EventHandler(this.displayButton2_Click);
 			// 
 			// fullscreenButton
 			// 
@@ -456,24 +553,31 @@
 			this.fullscreenButton.TabIndex = 79;
 			this.fullscreenButton.Click += new System.EventHandler(this.displayButton66_Click);
 			// 
-			// button39
+			// addFrameButton
 			// 
-			this.button39.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.button39.ArrayPos = 0;
-			this.button39.BackColor = System.Drawing.Color.Gray;
-			this.button39.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button39.BackgroundImage")));
-			this.button39.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.button39.CanSendMessage = true;
-			this.button39.DisplayText = "Add Frame";
-			this.button39.LaunchpadEdit = false;
-			this.button39.Location = new System.Drawing.Point(560, 530);
-			this.button39.Name = "button39";
-			this.button39.Port = null;
-			this.button39.ShiftDown = false;
-			this.button39.Size = new System.Drawing.Size(112, 23);
-			this.button39.TabIndex = 39;
-			this.button39.Load += new System.EventHandler(this.button39_Load);
-			this.button39.Click += new System.EventHandler(this.button39_Click);
+			this.addFrameButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.addFrameButton.ArrayPos = 0;
+			this.addFrameButton.BackColor = System.Drawing.Color.Gray;
+			this.addFrameButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("addFrameButton.BackgroundImage")));
+			this.addFrameButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.addFrameButton.CanSendMessage = true;
+			this.addFrameButton.DisplayText = "Add Frame";
+			this.addFrameButton.LaunchpadEdit = false;
+			this.addFrameButton.Location = new System.Drawing.Point(560, 530);
+			this.addFrameButton.Name = "addFrameButton";
+			this.addFrameButton.Port = null;
+			this.addFrameButton.ShiftDown = false;
+			this.addFrameButton.Size = new System.Drawing.Size(112, 23);
+			this.addFrameButton.TabIndex = 39;
+			this.addFrameButton.Load += new System.EventHandler(this.button39_Load);
+			this.addFrameButton.Click += new System.EventHandler(this.button39_Click);
+			// 
+			// useWithAbletonToolStripMenuItem
+			// 
+			this.useWithAbletonToolStripMenuItem.Name = "useWithAbletonToolStripMenuItem";
+			this.useWithAbletonToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+			this.useWithAbletonToolStripMenuItem.Text = "Use With Ableton";
+			this.useWithAbletonToolStripMenuItem.Click += new System.EventHandler(this.useWithAbletonToolStripMenuItem_Click);
 			// 
 			// Form1
 			// 
@@ -487,18 +591,21 @@
 			this.Controls.Add(this.axWindowsMediaPlayer1);
 			this.Controls.Add(this.imageButton);
 			this.Controls.Add(this.frameCheckbox);
-			this.Controls.Add(this.displayButton2);
+			this.Controls.Add(this.syncButton);
 			this.Controls.Add(this.pixelBar);
 			this.Controls.Add(this.fullscreenButton);
 			this.Controls.Add(this.textBox2);
 			this.Controls.Add(this.textBox1);
 			this.Controls.Add(this.frameListBox);
-			this.Controls.Add(this.button39);
+			this.Controls.Add(this.addFrameButton);
 			this.Controls.Add(this.menuStrip1);
 			this.DoubleBuffered = true;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MainMenuStrip = this.menuStrip1;
+			this.MaximizeBox = false;
 			this.Name = "Form1";
 			this.Text = "Song Illustrator";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
@@ -521,7 +628,7 @@
 
         #endregion
 
-				private DisplayButton button39;
+				private DisplayButton addFrameButton;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckedListBox frameListBox;
@@ -529,7 +636,7 @@
 				private System.Windows.Forms.TextBox textBox2;
         private DisplayButton fullscreenButton;
         private System.Windows.Forms.TrackBar pixelBar;
-        private DisplayButton displayButton2;
+        private DisplayButton syncButton;
         private System.Windows.Forms.CheckBox frameCheckbox;
         private DisplayButton imageButton;
         private Timeline timeline1;
@@ -560,6 +667,17 @@
 				private System.Windows.Forms.ToolStripMenuItem controlEditorToolStripMenuItem;
 				private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 				private System.Windows.Forms.ToolStripMenuItem addLaunchpadToolStripMenuItem;
+				private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+				private System.Windows.Forms.ToolStripMenuItem removeLaunchpadToolStripMenuItem;
+				private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+				private System.Windows.Forms.ToolStripMenuItem fLPortSetupToolStripMenuItem;
+				private System.Windows.Forms.ToolStripMenuItem useWithFLStudioToolStripMenuItem;
+				private System.Windows.Forms.ToolStripMenuItem howDoIToolStripMenuItem;
+				private System.Windows.Forms.ToolStripMenuItem addAFrameToolStripMenuItem;
+				private System.Windows.Forms.ToolStripMenuItem changeSpeedToolStripMenuItem;
+				private System.Windows.Forms.ToolStripMenuItem shiftFramesToolStripMenuItem;
+				private System.Windows.Forms.ToolStripMenuItem deleteFramesToolStripMenuItem;
+				private System.Windows.Forms.ToolStripMenuItem useWithAbletonToolStripMenuItem;
     }
 }
 

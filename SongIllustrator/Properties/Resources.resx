@@ -121,4 +121,73 @@
   <data name="bevel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\bevel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="SIFLT1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\FL Port Config A\SIFLT1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SIFLT2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\FL Port Config A\SIFLT2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SIFLT3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\FL Port Config A\SIFLT3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SIFLT4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\FL Port Config A\SIFLT4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SIFLT5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\FL Port Config A\SIFLT5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SIFLT6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\FL Port Config A\SIFLT6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SIFLT7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\FL Port Config A\SIFLT7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SIFLT8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\FL Port Config A\SIFLT8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SIFLT9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\FL Port Config A\SIFLT9.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SIFLT10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\FL Port Config A\SIFLT10.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SIFLT11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\FL Port Config A\SIFLT11.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AL1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\Ableton Port Config\AL1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AL10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\Ableton Port Config\AL10.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AL11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\Ableton Port Config\AL11.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AL12" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\Ableton Port Config\AL12.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AL2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\Ableton Port Config\AL2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AL3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\Ableton Port Config\AL3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AL4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\Ableton Port Config\AL4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AL5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\Ableton Port Config\AL5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AL6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\Ableton Port Config\AL6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AL7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\Ableton Port Config\AL7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AL8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\Ableton Port Config\AL8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AL9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Tutorial Images\Ableton Port Config\AL9.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

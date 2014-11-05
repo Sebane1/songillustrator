@@ -57,6 +57,12 @@
     <Compile Include="DisplayButton.Designer.cs">
       <DependentUpon>DisplayButton.cs</DependentUpon>
     </Compile>
+    <Compile Include="FigurePainter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FigurePainter.Designer.cs">
+      <DependentUpon>FigurePainter.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -71,6 +77,7 @@
     <Compile Include="LightPad.Designer.cs">
       <DependentUpon>LightPad.cs</DependentUpon>
     </Compile>
+    <Compile Include="MidiClass.cs" />
     <Compile Include="MidiWriter.cs" />
     <Compile Include="MilliStopWatch.cs">
       <SubType>Component</SubType>
@@ -100,8 +107,20 @@
     <Compile Include="TimelineItem.Designer.cs">
       <DependentUpon>TimelineItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="TutorialFigure.cs" />
+    <Compile Include="TutorialForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TutorialForm.Designer.cs">
+      <DependentUpon>TutorialForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TutorialPage.cs" />
+    <Compile Include="VLQ.cs" />
     <EmbeddedResource Include="DisplayButton.resx">
       <DependentUpon>DisplayButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FigurePainter.resx">
+      <DependentUpon>FigurePainter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -127,6 +146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TimelineItem.resx">
       <DependentUpon>TimelineItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TutorialForm.resx">
+      <DependentUpon>TutorialForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="ClassDiagram1.cd" />
@@ -164,6 +186,29 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Button2.png" />
+    <None Include="Tutorial Images\Ableton Port Config\AL1.png" />
+    <None Include="Tutorial Images\Ableton Port Config\AL2.png" />
+    <None Include="Tutorial Images\Ableton Port Config\AL3.png" />
+    <None Include="Tutorial Images\Ableton Port Config\AL4.png" />
+    <None Include="Tutorial Images\Ableton Port Config\AL5.png" />
+    <None Include="Tutorial Images\Ableton Port Config\AL6.png" />
+    <None Include="Tutorial Images\Ableton Port Config\AL7.png" />
+    <None Include="Tutorial Images\Ableton Port Config\AL8.png" />
+    <None Include="Tutorial Images\Ableton Port Config\AL9.png" />
+    <None Include="Tutorial Images\Ableton Port Config\AL10.png" />
+    <None Include="Tutorial Images\Ableton Port Config\AL11.png" />
+    <None Include="Tutorial Images\Ableton Port Config\AL12.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT1.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT10.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT11.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT2.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT3.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT4.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT5.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT6.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT7.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT8.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT9.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

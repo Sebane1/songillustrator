@@ -8,6 +8,16 @@ namespace SongIllustrator {
 	public class Launchpad {
 		private int _density;
 
+		LightPad _lightPad;
+
+		public LightPad LightPad {
+			get {
+				return _lightPad;
+			}
+			set {
+				_lightPad = value;
+			}
+		}
 		public int Density {
 			get {
 				return _density;
@@ -68,7 +78,9 @@ namespace SongIllustrator {
 					FrameData frame2 = (frameTimes[i + 1] as FrameData);
 					difference = frame2.TimeStamp - frame.TimeStamp;
 				}
-				_frameData[frame.Index].TimeStamp -= frame.TimeStamp - baseStamp;
+				//if(_frameData[frame.Index].TimeStamp - frame.TimeStamp - baseStamp > _frameData[frame.Index > 0 ? frame.Index - 1 : 0].TimeStamp){
+					_frameData[frame.Index].TimeStamp -= frame.TimeStamp - baseStamp;
+				//}
 				baseStamp += difference;
 			}
 		}
@@ -110,12 +122,12 @@ namespace SongIllustrator {
 				currentCount = _frameData[_frameData.Count - 1].TimeStamp;
 			}
 			for (int i = 0; i < frameTimes.Count; i++) {
-				FrameData item = frameTimes[i];
+				FrameData item = _frameData[frameTimes[i].Index];
 				FrameData data = new FrameData();
 				data.Colours = item.Colours;
 				data.Index = _frameData.Count;
 				if (i < frameTimes.Count - 1) {
-					FrameData frame2 = frameTimes[i + 1];
+					FrameData frame2 = _frameData[frameTimes[i + 1].Index];
 					difference = frame2.TimeStamp - item.TimeStamp;
 				}
 				currentCount += difference;
@@ -123,6 +135,5 @@ namespace SongIllustrator {
 				_frameData.Add(data);
 			}
 		}
-
 	}
 }

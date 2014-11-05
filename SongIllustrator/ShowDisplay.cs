@@ -43,6 +43,20 @@ namespace SongIllustrator {
 			}
 		}
 
+		private void CheckImage() {
+			List<List<DisplayButton>> displayButtonsList = new List<List<DisplayButton>>();
+			foreach (LightPad launchPad in Canvas.Controls) {
+				List<DisplayButton> displayButtons = new List<DisplayButton>();
+				foreach (DisplayButton displayButton in launchPad.LightCanvas.Controls) {
+					displayButtons.Add(displayButton);
+				}
+				displayButtonsList.Add(displayButtons);
+			}
+			if (displayButtonsList.Count > 0) {
+				Creator.OverlayButtons(_overlayImage, displayButtonsList);
+			}
+		}
+
 		private void ShowDisplay_Load(object sender, EventArgs e) {
 			panel1.Width = this.Height;
 			panel1.Location = new Point((this.Width / 2) - (panel1.Width / 2), this.Location.Y);
@@ -50,7 +64,12 @@ namespace SongIllustrator {
 
 		private void ShowDisplay_Shown(object sender, EventArgs e) {
 			panel1.Controls.Clear();
-			Creator.GeneratePads(Creator.LaunchPads, panel1);
+			if (Creator.LaunchPads != null) {
+				Creator.GeneratePads(Creator.LaunchPads, panel1);
+				if (_overlayImage != null) {
+					CheckImage();
+				}
+			}
 		}
 		//public void GeneratePixels(int pixels)
 		//{
