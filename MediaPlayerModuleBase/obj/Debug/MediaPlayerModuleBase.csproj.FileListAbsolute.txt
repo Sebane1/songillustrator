@@ -1,0 +1,7 @@
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MediaPlayerModuleBase\bin\Debug\MediaPlayerModuleBase.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MediaPlayerModuleBase\bin\Debug\MediaPlayerModuleBase.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MediaPlayerModuleBase\obj\Debug\MediaPlayerModuleBase.WavPlayerControl.resources
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MediaPlayerModuleBase\obj\Debug\MediaPlayerModuleBase.csproj.GenerateResource.Cache
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MediaPlayerModuleBase\obj\Debug\MediaPlayerModuleBase.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MediaPlayerModuleBase\obj\Debug\MediaPlayerModuleBase.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MediaPlayerModuleBase\obj\Debug\MediaPlayerModuleBase.csprojResolveAssemblyReference.cache

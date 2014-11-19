@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TobiasErichsen.teVirtualMIDI;
 
 namespace SongIllustrator {
 	public class Launchpad {
 		private int _density;
 
 		LightPad _lightPad;
-
+		private bool _listenToMidi = true;
+		private bool _editMode;
+		MidiDriver _port;
 		public LightPad LightPad {
 			get {
 				return _lightPad;
@@ -36,7 +37,6 @@ namespace SongIllustrator {
 				_frameData = value;
 			}
 		}
-		TeVirtualMIDI _port;
 		private System.Threading.Thread _thread;
 
 		public System.Threading.Thread Thread {
@@ -47,7 +47,14 @@ namespace SongIllustrator {
 				_thread = value;
 			}
 		}
-		private bool _listenToMidi = true;
+		public bool EditMode {
+			get {
+				return _editMode;
+			}
+			set {
+				_editMode = value;
+			}
+		}
 
 		public bool ListenToMidi {
 			get {
@@ -57,7 +64,7 @@ namespace SongIllustrator {
 				_listenToMidi = value;
 			}
 		}
-		public TeVirtualMIDI Port {
+		public MidiDriver Port {
 			get {
 				return _port;
 			}
@@ -78,18 +85,16 @@ namespace SongIllustrator {
 					FrameData frame2 = (frameTimes[i + 1] as FrameData);
 					difference = frame2.TimeStamp - frame.TimeStamp;
 				}
-				//if(_frameData[frame.Index].TimeStamp - frame.TimeStamp - baseStamp > _frameData[frame.Index > 0 ? frame.Index - 1 : 0].TimeStamp){
-					_frameData[frame.Index].TimeStamp -= frame.TimeStamp - baseStamp;
-				//}
+				_frameData[frame.Index].TimeStamp -= frame.TimeStamp - baseStamp;
 				baseStamp += difference;
 			}
 		}
 
 		/// <summary>
-		/// Syncs the  selected frames for the virtual launchpad.
+		/// Syncs the selected frames for the virtual launchpad.
 		/// </summary>
-		/// <param name="baseStamp"></param>
-		/// <param name="frameTimes"></param>
+		/// <param name="baseStamp">The time stamp to start from.</param>
+		/// <param name="frameTimes">The skeleton frame data to reference time stamps and indexes off of. Colour data is not used.</param>
 		public void SyncFrames(decimal baseStamp, List<FrameData> frameTimes) {
 			int frameIndex = 0;
 			List<FrameData> tempFrames = new List<FrameData>();
@@ -113,8 +118,8 @@ namespace SongIllustrator {
 		/// <summary>
 		/// Duplicates the selected frames for the virtual launchpad.
 		/// </summary>
-		/// <param name="baseStamp"></param>
-		/// <param name="frameTimes"></param>
+		/// <param name="baseStamp">The time stamp to start from.</param>
+		/// <param name="frameTimes">>The skeleton frame data to reference time stamps and indexes off of. Colour data is not used.</param>
 		public void DuplicateFrames(decimal baseStamp, List<FrameData> frameTimes) {
 			decimal currentCount = baseStamp;
 			decimal difference = 0;
@@ -129,6 +134,31 @@ namespace SongIllustrator {
 				if (i < frameTimes.Count - 1) {
 					FrameData frame2 = _frameData[frameTimes[i + 1].Index];
 					difference = frame2.TimeStamp - item.TimeStamp;
+				}
+				currentCount += difference;
+				data.TimeStamp = currentCount;
+				_frameData.Add(data);
+			}
+		}
+		/// <summary>
+		/// Duplicates the selected frames in reverse order.
+		/// </summary>
+		/// <param name="baseStamp">The starting note placement.</param>
+		/// <param name="frameTimes">The skeleton frame data to reference time stamps and indexes off of. Colour data is not used.</param>
+		internal void ReverseDuplicateFrames(decimal baseStamp, List<FrameData> frameTimes) {
+			decimal currentCount = baseStamp;
+			decimal difference = 0;
+			if (_frameData.Count != 0) {
+				currentCount = _frameData[_frameData.Count - 1].TimeStamp;
+			}
+			for (int i = 0; i < frameTimes.Count; i++) {
+				FrameData item = _frameData[frameTimes[frameTimes.Count - 1 - i].Index];
+				FrameData data = new FrameData();
+				data.Colours = item.Colours;
+				data.Index = _frameData.Count;
+				if (i < frameTimes.Count - 1) {
+					FrameData frame2 = _frameData[frameTimes[i + 1].Index];
+					difference = frame2.TimeStamp - _frameData[frameTimes[i].Index].TimeStamp;
 				}
 				currentCount += difference;
 				data.TimeStamp = currentCount;

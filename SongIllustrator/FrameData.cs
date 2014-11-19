@@ -41,5 +41,13 @@ namespace SongIllustrator
             get { return _colours; }
             set { _colours = value; }
         }
+
+				/// <summary>
+				/// An override of the ToString() method.
+				/// </summary>
+				/// <returns>The frame data's index.</returns>
+				public override string ToString() {
+					return "Frame " + Index;
+				}
     }
 }

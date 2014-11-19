@@ -1,0 +1,3 @@
+/media/sebastian/Shared/Documents/Visual Studio 2010/Projects/SongIllustrator/MediaPlayerModuleBase/obj/Release/MediaPlayerModuleBase.WavPlayerControl.resources
+/media/sebastian/Shared/Documents/Visual Studio 2010/Projects/SongIllustrator/MediaPlayerModuleBase/bin/Release/MediaPlayerModuleBase.dll
+/media/sebastian/Shared/Documents/Visual Studio 2010/Projects/SongIllustrator/MediaPlayerModuleBase/obj/Release/MediaPlayerModuleBase.dll

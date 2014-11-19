@@ -36,12 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -57,6 +52,7 @@
     <Compile Include="DisplayButton.Designer.cs">
       <DependentUpon>DisplayButton.cs</DependentUpon>
     </Compile>
+    <Compile Include="DriverEnumerator.cs" />
     <Compile Include="FigurePainter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,8 +89,6 @@
       <DependentUpon>ShowDisplay.cs</DependentUpon>
     </Compile>
     <Compile Include="SongIO.cs" />
-    <Compile Include="teVirtualMIDI.cs" />
-    <Compile Include="TeVirtualMIDITest.cs" />
     <Compile Include="Timeline.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -163,20 +157,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="AxWMPLib">
-      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
-      <VersionMajor>1</VersionMajor>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
-      <WrapperTool>aximp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
-    <COMReference Include="WMPLib">
-      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
+      <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
@@ -218,4 +204,14 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <ProjectReference Include="..\MediaPlayerModuleBase\MediaPlayerModuleBase.csproj">
+      <Project>{42EA643A-6513-4A91-AF16-EBAE9068CE87}</Project>
+      <Name>MediaPlayerModuleBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MIDIDriverInterface\MIDIDriverInterface.csproj">
+      <Project>{D1B755F3-6A9F-4013-902D-8DDA565E1E3F}</Project>
+      <Name>MIDIDriverInterface</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

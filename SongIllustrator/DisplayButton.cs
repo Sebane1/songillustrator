@@ -6,7 +6,6 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using TobiasErichsen.teVirtualMIDI;
 
 namespace SongIllustrator {
 	public partial class DisplayButton : UserControl {
@@ -50,9 +49,9 @@ namespace SongIllustrator {
 		private bool shiftDown = false;
 		private bool rightClick = false;
 		List<DisplayButton> buttons = new List<DisplayButton>();
-		TeVirtualMIDI port;
+		MidiDriver port;
 
-		public TeVirtualMIDI Port {
+		public MidiDriver Port {
 			get {
 				return port;
 			}
@@ -78,6 +77,9 @@ namespace SongIllustrator {
 				_text = value;
 			}
 		}
+		/// <summary>
+		/// Tells the button to cycle to the next color.
+		/// </summary>
 		public bool InvokeInteraction {
 			set {
 				Interact(this, EventArgs.Empty);
@@ -113,6 +115,10 @@ namespace SongIllustrator {
 				_canSendMessage = true;
 			}*/
 		}
+
+		/// <summary>
+		/// Cycles the buttons color.
+		/// </summary>
 		public void ChangeColor() {
 			switch (_colorCount++) {
 				case 0:
@@ -189,6 +195,9 @@ namespace SongIllustrator {
 			Graphics graphics = e.Graphics;
 			graphics.DrawString(_text, new Font(new FontFamily("Arial"), 12), Brushes.Black, new PointF(0, 0));
 		}
+		/// <summary>
+		/// Sends a MIDI on event for the associated note.
+		/// </summary>
 		public void SendMessage() {
 			//if (_canSendMessage) {
 			if (port != null) {
@@ -215,21 +224,21 @@ namespace SongIllustrator {
 				}
 				sysMessage[0] = 240;
 				sysMessage[1] = 2;
-				port.sendCommand(sysMessage);
+				port.SendCommand(sysMessage);
 				//..............
 				message[0] = 128;
 				message[1] = (byte) NoteIdentifier.GetIntFromNote(NoteIdentifier.GetNoteFromPosition(_index));
 				message[2] = _lastVelocity;
-				port.sendCommand(message);
+				port.SendCommand(message);
 				//..............
 				sysMessage[0] = 240;
 				sysMessage[1] =  2;
-				port.sendCommand(sysMessage);
+				port.SendCommand(sysMessage);
 				//..............
 				message[0] = 144;
 				message[1] = (byte) NoteIdentifier.GetIntFromNote(NoteIdentifier.GetNoteFromPosition(_index));
 				message[2] = velocity;
-				port.sendCommand(message);
+				port.SendCommand(message);
 				//..............
 				_lastMessage = message;
 				_lastVelocity = velocity;
@@ -237,16 +246,25 @@ namespace SongIllustrator {
 			//	}
 		}
 
+		/// <summary>
+		/// Compares MIDI messages to see if theres a match.
+		/// </summary>
+		/// <param name="_lastMessage">The last MIDI message sent.</param>
+		/// <param name="message">The current MIDI message to send.</param>
+		/// <returns>Whether nor not the messages match.</returns>
 		private bool CompareMessage(byte[] _lastMessage, byte[] message) {
 			return _lastMessage[0] == message[0] && _lastMessage[1] == message[1] && _lastMessage[2] == message[2];
 		}
+		/// <summary>
+		/// Sends a MIDI off event for the buttons associated note.
+		/// </summary>
 		public void SendOff() {
 			if (port != null) {
 				byte[] message = new byte[3];
 				message[0] = 128;
 				message[1] = (byte) NoteIdentifier.GetIntFromNote(NoteIdentifier.GetNoteFromPosition(_index));
 				message[2] = _lastVelocity;
-				port.sendCommand(message);
+				port.SendCommand(message);
 			}
 		}
 		public bool CheckEqualColor(Color a, Color b) {

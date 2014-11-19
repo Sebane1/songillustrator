@@ -1,0 +1,8 @@
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\WindowsMediaPlayer\bin\Debug\WindowsMediaPlayer.Player.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\WindowsMediaPlayer\bin\Debug\WindowsMediaPlayer.Player.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\WindowsMediaPlayer\bin\Debug\AxInterop.WMPLib.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\WindowsMediaPlayer\bin\Debug\MediaPlayerModuleBase.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\WindowsMediaPlayer\bin\Debug\MediaPlayerModuleBase.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\WindowsMediaPlayer\obj\Debug\WindowsMediaPlayer.Player.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\WindowsMediaPlayer\obj\Debug\WindowsMediaPlayer.Player.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\WindowsMediaPlayer\obj\Debug\WindowsMediaPlayer.csprojResolveAssemblyReference.cache

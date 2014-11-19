@@ -14,12 +14,13 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using SongIllustrator;
 
 
 namespace TobiasErichsen.teVirtualMIDI {
 
 	[Serializable()]
-	public class TeVirtualMIDIException : System.Exception {
+	public class TeVirtualMIDIException : System.Exception{
 
 		/* defines of specific WIN32-error-codes that the native teVirtualMIDI-driver
 		 * is using to communicate specific problems to the application */
@@ -37,11 +38,11 @@ namespace TobiasErichsen.teVirtualMIDI {
 		public TeVirtualMIDIException() : base() {
 		}
 		
-		public TeVirtualMIDIException(string message) : base(message) {
-		}
+		//public TeVirtualMIDIException(string message) : base(message) {
+		//}
 
-		public TeVirtualMIDIException(string message, System.Exception inner) : base(message, inner) {
-		}
+		//public TeVirtualMIDIException(string message, System.Exception inner) : base(message, inner) {
+		//}
 
 		protected TeVirtualMIDIException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) {
 		}
@@ -80,6 +81,7 @@ namespace TobiasErichsen.teVirtualMIDI {
 					return "The name for the MIDI-_port you specified is already in use!";
 
 				case ERROR_PATH_NOT_FOUND:
+					Process.Start("loopMIDI_1_0_5_15.msi");
 					return "Possibly the teVirtualMIDI-driver has not been installed!";
 
 				case ERROR_MOD_NOT_FOUND:
@@ -106,9 +108,9 @@ namespace TobiasErichsen.teVirtualMIDI {
 
 		public static void ThrowExceptionForReasonCode( int reasonCode ) {
 
-			TeVirtualMIDIException exception = new TeVirtualMIDIException( reasonCodeToString( reasonCode ) );
+			//TeVirtualMIDIException exception = new TeVirtualMIDIException( reasonCodeToString( reasonCode ) );
 
-			exception.reasonCode = reasonCode;
+			//exception.reasonCode = reasonCode;
 
 			//throw exception;
 
@@ -121,7 +123,7 @@ namespace TobiasErichsen.teVirtualMIDI {
 
 
 
-	public class TeVirtualMIDI {
+	public class TeVirtualMIDI : MidiDriver{
 
 		/* default size of sysex-buffer */
 		private const UInt32 TE_VM_DEFAULT_SYSEX_SIZE = 65535;
@@ -147,9 +149,12 @@ namespace TobiasErichsen.teVirtualMIDI {
 			fVersionString = virtualMIDIGetVersion(ref fVersionMajor, ref fVersionMinor, ref fVersionRelease, ref fVersionBuild );
 
 		}
+		public TeVirtualMIDI(string portName)
+			: base(portName, OperatingSystem.Windows) {
+			Initialize(portName, TE_VM_DEFAULT_SYSEX_SIZE, TE_VM_FLAGS_PARSE_RX);
+		}
 
-
-		public TeVirtualMIDI( string portName, UInt32 maxSysexLength = TE_VM_DEFAULT_SYSEX_SIZE, UInt32 flags = TE_VM_FLAGS_PARSE_RX ) {
+		public void Initialize(string portName, UInt32 maxSysexLength = TE_VM_DEFAULT_SYSEX_SIZE, UInt32 flags = TE_VM_FLAGS_PARSE_RX ) {
 
 			fInstance = virtualMIDICreatePortEx2(portName, IntPtr.Zero, IntPtr.Zero, maxSysexLength, flags );
 
@@ -241,7 +246,7 @@ namespace TobiasErichsen.teVirtualMIDI {
 		}
 
 
-		public void shutdown() {
+		public override void ShutDown() {
 
 			if ( !virtualMIDIShutdown( fInstance ) ) {
 
@@ -254,7 +259,7 @@ namespace TobiasErichsen.teVirtualMIDI {
 		}
 
 
-		public void sendCommand( byte[] command ) {
+		public override void SendCommand( byte[] command ) {
 
 			if ( ( command == null ) || ( command.Length == 0 ) ) {
 
@@ -272,7 +277,7 @@ namespace TobiasErichsen.teVirtualMIDI {
 		}
 
 
-		public byte[] getCommand( ) {
+		public override byte[] ReceiveCommand( ) {
 
 			UInt32 length = fMaxSysexLength;
 

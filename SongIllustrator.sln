@@ -7,6 +7,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Song Illustrator Launcher", "Song Illustrator Launcher\Song Illustrator Launcher.csproj", "{48CCE5A3-F66C-437D-88CA-DF90BAA50684}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIDIDriverInterface", "MIDIDriverInterface\MIDIDriverInterface.csproj", "{D1B755F3-6A9F-4013-902D-8DDA565E1E3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TobiasDriver", "TobiasDriver\TobiasDriver.csproj", "{60C8701C-6C3C-4F36-B38A-8E40993190BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaPlayerModuleBase", "MediaPlayerModuleBase\MediaPlayerModuleBase.csproj", "{42EA643A-6513-4A91-AF16-EBAE9068CE87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsMediaPlayer", "WindowsMediaPlayer\WindowsMediaPlayer.csproj", "{116D90E7-3511-4BE3-8304-904584E83C9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,8 +45,51 @@ Global
 		{48CCE5A3-F66C-437D-88CA-DF90BAA50684}.Release|Mixed Platforms.Build.0 = Release|x86
 		{48CCE5A3-F66C-437D-88CA-DF90BAA50684}.Release|x86.ActiveCfg = Release|x86
 		{48CCE5A3-F66C-437D-88CA-DF90BAA50684}.Release|x86.Build.0 = Release|x86
+		{D1B755F3-6A9F-4013-902D-8DDA565E1E3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1B755F3-6A9F-4013-902D-8DDA565E1E3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1B755F3-6A9F-4013-902D-8DDA565E1E3F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D1B755F3-6A9F-4013-902D-8DDA565E1E3F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D1B755F3-6A9F-4013-902D-8DDA565E1E3F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D1B755F3-6A9F-4013-902D-8DDA565E1E3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1B755F3-6A9F-4013-902D-8DDA565E1E3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1B755F3-6A9F-4013-902D-8DDA565E1E3F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D1B755F3-6A9F-4013-902D-8DDA565E1E3F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D1B755F3-6A9F-4013-902D-8DDA565E1E3F}.Release|x86.ActiveCfg = Release|Any CPU
+		{60C8701C-6C3C-4F36-B38A-8E40993190BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60C8701C-6C3C-4F36-B38A-8E40993190BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60C8701C-6C3C-4F36-B38A-8E40993190BC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{60C8701C-6C3C-4F36-B38A-8E40993190BC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{60C8701C-6C3C-4F36-B38A-8E40993190BC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{60C8701C-6C3C-4F36-B38A-8E40993190BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60C8701C-6C3C-4F36-B38A-8E40993190BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60C8701C-6C3C-4F36-B38A-8E40993190BC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{60C8701C-6C3C-4F36-B38A-8E40993190BC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{60C8701C-6C3C-4F36-B38A-8E40993190BC}.Release|x86.ActiveCfg = Release|Any CPU
+		{42EA643A-6513-4A91-AF16-EBAE9068CE87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42EA643A-6513-4A91-AF16-EBAE9068CE87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42EA643A-6513-4A91-AF16-EBAE9068CE87}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{42EA643A-6513-4A91-AF16-EBAE9068CE87}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{42EA643A-6513-4A91-AF16-EBAE9068CE87}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{42EA643A-6513-4A91-AF16-EBAE9068CE87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42EA643A-6513-4A91-AF16-EBAE9068CE87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42EA643A-6513-4A91-AF16-EBAE9068CE87}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{42EA643A-6513-4A91-AF16-EBAE9068CE87}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{42EA643A-6513-4A91-AF16-EBAE9068CE87}.Release|x86.ActiveCfg = Release|Any CPU
+		{116D90E7-3511-4BE3-8304-904584E83C9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{116D90E7-3511-4BE3-8304-904584E83C9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{116D90E7-3511-4BE3-8304-904584E83C9F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{116D90E7-3511-4BE3-8304-904584E83C9F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{116D90E7-3511-4BE3-8304-904584E83C9F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{116D90E7-3511-4BE3-8304-904584E83C9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{116D90E7-3511-4BE3-8304-904584E83C9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{116D90E7-3511-4BE3-8304-904584E83C9F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{116D90E7-3511-4BE3-8304-904584E83C9F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{116D90E7-3511-4BE3-8304-904584E83C9F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = SongIllustrator\SongIllustrator.csproj
 	EndGlobalSection
 EndGlobal

@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
-using TobiasErichsen.teVirtualMIDI;
 using TypingConnector;
 using System.Drawing.Imaging;
+using MediaPlayerModuleBase;
 
 namespace SongIllustrator {
 	public partial class Form1 : Form {
 		public Form1() {
 			InitializeComponent();
 		}
+		MediaPlayer axWindowsMediaPlayer1;
 		private Stream _overlayImage;
 		int _portCount = 0;
 		string filePath = "";
@@ -149,7 +149,7 @@ namespace SongIllustrator {
 		}
 		private void timer1_Tick(object sender, EventArgs e) {
 			for (int i = 0; i < launchPads.Count; i++) {
-				decimal currentPos = (decimal) axWindowsMediaPlayer1.Ctlcontrols.currentPosition;
+				decimal currentPos = (decimal) axWindowsMediaPlayer1.CurrentPosition;
 				for (int z = 0; z < launchPads[i].FrameData.Count; z++) {
 					FrameData time = launchPads[i].FrameData[z];
 					if (currentPos * 100 <= time.TimeStamp) {
@@ -157,7 +157,7 @@ namespace SongIllustrator {
 					}
 					if (currentPos * 100 >= time.TimeStamp) {
 						if (!time.Fired) {
-							frameLabel.Text = "Frame: " + time.TimeStamp;
+							frameLabel.Text = "Frame: " + time.Index;
 							if (panel1.Controls.Count > 0) {
 								(panel1.Controls[i] as LightPad).SetFrame(z);
 							}
@@ -226,54 +226,7 @@ namespace SongIllustrator {
 			_changed = true;
 			OpenFileDialog dialog = new OpenFileDialog();
 			if (dialog.ShowDialog() == DialogResult.OK) {
-				axWindowsMediaPlayer1.URL = dialog.FileName;
-			}
-		}
-
-		private void axWindowsMediaPlayer1_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e) {
-			if (e.newState == 3) {
-				timer1.Start();
-				stopwatch.Start();
-				foreach (Launchpad launchPad in launchPads) {
-					launchPad.ListenToMidi = false;
-				}
-				gotPlay = true;
-			}
-			if (e.newState == 2) {
-				timer1.Stop();
-				stopwatch.Stop();
-				foreach (Launchpad launchPad in launchPads) {
-					launchPad.ListenToMidi = true;
-				}
-			}
-			if (gotPlay) {
-				if (e.newState == 1) {
-					gotPlay = false;
-					timer1.Stop();
-					stopwatch.Stop();
-					foreach (Launchpad launchPad in launchPads) {
-						launchPad.ListenToMidi = false;
-					}
-					stopwatch.Reset();
-				}
-				if (e.newState == 8) {
-					if (playlist.Count > 1) {
-						if (playlistPosition < playlist.Count) {
-							try {
-								OpenFileDialog(playlist[playlistPosition++]);
-							} catch {
-
-							}
-						}
-					}
-				}
-				if (e.newState == 10) {
-					try {
-						axWindowsMediaPlayer1.Ctlcontrols.play();
-						stopwatch.Reset();
-					} catch {
-					}
-				}
+				axWindowsMediaPlayer1.MediaPath = dialog.FileName;
 			}
 		}
 
@@ -338,7 +291,7 @@ namespace SongIllustrator {
 				}
 				newCount = padData.Count;
 				launchPads = MergeLightPads(padData, launchPads);
-				axWindowsMediaPlayer1.URL = SongIO.Url;
+				axWindowsMediaPlayer1.MediaPath = SongIO.Url;
 			}
 			//timeline1.UpdateTimeline();
 			if (oldCount != newCount) {
@@ -366,7 +319,7 @@ namespace SongIllustrator {
 				if (newList.Count <= existingList.Count && i < newList.Count) {
 					newLaunchPad = newList[i];
 				} else if (newList.Count < existingList.Count && i >= newList.Count) {
-					existingLaunchPad.Port.shutdown();
+					existingLaunchPad.Port.ShutDown();
 					existingLaunchPad.Thread.Abort();
 					existingLaunchPad.Thread = null;
 					existingLaunchPad.Port = null;
@@ -380,7 +333,7 @@ namespace SongIllustrator {
 			return newList;
 		}
 		private void SaveFileDialog(string filePath, List<Launchpad> padData) {
-			SongIO.SaveFile(filePath, padData, axWindowsMediaPlayer1.URL);
+			SongIO.SaveFile(filePath, padData, axWindowsMediaPlayer1.MediaPath);
 		}
 
 		private void openDisplayFileButton_Click(object sender, EventArgs e) {
@@ -422,7 +375,7 @@ namespace SongIllustrator {
 					_refFrame1 = frameListBox.SelectedItem as FrameData;
 					if (frameListBox.SelectedIndex >= 0) {
 						frameListBox.SetItemChecked(frameListBox.SelectedIndex, true);
-						axWindowsMediaPlayer1.Ctlcontrols.currentPosition = (double) (frameListBox.SelectedItem as FrameData).TimeStamp / 100;
+						axWindowsMediaPlayer1.CurrentPosition = (double) (frameListBox.SelectedItem as FrameData).TimeStamp / 100;
 					}
 					_frameReferences++;
 					break;
@@ -499,7 +452,7 @@ namespace SongIllustrator {
 					(panel1.Controls[i] as LightPad).LightData.FrameData.Clear();
 				}
 				frameListBox.Items.Clear();
-				axWindowsMediaPlayer1.URL = "";
+				axWindowsMediaPlayer1.MediaPath = "";
 				pixelBar.Enabled = true;
 				UpdateFrames();
 			}
@@ -601,6 +554,67 @@ namespace SongIllustrator {
 			}
 			_lowestDivisor = 1;
 			GeneratePads(launchPads, panel1);
+			axWindowsMediaPlayer1 = MediaPlayerLoader.LoadMediaPlayer(""); 
+			(axWindowsMediaPlayer1 as Control).Dock = System.Windows.Forms.DockStyle.Bottom;
+			(axWindowsMediaPlayer1 as Control).Location = new System.Drawing.Point(0, 607);
+			(axWindowsMediaPlayer1 as Control).Name = "panel2";
+			(axWindowsMediaPlayer1 as Control).Size = new System.Drawing.Size(684, 55);
+			(axWindowsMediaPlayer1 as Control).TabIndex = 92;
+			axWindowsMediaPlayer1.DonePlaying += new EventHandler(axWindowsMediaPlayer1_DonePlaying);
+			axWindowsMediaPlayer1.Paused += new EventHandler(axWindowsMediaPlayer1_Paused);
+			axWindowsMediaPlayer1.Playing += new EventHandler(axWindowsMediaPlayer1_Playing);
+			axWindowsMediaPlayer1.Ready += new EventHandler(axWindowsMediaPlayer1_Ready);
+			axWindowsMediaPlayer1.Stopped += new EventHandler(axWindowsMediaPlayer1_Stopped);
+			Controls.Add(axWindowsMediaPlayer1 as Control);
+		}
+
+		void axWindowsMediaPlayer1_Stopped(object sender, EventArgs e) {
+			if (gotPlay) {
+				gotPlay = false;
+				timer1.Stop();
+				stopwatch.Stop();
+				foreach (Launchpad launchPad in launchPads) {
+					launchPad.ListenToMidi = false;
+				}
+			}
+		}
+
+		void axWindowsMediaPlayer1_Ready(object sender, EventArgs e) {
+			try {
+				axWindowsMediaPlayer1.Play();
+			} catch {
+			}
+		}
+
+		void axWindowsMediaPlayer1_Playing(object sender, EventArgs e) {
+			timer1.Start();
+			stopwatch.Start();
+			foreach (Launchpad launchPad in launchPads) {
+				launchPad.ListenToMidi = false;
+			}
+			gotPlay = true;
+		}
+
+		void axWindowsMediaPlayer1_Paused(object sender, EventArgs e) {
+			timer1.Stop();
+			stopwatch.Stop();
+			foreach (Launchpad launchPad in launchPads) {
+				launchPad.ListenToMidi = true;
+			}
+		}
+
+		void axWindowsMediaPlayer1_DonePlaying(object sender, EventArgs e) {
+			if (gotPlay) {
+				if (playlist.Count > 1) {
+					if (playlistPosition < playlist.Count) {
+						try {
+							OpenFileDialog(playlist[playlistPosition++]);
+						} catch {
+
+						}
+					}
+				}
+			}
 		}
 
 		private void AddLightPad() {
@@ -618,7 +632,7 @@ namespace SongIllustrator {
 			for (int i = 0; i < lightDataList.Count; i++) {
 				LightPad lightPad = new LightPad();
 				if (lightDataList[i].Port == null) {
-					lightDataList[i].Port = new TeVirtualMIDI("Virtual Launchpad " + (i + 1));
+					lightDataList[i].Port = MidiDriverLoader.LoadCoreMIDI("Virtual Launchpad " + (i + 1));
 				}
 				if (i > panel1.Controls.Count) {
 					(panel1.Controls[i] as LightPad).Port = lightDataList[i].Port;
@@ -627,6 +641,9 @@ namespace SongIllustrator {
 				lightPad.Index = i;
 				lightPad.Display = display;
 				lightPad.Size = new Size(widthHeight, widthHeight);
+				lightPad.GotInteraction += delegate {
+					lightPad.ReplaceFrame(frameListBox.SelectedIndex);
+				};
 				if (widthProgression >= _lowestDivisor) {
 					heightProgression++;
 					widthProgression = 0;
@@ -762,9 +779,9 @@ namespace SongIllustrator {
 		}
 
 		private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
-			foreach (Launchpad launchpad in launchPads) {
-				launchpad.Port.shutdown();
-				launchpad.Thread.Abort();
+			foreach (LightPad launchpad in panel1.Controls) {
+				launchpad.Port.ShutDown();
+				launchpad.LightData.Thread.Abort();
 			}
 		}
 
@@ -843,7 +860,7 @@ namespace SongIllustrator {
 				if (frameListBox.Items.Count <= 0) {
 					panel1.Controls.Clear();
 					_lowestDivisor--;
-					launchPads[launchPads.Count - 1].Port.shutdown();
+					launchPads[launchPads.Count - 1].Port.ShutDown();
 					launchPads[launchPads.Count - 1].ListenToMidi = false;
 					launchPads[launchPads.Count - 1].FrameData = null;
 					launchPads[launchPads.Count - 1].Thread.Abort();
@@ -933,6 +950,66 @@ namespace SongIllustrator {
 			TutorialForm tutForm = new TutorialForm();
 			tutForm.TutorialPages = TutorialPage.AbletonPages();
 			tutForm.ShowDialog();
+		}
+
+		private void reverseDuplicateToolStripMenuItem_Click(object sender, EventArgs e) {
+			_changed = true;
+			List<FrameData> frameTimes = new List<FrameData>();
+			foreach (FrameData item in frameListBox.CheckedItems) {
+				frameTimes.Add(item);
+			}
+			foreach (Launchpad launchPad in launchPads) {
+				launchPad.ReverseDuplicateFrames(decimal.Parse(textBox2.Text), frameTimes);
+			}
+			UpdateFrames();
+		}
+
+		private void helpToolStripMenuItem_Click(object sender, EventArgs e) {
+
+		}
+
+		private void editCurrentFrameToolStripMenuItem_Click(object sender, EventArgs e) {
+			if (launchPads[0].FrameData.Count > 0) {
+				LockControls();
+				foreach (Launchpad launchpad in launchPads) {
+					launchpad.EditMode = true;
+				}
+			} else {
+				MessageBox.Show("No frames to edit!", "Song Illustrator", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
+		}
+
+		private void UnlockControls() {
+			frameListBox.Enabled
+				= textBox1.Enabled
+				= textBox2.Enabled
+				= addFrameButton.Enabled
+				= fullscreenButton.Enabled
+				= shiftButton.Enabled
+				= syncButton.Enabled = true;
+			editCurrentFrameToolStripMenuItem.Enabled = true;
+			stopEditingCurrentFrameToolStripMenuItem.Enabled = false;
+			//axWindowsMediaPlayer1.enabled = true;
+		}
+
+		private void LockControls() {
+			frameListBox.Enabled
+				= textBox1.Enabled
+				= textBox2.Enabled
+				= addFrameButton.Enabled
+				= fullscreenButton.Enabled
+				= shiftButton.Enabled
+				= syncButton.Enabled = false;
+			editCurrentFrameToolStripMenuItem.Enabled = false;
+			stopEditingCurrentFrameToolStripMenuItem.Enabled = true;
+			//axWindowsMediaPlayer1.Ctlenabled = false;
+		}
+
+		private void stopEditingCurrentFrameToolStripMenuItem_Click(object sender, EventArgs e) {
+			UnlockControls();
+			foreach (Launchpad launchpad in launchPads) {
+				launchpad.EditMode = false;
+			}
 		}
 	}
 }

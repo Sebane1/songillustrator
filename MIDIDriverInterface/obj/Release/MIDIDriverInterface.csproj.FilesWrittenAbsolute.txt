@@ -1,0 +1,2 @@
+/media/sebastian/Shared/Documents/Visual Studio 2010/Projects/SongIllustrator/MIDIDriverInterface/bin/Release/MIDIDriverInterface.dll
+/media/sebastian/Shared/Documents/Visual Studio 2010/Projects/SongIllustrator/MIDIDriverInterface/obj/Release/MIDIDriverInterface.dll

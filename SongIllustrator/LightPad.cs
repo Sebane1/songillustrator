@@ -6,7 +6,6 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using TobiasErichsen.teVirtualMIDI;
 using System.Threading;
 
 namespace SongIllustrator {
@@ -18,7 +17,7 @@ namespace SongIllustrator {
 		private bool passiveMode = false;
 		private bool _listenToMidi = true;
 		ShowDisplay _display;
-
+		public event EventHandler GotInteraction;
 		public ShowDisplay Display {
 			get {
 				return _display;
@@ -64,7 +63,7 @@ namespace SongIllustrator {
 				}
 			}
 		}
-		public TeVirtualMIDI Port {
+		public MidiDriver Port {
 			get {
 				return lightData.Port;
 			}
@@ -113,23 +112,20 @@ namespace SongIllustrator {
 						button.Port = lightData.Port;
 						button.Size = buttonSize;
 						button.Location = new Point(buttonSize.Width * widthProgression, buttonSize.Height * heightProgression);
+						button.BackColorChanged += delegate {
+							if (lightData.EditMode) {
+								GotInteraction(this, EventArgs.Empty);
+							}
+						};
 						lightCanvas.Controls.Add(button);
 					}
 				}
 			}
-			/*
-			if (_overlayImage != null) {
-				OverlayButtons(_overlayImage, panel1.Controls);
+		}
+		public void ReplaceFrame(int index) {
+			for (int i = 0; i < lightCanvas.Controls.Count; i++) {
+				lightData.FrameData[index].Colours[i] = (lightCanvas.Controls[i] as DisplayButton).BackColor;
 			}
-			if (display.Visible) {
-				display.Show();
-				display.GeneratePixels(pixels);
-			} else {
-				display.Show();
-				display.GeneratePixels(pixels);
-				display.Hide();
-			}
-			 */
 		}
 		private void MidiDataCoordinator() {
 			while (true) {
@@ -137,80 +133,82 @@ namespace SongIllustrator {
 					object test;
 				}
 				if (_listenToMidi) {
-					byte[] command = lightData.Port.getCommand();
-					if (command.Length >= 3) {
-						int process = command[0];
-						int key = command[1];
-						int velocity = command[2];
-						string note = NoteIdentifier.GetNoteFromInt(key);
-						int notePos = NoteIdentifier.GetNotePosition(note);
-						#region MIDI Logic
-						switch (process) {
-							case 128:
-								DisplayButton button;
-								if (notePos >= 0) {
-									Invoke(new MethodInvoker(
-										delegate() {
-											try {
-												button = !_display.Visible ? lightCanvas.Controls[notePos] as DisplayButton : (_display.Canvas.Controls[Index] as LightPad).LightCanvas.Controls[notePos] as DisplayButton;
-											} catch {
-												button = lightCanvas.Controls[notePos] as DisplayButton;
-											}
-											button.Reset();
-											button.CanSendMessage = true;
-										}));
-								}
-								break;
-							case 144:
-								if (notePos >= 0) {
-									Invoke(new MethodInvoker(
-										delegate() {
-											try {
-												button = !_display.Visible ? lightCanvas.Controls[notePos] as DisplayButton : (_display.Canvas.Controls[Index] as LightPad).LightCanvas.Controls[notePos] as DisplayButton;
-											} catch {
-												button = lightCanvas.Controls[notePos] as DisplayButton;
-											}
-											if (button != null) {
-												switch (velocity) {
-													case 7:
-														if (!button.CheckEqualColor(button.BackColor, Color.Red)) {
-															button.BackColor = Color.Red;
-														}
-														break;
-													case 83:
-														if (!button.CheckEqualColor(button.BackColor, Color.Orange)) {
-															button.BackColor = Color.Orange;
-														}
-														break;
-													case 124:
-														if (!button.CheckEqualColor(button.BackColor, Color.Green)) {
-															button.BackColor = Color.Green;
-														}
-														break;
-													case 127:
-														if (!button.CheckEqualColor(button.BackColor, Color.Yellow)) {
-															button.BackColor = Color.Yellow;
-														}
-														break;
+					byte[] command = lightData.Port.ReceiveCommand();
+					if (command != null) {
+						if (command.Length >= 3) {
+							int process = command[0];
+							int key = command[1];
+							int velocity = command[2];
+							string note = NoteIdentifier.GetNoteFromInt(key);
+							int notePos = NoteIdentifier.GetNotePosition(note);
+							#region MIDI Logic
+							switch (process) {
+								case 128:
+									DisplayButton button;
+									if (notePos >= 0) {
+										Invoke(new MethodInvoker(
+											delegate() {
+												try {
+													button = !_display.Visible ? lightCanvas.Controls[notePos] as DisplayButton : (_display.Canvas.Controls[Index] as LightPad).LightCanvas.Controls[notePos] as DisplayButton;
+												} catch {
+													button = lightCanvas.Controls[notePos] as DisplayButton;
 												}
-											}
-										}));
-								}
-								break;
-							case 240:
-								if (key == 2) {
-									_listenToMidi = false;
-								}
-								break;
-							default:
-								object test = new object();
-								break;
+												button.Reset();
+												button.CanSendMessage = true;
+											}));
+									}
+									break;
+								case 144:
+									if (notePos >= 0) {
+										Invoke(new MethodInvoker(
+											delegate() {
+												try {
+													button = !_display.Visible ? lightCanvas.Controls[notePos] as DisplayButton : (_display.Canvas.Controls[Index] as LightPad).LightCanvas.Controls[notePos] as DisplayButton;
+												} catch {
+													button = lightCanvas.Controls[notePos] as DisplayButton;
+												}
+												if (button != null) {
+													switch (velocity) {
+														case 7:
+															if (!button.CheckEqualColor(button.BackColor, Color.Red)) {
+																button.BackColor = Color.Red;
+															}
+															break;
+														case 83:
+															if (!button.CheckEqualColor(button.BackColor, Color.Orange)) {
+																button.BackColor = Color.Orange;
+															}
+															break;
+														case 124:
+															if (!button.CheckEqualColor(button.BackColor, Color.Green)) {
+																button.BackColor = Color.Green;
+															}
+															break;
+														case 127:
+															if (!button.CheckEqualColor(button.BackColor, Color.Yellow)) {
+																button.BackColor = Color.Yellow;
+															}
+															break;
+													}
+												}
+											}));
+									}
+									break;
+								case 240:
+									if (key == 2) {
+										_listenToMidi = false;
+									}
+									break;
+								default:
+									object test = new object();
+									break;
+							}
 						}
+							#endregion MIDI Logic
+					} else {
+						lightData.Port.ReceiveCommand();
+						_listenToMidi = true;
 					}
-						#endregion MIDI Logic
-				} else {
-					lightData.Port.getCommand();
-					_listenToMidi = true;
 				}
 			}
 		}

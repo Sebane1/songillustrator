@@ -1,5 +1,8 @@
 using System;
 using System.Windows.Forms;
+using System.IO;
+
+
 namespace File_Encryptor_Launcher
 {
 	internal static class Program
@@ -7,16 +10,20 @@ namespace File_Encryptor_Launcher
 		private static string _recentFileLog = string.Concat(new string[]
 		{
 			Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-			"\\",
+			"/",
 			Application.CompanyName,
-			"\\",
+			"/",
 			Application.ProductName,
-			"\\SongIllustrator.exe"
+			"/SongIllustrator.exe"
 		});
 		public static string RecentFileLog
 		{
 			get
 			{
+				string test = Path.GetDirectoryName (_recentFileLog);
+				if (!Directory.Exists (test) ){
+					Directory.CreateDirectory (Path.GetPathRoot (_recentFileLog));
+				}
 				return Program._recentFileLog;
 			}
 			set

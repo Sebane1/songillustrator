@@ -70,27 +70,27 @@ namespace SongIllustrator {
 						validPositions++;
 					}
 				}
-
-				if ((location.X >= controlToFocus.Location.X - 10 && location.X <= controlToFocus.Location.X) || (location.X <= controlToFocus.Location.X + 10 && location.X >= controlToFocus.Location.X)) {
-					_locations[i] = new Point(controlToFocus.Location.X, _locations[i].Y);
+				Point itemPoint = controlToFocus.Location;
+				if ((location.X >= itemPoint.X - 10 && location.X <= itemPoint.X) || (location.X <= itemPoint.X + 10 && location.X >= itemPoint.X)) {
+					_locations[i] = new Point(itemPoint.X, _locations[i].Y);
 					validPositions++;
 				} else {
 					if (location.X > controlToFocus.Location.X) {
 						location = new Point(location.X - _startSpeed, location.Y);
-					} else if (location.X < controlToFocus.Location.X) {
+					} else if (location.X < itemPoint.X) {
 						location = new Point(location.X + _startSpeed, location.Y);
 					} else {
 						validPositions++;
 					}
 				}
 
-				if ((location.Y >= controlToFocus.Location.Y - 10 && location.Y <= controlToFocus.Location.Y) || (location.Y <= controlToFocus.Location.Y + 10 && location.Y >= controlToFocus.Location.Y)) {
-					_locations[i] = new Point(_locations[i].X, controlToFocus.Location.Y);
+				if ((location.Y >= itemPoint.Y - 10 && location.Y <= itemPoint.Y) || (location.Y <= itemPoint.Y + 10 && location.Y >= itemPoint.Y)) {
+					_locations[i] = new Point(_locations[i].X, itemPoint.Y);
 					validPositions++;
 				} else {
-					if (location.Y > controlToFocus.Location.Y) {
+					if (location.Y > itemPoint.Y) {
 						location = new Point(location.X, location.Y - _startSpeed);
-					} else if (location.Y < controlToFocus.Location.Y) {
+					} else if (location.Y < itemPoint.Y) {
 						location = new Point(location.X, location.Y + _startSpeed);
 					} else {
 						validPositions++;
@@ -113,6 +113,15 @@ namespace SongIllustrator {
 				if (pauseTimer.Enabled) {
 					descriptionLabel.Text = _tutorialFigures[_currentFigure].Description;
 				}
+			}
+		}
+
+		private Point GetAbsolutePosition(Control controlToFocus) {
+			if (controlToFocus.Parent != null) {
+				Point absolute = GetAbsolutePosition(controlToFocus);
+				return new Point(controlToFocus.Location.X + absolute.X, controlToFocus.Location.Y + absolute.Y);
+			} else {
+				return new Point();
 			}
 		}
 

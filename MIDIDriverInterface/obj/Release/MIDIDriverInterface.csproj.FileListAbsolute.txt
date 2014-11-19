@@ -1,0 +1,4 @@
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MIDIDriverInterface\bin\Release\MIDIDriverInterface.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MIDIDriverInterface\bin\Release\MIDIDriverInterface.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MIDIDriverInterface\obj\Release\MIDIDriverInterface.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MIDIDriverInterface\obj\Release\MIDIDriverInterface.pdb

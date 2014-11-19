@@ -1,0 +1,9 @@
+/media/sebastian/Shared/Documents/Visual Studio 2010/Projects/SongIllustrator/WindowsMediaPlayer/obj/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/media/sebastian/Shared/Documents/Visual Studio 2010/Projects/SongIllustrator/WindowsMediaPlayer/bin/Debug/WindowsMediaPlayer.Player.dll.mdb
+/media/sebastian/Shared/Documents/Visual Studio 2010/Projects/SongIllustrator/WindowsMediaPlayer/bin/Debug/WindowsMediaPlayer.Player.dll
+/media/sebastian/Shared/Documents/Visual Studio 2010/Projects/SongIllustrator/WindowsMediaPlayer/obj/Debug/WindowsMediaPlayer.Player.dll
+/media/sebastian/Shared/Documents/Visual Studio 2010/Projects/SongIllustrator/WindowsMediaPlayer/obj/Debug/WindowsMediaPlayer.Player.dll.mdb
+/media/sebastian/Shared/Documents/Visual Studio 2010/Projects/SongIllustrator/WindowsMediaPlayer/bin/Debug/AxInterop.WMPLib.dll
+/media/sebastian/Shared/Documents/Visual Studio 2010/Projects/SongIllustrator/WindowsMediaPlayer/bin/Debug/Interop.WMPLib.dll
+/media/sebastian/Shared/Documents/Visual Studio 2010/Projects/SongIllustrator/WindowsMediaPlayer/bin/Debug/MediaPlayerModuleBase.dll
+/media/sebastian/Shared/Documents/Visual Studio 2010/Projects/SongIllustrator/WindowsMediaPlayer/bin/Debug/MediaPlayerModuleBase.dll.mdb

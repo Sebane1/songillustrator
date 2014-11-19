@@ -27,9 +27,9 @@ namespace TobiasErichsen.teVirtualMIDI.test {
 				try {
 					while (true) {
 
-						command = port.getCommand();
+						command = port.ReceiveCommand();
 
-						port.sendCommand(command);
+						port.SendCommand(command);
 
 						Console.WriteLine("command: " + byteArrayToString(command));
 
@@ -62,11 +62,11 @@ namespace TobiasErichsen.teVirtualMIDI.test {
 			Thread thread = new Thread(new ThreadStart(WorkThreadFunction));
 			thread.Start();
 
-		/*	Console.WriteLine("Virtual _port created - press enter to close _port again");
+			Console.WriteLine("Virtual _port created - press enter to close _port again");
 			Console.ReadKey();
-			_port.shutdown();
+			port.ShutDown();
 			Console.WriteLine("Virtual _port closed - press enter to terminate application");
-			Console.ReadKey();*/
+			Console.ReadKey();
 
 		}
 
