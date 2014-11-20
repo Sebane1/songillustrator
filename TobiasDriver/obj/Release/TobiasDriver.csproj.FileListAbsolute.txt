@@ -1,9 +1,9 @@
-F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\obj\Release\TobiasDriver.csprojResolveAssemblyReference.cache
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\bin\Release\MIDIDriverInterface.dll
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\bin\Release\MIDIDriverInterface.pdb
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\bin\Release\Tobias.Driver.dll
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\bin\Release\Tobias.Driver.pdb
-F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\obj\Release\Tobias.Driver.dll
-F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\obj\Release\Tobias.Driver.pdb
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustrator\bin\Release\Tobias.Driver.dll
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustrator\bin\Release\Tobias.Driver.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\obj\Release\TobiasDriver.csprojResolveAssemblyReference.cache
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\obj\Release\Tobias.Driver.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\obj\Release\Tobias.Driver.pdb

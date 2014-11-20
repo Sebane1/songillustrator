@@ -1,0 +1,9 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace SongIllustrator {
+	public interface FormView : FormControl {
+		void ShowDialog();
+	}
+}

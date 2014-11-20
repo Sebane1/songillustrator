@@ -13,15 +13,23 @@ namespace SongIllustrator
         [STAThread]
         static void Main(string[] args)
         {
-
+					Form form = new Form();
+					BaseForm abstractionLayer = new BaseForm(new Win32Factory());
+					form.Width = abstractionLayer.ControlWidth;
+					form.Height = abstractionLayer.ControlHeight;
+					foreach (Control control in abstractionLayer.FormControls) {
+						if (control != null) {
+							form.Controls.Add(control);
+						}
+					}
             Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            //Application.SetCompatibleTextRenderingDefault(false);
             if (args.Length > 0)
             {
-                Application.Run(new Form1(args[0]));
+                //Application.Run(new Form(args[0]));
             }
             else {
-                Application.Run(new Form1());
+                Application.Run(form);
             }
         }
     }

@@ -43,7 +43,7 @@ namespace SongIllustrator {
 		}
 
 		//**********************************************************************************************
-		public static MidiDriver LoadCoreMIDI(string name) {
+		public static MidiDriver LoadMIDIDriver(string name) {
 			MidiDriver.OperatingSystem os = MidiDriver.OperatingSystem.None;
 			switch (Environment.OSVersion.Platform) {
 				case PlatformID.Win32Windows:

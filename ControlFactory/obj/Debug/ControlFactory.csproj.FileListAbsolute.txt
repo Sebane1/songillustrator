@@ -1,0 +1,4 @@
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\ControlFactory\bin\Debug\Factory.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\ControlFactory\bin\Debug\Factory.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\ControlFactory\obj\Debug\Factory.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\ControlFactory\obj\Debug\Factory.pdb

@@ -1,0 +1,7 @@
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\Win32Factory\obj\Release\Win32Factory.csprojResolveAssemblyReference.cache
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\Win32Factory\bin\Release\Win32Factory.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\Win32Factory\bin\Release\Win32Factory.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\Win32Factory\bin\Release\Factory.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\Win32Factory\bin\Release\Factory.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\Win32Factory\obj\Release\Win32Factory.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\Win32Factory\obj\Release\Win32Factory.pdb

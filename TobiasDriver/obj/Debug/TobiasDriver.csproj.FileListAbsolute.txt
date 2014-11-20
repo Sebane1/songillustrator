@@ -2,6 +2,6 @@ F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\bin\Debug\
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\bin\Debug\Tobias.Driver.pdb
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\bin\Debug\MIDIDriverInterface.dll
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\bin\Debug\MIDIDriverInterface.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\obj\Debug\TobiasDriver.csprojResolveAssemblyReference.cache
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\obj\Debug\Tobias.Driver.dll
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\obj\Debug\Tobias.Driver.pdb
-F:\Documents\Visual Studio 2010\Projects\SongIllustrator\TobiasDriver\obj\Debug\TobiasDriver.csprojResolveAssemblyReference.cache

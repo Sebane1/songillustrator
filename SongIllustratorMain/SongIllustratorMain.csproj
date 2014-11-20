@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D548698D-C2D1-46EF-996D-BE41F704A935}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SongIllustrator</RootNamespace>
+    <AssemblyName>SongIllustratorCore</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tokenizer">
+      <HintPath>..\..\Learning Speech AI\Tokenizer\Tokenizer.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AlertButtons.cs" />
+    <Compile Include="AlertView.cs" />
+    <Compile Include="MilliStopWatch.cs" />
+    <Compile Include="TypeOFAlert.cs" />
+    <Compile Include="FigurePainter.cs" />
+    <Compile Include="BaseForm.cs" />
+    <Compile Include="BaseForm.Designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LaunchPad.cs" />
+    <Compile Include="LightPad.cs" />
+    <Compile Include="MediaControl.cs" />
+    <Compile Include="MidiWriter.cs" />
+    <Compile Include="NoteIdentifier.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShowDisplay.cs" />
+    <Compile Include="ShowDisplay.Designer.cs">
+      <DependentUpon>ShowDisplay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SongIO.cs" />
+    <Compile Include="Timeline.cs" />
+    <Compile Include="TimelineItem.cs" />
+    <Compile Include="TimelineItem.Designer.cs">
+      <DependentUpon>TimelineItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TutorialFigure.cs" />
+    <Compile Include="TutorialForm.cs" />
+    <Compile Include="TutorialForm.Designer.cs">
+      <DependentUpon>TutorialForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TutorialPage.cs" />
+    <Compile Include="VLQ.cs" />
+    <Compile Include="MacroButton.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ShowDisplay.resx">
+      <DependentUpon>ShowDisplay.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimelineItem.resx">
+      <DependentUpon>TimelineItem.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TutorialForm.resx">
+      <DependentUpon>TutorialForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tutorial Images\Ableton Port Config\AL1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tutorial Images\Ableton Port Config\AL10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tutorial Images\Ableton Port Config\AL11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tutorial Images\Ableton Port Config\AL12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tutorial Images\Ableton Port Config\AL2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tutorial Images\Ableton Port Config\AL3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tutorial Images\Ableton Port Config\AL4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tutorial Images\Ableton Port Config\AL5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tutorial Images\Ableton Port Config\AL6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tutorial Images\Ableton Port Config\AL7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tutorial Images\Ableton Port Config\AL8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tutorial Images\Ableton Port Config\AL9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Button2.png" />
+    <None Include="bevel.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT1.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT10.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT11.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT2.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT3.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT4.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT5.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT6.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT7.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT8.png" />
+    <Content Include="Tutorial Images\FL Port Config A\SIFLT9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MediaPlayerModuleBase\MediaPlayerModuleBase.csproj">
+      <Project>{42EA643A-6513-4A91-AF16-EBAE9068CE87}</Project>
+      <Name>MediaPlayerModuleBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MIDIDriverInterface\MIDIDriverInterface.csproj">
+      <Project>{D1B755F3-6A9F-4013-902D-8DDA565E1E3F}</Project>
+      <Name>MIDIDriverInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ControlFactory\ControlFactory.csproj">
+      <Project>{484CAA88-578D-46B9-85E9-70CADC8616CD}</Project>
+      <Name>ControlFactory</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
