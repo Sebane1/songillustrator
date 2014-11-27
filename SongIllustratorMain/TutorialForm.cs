@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Text;
+using ControlFactory;
 
 namespace SongIllustrator {
-	public partial class TutorialForm : FormControl {
-		public TutorialForm() {
+	public partial class TutorialForm : IView {
+		IFormView _formView;
+		public TutorialForm(IFactory factory) {
 			InitializeComponent();
+			_factory = factory;
+			_formView = _factory.BuildFormView();
 		}
 		List<TutorialPage> _tutorialPages = new List<TutorialPage>();
 
@@ -53,7 +57,7 @@ namespace SongIllustrator {
 			SetPage();
 		}
 
-		#region FormControl Members
+		#region IView Members
 
 		public event EventHandler Click;
 
@@ -78,7 +82,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		public FormControl Parent {
+		public IView Parent {
 			get {
 				throw new NotImplementedException();
 			}
@@ -114,7 +118,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		public List<FormControl> FormControls {
+		public List<IView> FormControls {
 			get {
 				throw new NotImplementedException();
 			}
@@ -123,7 +127,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		void FormControl.Dispose(bool dispose) {
+		void IView.Dispose(bool dispose) {
 			throw new NotImplementedException();
 		}
 
@@ -147,7 +151,7 @@ namespace SongIllustrator {
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 
 		public bool Visible {
@@ -201,7 +205,7 @@ namespace SongIllustrator {
 			throw new NotImplementedException();
 		}
 
-		#region FormControl Members
+		#region IView Members
 
 
 		public int Width {
@@ -224,13 +228,13 @@ namespace SongIllustrator {
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
-		void FormControl.Initialize() {
+		void IView.Initialize() {
 			throw new NotImplementedException();
 		}
 
-		int FormControl.TabIndex {
+		int IView.TabIndex {
 			get {
 				throw new NotImplementedException();
 			}
@@ -239,7 +243,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		FormControl FormControl.ParentControl {
+		IView IView.ParentControl {
 			get {
 				throw new NotImplementedException();
 			}
@@ -248,7 +252,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		string FormControl.Name {
+		string IView.Name {
 			get {
 				throw new NotImplementedException();
 			}
@@ -257,7 +261,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		ControlSize FormControl.ControlSize {
+		ControlSize IView.ControlSize {
 			get {
 				throw new NotImplementedException();
 			}
@@ -266,7 +270,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		ControlLocation FormControl.ControlLocation {
+		ControlLocation IView.ControlLocation {
 			get {
 				throw new NotImplementedException();
 			}
@@ -275,7 +279,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		int FormControl.ControlWidth {
+		int IView.ControlWidth {
 			get {
 				throw new NotImplementedException();
 			}
@@ -284,7 +288,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		int FormControl.ControlHeight {
+		int IView.ControlHeight {
 			get {
 				throw new NotImplementedException();
 			}
@@ -293,7 +297,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		List<FormControl> FormControl.FormControls {
+		bool IView.Visible {
 			get {
 				throw new NotImplementedException();
 			}
@@ -302,7 +306,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		bool FormControl.Visible {
+		int IView.Height {
 			get {
 				throw new NotImplementedException();
 			}
@@ -311,7 +315,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		int FormControl.Height {
+		bool IView.Enabled {
 			get {
 				throw new NotImplementedException();
 			}
@@ -319,16 +323,7 @@ namespace SongIllustrator {
 				throw new NotImplementedException();
 			}
 		}
-
-		bool FormControl.Enabled {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-		string FormControl.Text {
+		string IView.Text {
 			get {
 				throw new NotImplementedException();
 			}
@@ -339,7 +334,7 @@ namespace SongIllustrator {
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 
 		public event EventHandler BackColorChanged;
@@ -355,58 +350,72 @@ namespace SongIllustrator {
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
-		EventHandler FormControl.Click {
-			get {
+		
+		#endregion
+
+		#region IView Members
+
+
+		public void AddControl(IView control) {
+			throw new NotImplementedException();
+		}
+
+		public void RemoveControl(IView control) {
+			throw new NotImplementedException();
+		}
+
+		public void RemoveControl(int index) {
+			throw new NotImplementedException();
+		}
+
+		event EventHandler IView.Load {
+			add {
 				throw new NotImplementedException();
 			}
-			set {
+			remove {
 				throw new NotImplementedException();
 			}
 		}
 
-		EventHandler FormControl.RightClicked {
-			get {
+		event EventHandler IView.Shown {
+			add {
 				throw new NotImplementedException();
 			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.KeyDown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
+			remove {
 				throw new NotImplementedException();
 			}
 		}
 
-		EventHandler FormControl.KeyUp {
-			get {
+		event EventHandler IView.DoubleClick {
+			add {
 				throw new NotImplementedException();
 			}
-			set {
+			remove {
 				throw new NotImplementedException();
 			}
 		}
 
-		EventHandler FormControl.Resized {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
+		#endregion
+
+		#region IView Members
+
+
+		public event EventHandler MouseLeftUp;
+
+		public event EventHandler MouseRightUp;
+
+		public event EventHandler MouseLeftDown;
+
+		public event EventHandler MouseRightDown;
+		private IFactory _factory;
 
 		#endregion
 	}

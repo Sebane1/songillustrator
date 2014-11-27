@@ -3,6 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace SongIllustrator {
-	public interface MenuItemSeperator : MenuItemView {
+	public interface IMenuItemSeperator : IMenuItemView {
 	}
 }

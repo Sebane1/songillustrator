@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace SongIllustrator {
-	public interface TextBoxView : FormControl{
-		EventHandler TextChanged {
-			get;
-			set;
-		}
+	public interface ITextBoxView : IView{
+		event EventHandler TextChanged;
 
 		bool ReadOnly {
 			get;

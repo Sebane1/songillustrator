@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
 using System.Text;
-using System.Windows.Forms;
 using System.Media;
 using System.Diagnostics;
 using System.IO;
+using ControlFactory;
+using SongIllustrator;
 
 namespace MediaPlayerModuleBase {
-	public partial class WavPlayerControl : UserControl, MediaPlayer {
-		public WavPlayerControl() {
+	public partial class WavPlayerControl : IMediaPlayer {
+		public WavPlayerControl(IFactory factory, IFormView formView) {
+			_factory = factory;
+			_formView = formView;
 			InitializeComponent();
 		}
 		SoundPlayer _player = new SoundPlayer();
@@ -23,7 +25,7 @@ namespace MediaPlayerModuleBase {
 		public event EventHandler DonePlaying;
 		public double CurrentPosition {
 			get {
-				return (double)stopwatch.ElapsedMilliseconds / (double)1000;
+				return (double) stopwatch.ElapsedMilliseconds / (double) 1000;
 			}
 			set {
 
@@ -42,8 +44,10 @@ namespace MediaPlayerModuleBase {
 				return _player.SoundLocation;
 			}
 			set {
-				_player.Stream =  new FileStream(value, FileMode.Open,FileAccess.Read);
-				Play();
+				if (!string.IsNullOrEmpty(value)) {
+					_player.Stream = new FileStream(value, FileMode.Open, FileAccess.Read);
+					Play();
+				}
 			}
 		}
 		private bool playing = false;
@@ -88,12 +92,191 @@ namespace MediaPlayerModuleBase {
 			stopwatch.Stop();
 		}
 
-		#region MediaPlayer Members
-		OperatingSystem MediaPlayer.SupportedOS {
+		#region IMediaPlayer Members
+		OperatingSystem IMediaPlayer.SupportedOS {
 			get {
 				return OperatingSystem.None;
 			}
 		}
+
+		#endregion
+
+		#region IMediaPlayer Members
+
+
+		MediaPlayerModuleBase.OperatingSystem SupportedOS {
+			get {
+				return OperatingSystem.None;
+			}
+		}
+
+		#endregion
+
+		#region IView Members
+
+		public event EventHandler Click;
+
+		public event EventHandler RightClicked;
+
+		public event EventHandler KeyDown;
+
+		public event EventHandler KeyUp;
+
+		public event EventHandler Resized;
+
+		public event EventHandler BackColorChanged;
+
+		public void Initialize() {
+			throw new NotImplementedException();
+		}
+
+		public int TabIndex {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public SongIllustrator.IView ParentControl {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public string Name {
+			get {
+				return _name;
+			}
+			set {
+				_name = value;
+			}
+		}
+
+		public SongIllustrator.ControlSize ControlSize {
+			get {
+				return _controlSize;
+			}
+			set {
+				_controlSize = value;
+			}
+		}
+
+		public SongIllustrator.ControlLocation ControlLocation {
+			get {
+				return _controlLocation;
+			}
+			set {
+				_controlLocation = value;
+			}
+		}
+
+		public int ControlWidth {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public int ControlHeight {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public void AddControl(SongIllustrator.IView control) {
+			throw new NotImplementedException();
+		}
+
+		public void RemoveControl(SongIllustrator.IView control) {
+			throw new NotImplementedException();
+		}
+
+		public void RemoveControl(int index) {
+			throw new NotImplementedException();
+		}
+
+		public bool Visible {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		void SongIllustrator.IView.Dispose(bool dispose) {
+			throw new NotImplementedException();
+		}
+
+		public int Height {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public bool Enabled {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public event EventHandler Load;
+
+		public event EventHandler Shown;
+
+		public event EventHandler DoubleClick;
+		private IFactory _factory;
+		private IFormView _formView;
+		private ControlSize _controlSize;
+		private ControlLocation _controlLocation;
+		private string _name;
+
+		public string Text {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public SongIllustrator.Color ControlBackColor {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		#endregion
+
+		#region IView Members
+
+
+		public event EventHandler MouseLeftUp;
+
+		public event EventHandler MouseRightUp;
+
+		public event EventHandler MouseLeftDown;
+
+		public event EventHandler MouseRightDown;
 
 		#endregion
 	}

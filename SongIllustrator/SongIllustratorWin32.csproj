@@ -47,7 +47,6 @@
   <ItemGroup>
     <Compile Include="BitmapOpacity.cs" />
     <Compile Include="ImageSlicer.cs" />
-    <Compile Include="MilliStopWatch.cs" />
     <Compile Include="Properties\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -91,21 +90,13 @@
   </Target>
   -->
   <ItemGroup>
-    <ProjectReference Include="..\MediaPlayerModuleBase\MediaPlayerModuleBase.csproj">
-      <Project>{42EA643A-6513-4A91-AF16-EBAE9068CE87}</Project>
-      <Name>MediaPlayerModuleBase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MIDIDriverInterface\MIDIDriverInterface.csproj">
-      <Project>{D1B755F3-6A9F-4013-902D-8DDA565E1E3F}</Project>
-      <Name>MIDIDriverInterface</Name>
+    <ProjectReference Include="..\ControlFactory\ControlFactory.csproj">
+      <Project>{484CAA88-578D-46B9-85E9-70CADC8616CD}</Project>
+      <Name>ControlFactory</Name>
     </ProjectReference>
     <ProjectReference Include="..\SongIllustratorMain\SongIllustratorMain.csproj">
       <Project>{D548698D-C2D1-46EF-996D-BE41F704A935}</Project>
       <Name>SongIllustratorMain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ControlFactory\ControlFactory.csproj">
-      <Project>{484CAA88-578D-46B9-85E9-70CADC8616CD}</Project>
-      <Name>ControlFactory</Name>
     </ProjectReference>
     <ProjectReference Include="..\Win32Factory\Win32Factory.csproj">
       <Project>{63D4744F-2ADB-43C1-A89E-827D82F3C697}</Project>

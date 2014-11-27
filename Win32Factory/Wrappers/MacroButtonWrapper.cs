@@ -5,67 +5,45 @@ using SongIllustrator;
 using System.Windows.Forms;
 
 namespace Win32Factory.Wrappers {
-	public class FormWrapper : Form, FormView {
-		#region FormView Members
+	public class CustomControlWrapper : ICustomControl {
 
-		public new void ShowDialog() {
-			throw new NotImplementedException();
-		}
+		#region IView Members
 
-		#endregion
+		public event EventHandler Click;
 
-		#region FormControl Members
+		public event EventHandler RightClicked;
 
-		public new EventHandler Click {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
+		public event EventHandler KeyDown;
 
-		public EventHandler RightClicked {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
+		public event EventHandler KeyUp;
 
-		public new EventHandler KeyDown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
+		public event EventHandler Resized;
 
-		public new EventHandler KeyUp {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public EventHandler Resized {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
+		public event EventHandler BackColorChanged;
 
 		public void Initialize() {
 			throw new NotImplementedException();
 		}
 
-		public FormControl ParentControl {
+		public int TabIndex {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public IView ParentControl {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public string Name {
 			get {
 				throw new NotImplementedException();
 			}
@@ -110,20 +88,19 @@ namespace Win32Factory.Wrappers {
 			}
 		}
 
-		public List<FormControl> FormControls {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public new void Dispose(bool dispose) {
+		public void AddControl(IView control) {
 			throw new NotImplementedException();
 		}
 
-		public new EventHandler Load {
+		public void RemoveControl(IView control) {
+			throw new NotImplementedException();
+		}
+
+		public void RemoveControl(int index) {
+			throw new NotImplementedException();
+		}
+
+		public bool Visible {
 			get {
 				throw new NotImplementedException();
 			}
@@ -132,7 +109,11 @@ namespace Win32Factory.Wrappers {
 			}
 		}
 
-		public new EventHandler Shown {
+		public void Dispose(bool dispose) {
+			throw new NotImplementedException();
+		}
+
+		public int Height {
 			get {
 				throw new NotImplementedException();
 			}
@@ -141,7 +122,22 @@ namespace Win32Factory.Wrappers {
 			}
 		}
 
-		public new EventHandler DoubleClick {
+		public bool Enabled {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public event EventHandler Load;
+
+		public event EventHandler Shown;
+
+		public event EventHandler DoubleClick;
+
+		public string Text {
 			get {
 				throw new NotImplementedException();
 			}
@@ -158,6 +154,19 @@ namespace Win32Factory.Wrappers {
 				throw new NotImplementedException();
 			}
 		}
+
+		#endregion
+
+		#region IView Members
+
+
+		public event EventHandler MouseLeftUp;
+
+		public event EventHandler MouseRightUp;
+
+		public event EventHandler MouseLeftDown;
+
+		public event EventHandler MouseRightDown;
 
 		#endregion
 	}

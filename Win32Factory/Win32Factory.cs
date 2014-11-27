@@ -3,56 +3,58 @@ using System.Collections.Generic;
 using System.Text;
 using ControlFactory;
 using Win32Factory.Wrappers;
+using Win32Factory;
+using System.Windows.Forms;
 
 namespace SongIllustrator {
-	public class Win32Factory : Factory {
-		#region Factory Members
+	public class Win32Factory : IFactory {
+		#region IFactory Members
 
-		public ButtonView BuildButton() {
+		public IButtonView BuildButton() {
 			return new ButtonWrapper();
 		}
 
-		public TextBoxView BuildRichTextBox() {
+		public IRichTextBoxView BuildRichTextBox() {
+			return new RichTextBoxWrapper();
+		}
+
+		public ITextBoxView BuildTextBox() {
 			return new TextBoxWrapper();
 		}
 
-		public TextBoxView BuildTextBox() {
-			return new TextBoxWrapper();
-		}
-
-		public FormControl BuildFormControl() {
+		public IView BuildFormControl() {
 			return new ControlWrapper();
 		}
 
-		public FormView BuildFormView() {
+		public IFormView BuildFormView() {
 			return new FormWrapper();
 		}
 
-		public LabelView BuildLabelView() {
+		public ILabelView BuildLabelView() {
 			return new LabelWrapper();
 		}
 
-		public ArrayView BuildListView() {
+		public IArrayView BuildListView() {
 			return new ListBoxWrapper();
 		}
 
-		public ArrayViewItem BuildListViewItem() {
+		public IArrayViewItem BuildListViewItem() {
 			return null;
 		}
 
-		public Menu BuildMenu() {
+		public IMenu BuildMenu() {
 			throw new NotImplementedException();
 		}
 
-		public MenuItemView BuildMenuItem() {
+		public IMenuItemView BuildMenuItem() {
 			return new ToolStripMenuItemWrapper();
 		}
 
-		public MenuItemSeperator BuildMenuItemSeperator() {
+		public IMenuItemSeperator BuildMenuItemSeperator() {
 			return new ToolStripSeparatorWrapper();
 		}
 
-		public PictureView BuildPictureView() {
+		public IPictureView BuildPictureView() {
 			return new PictureBoxWrapper();
 		}
 
@@ -60,34 +62,34 @@ namespace SongIllustrator {
 			return new SplitContainerWrapper();
 		}
 
-		public TextBoxView BuildTextBoxView() {
+		public ITextBoxView BuildTextBoxView() {
 			return new TextBoxWrapper();
 		}
 
-		public TrackBarView BuildTrackBar() {
+		public ITrackBarView BuildTrackBar() {
 			return new TrackBarWrapper();
 		}
 
 		#endregion
 
-		#region Factory Members
+		#region IFactory Members
 
 
-		public ToolStripMenuView BuildToolStripMenu() {
+		public IToolStripMenuView BuildToolStripMenu() {
 			return new ToolStripMenuWrapper();
 		}
 
-		public ContextMenuView BuildContextMenu() {
+		public IContextMenuView BuildContextMenu() {
 			return new ContextMenuWrapper();
 		}
 
 		#endregion
 
-		#region Factory Members
+		#region IFactory Members
 
 
-		public FormControl BuildPanel() {
-			return new ControlWrapper();
+		public IPanelView BuildPanel() {
+			return new PanelWrapper();
 		}
 
 		//public Timer BuildTimer() {
@@ -96,11 +98,64 @@ namespace SongIllustrator {
 
 		#endregion
 
-		#region Factory Members
+		#region IFactory Members
+
+		#endregion
+
+		#region IFactory Members
 
 
-		public Timer BuildTimer() {
-			throw new NotImplementedException();
+		public IMessageBox BuildPopup() {
+			return new MessageBoxWrapper();
+		}
+
+		#endregion
+
+		#region IFactory Members
+
+
+		public OpenFileDialogView BuildOpenFileDialog() {
+			return new OpenFileDialogWrapper();
+		}
+
+		public SaveFileDialogView BuildSaveDialog() {
+			return new SaveDialogWrapper();
+		}
+
+		#endregion
+
+		#region IFactory Members
+
+
+		public IMediaPlayer BuildMediaPlayer(IFormView formView) {
+			return new MediaPlayerWrapper(this, formView);
+		}
+
+		#endregion
+
+		#region IFactory Members
+
+
+		public ControlSize MaxBounds() {
+			return new ControlSize(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+		}
+
+		#endregion
+
+		#region IFactory Members
+
+
+		public ControlLocation GetCursorPosition() {
+			return new ControlLocation(Cursor.Position.X, Cursor.Position.Y - 20);
+		}
+
+		#endregion
+
+		#region IFactory Members
+
+
+		public IMenuItemView BuildContextMenuItem() {
+			return new MenuItemWrapper();
 		}
 
 		#endregion

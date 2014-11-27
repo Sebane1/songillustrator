@@ -3,10 +3,62 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Text;
+using System.Threading;
 
 
 namespace SongIllustrator {
-	public class MacroButton : FormControl {
+	public class MacroButton : IView {
+		IButtonView _button;
+		Timer timer;
+		//-------------------------------------------------------
+		public IButtonView Button {
+			get {
+				return _button;
+			}
+			set {
+				_button = value;
+				_button.ParentControl = this.ParentControl;
+				_button.Click += delegate {
+					ChangeColor();
+				};
+				_button.BackColorChanged += new EventHandler(DisplayButton_BackColorChanged);
+				_button.MouseLeftDown += delegate {
+					timer = new Timer(new TimerCallback(MouseFollow), null, 1, 1);
+					_mouseDown = true;
+					cursorLocation = _factory.GetCursorPosition();
+				};
+				_button.MouseLeftUp += delegate {
+					if (timer != null) {
+						//timer.Change(Timeout.Infinite, Timeout.Infinite);
+						timer.Dispose();
+					}
+					_mouseDown = false;
+				};
+				_button.MouseRightDown += delegate {
+					buttons = new List<IView>();
+					foreach (IView button in (ParentControl as IFormView).ViewList.Values) {
+						if (button.ControlBackColor == this.ControlBackColor) {
+							buttons.Add(button);
+						}
+					}
+					rightClick = true;
+				};
+				_button.MouseRightUp += delegate {
+					ChangeColor();
+					//_mouseRightUp = true;
+					lock (buttons) {
+						foreach (IView item in buttons) {
+							try {
+								(item.ParentControl as MacroButton)._colorCount = this._colorCount;
+								item.ControlBackColor = this.ControlBackColor;
+							} catch {
+							}
+						}
+					}
+				};
+			}
+		}
+		//-------------------------------------------------------
 		int ignoreMessageCount = 0;
 		private byte[] _lastMessage;
 		private int _index;
@@ -15,6 +67,7 @@ namespace SongIllustrator {
 		private DateTime _lastColorChange = new DateTime();
 		DateTime _lastButtonPush = DateTime.Now;
 		Color lastColour;
+		//-------------------------------------------------------
 		public bool LaunchpadEdit {
 			get {
 				return _launchpadEdit;
@@ -23,6 +76,7 @@ namespace SongIllustrator {
 				_launchpadEdit = value;
 			}
 		}
+		//-------------------------------------------------------
 		public bool CanSendMessage {
 			get {
 				return _canSendMessage;
@@ -31,6 +85,7 @@ namespace SongIllustrator {
 				_canSendMessage = value;
 			}
 		}
+		//-------------------------------------------------------
 		byte _lastVelocity = 0;
 		public int ArrayPos {
 			get {
@@ -40,12 +95,13 @@ namespace SongIllustrator {
 				_index = value;
 			}
 		}
+		//-------------------------------------------------------
 		private int _colorCount = 4;
 		private bool shiftDown = false;
 		private bool rightClick = false;
-		List<MacroButton> buttons = new List<MacroButton>();
+		List<IView> buttons = new List<IView>();
 		MidiDriver port;
-
+		//-------------------------------------------------------
 		public MidiDriver Port {
 			get {
 				return port;
@@ -54,7 +110,7 @@ namespace SongIllustrator {
 				port = value;
 			}
 		}
-
+		//-------------------------------------------------------
 		public bool ShiftDown {
 			get {
 				return shiftDown;
@@ -63,7 +119,9 @@ namespace SongIllustrator {
 				shiftDown = value;
 			}
 		}
+		//-------------------------------------------------------
 		string _text = "";
+		//-------------------------------------------------------
 		public string DisplayText {
 			get {
 				return _text;
@@ -72,14 +130,16 @@ namespace SongIllustrator {
 				_text = value;
 			}
 		}
+		//-------------------------------------------------------
 		/// <summary>
-		/// Tells the button to cycle to the next color.
+		/// Tells the _button to cycle to the next color.
 		/// </summary>
 		public bool InvokeInteraction {
 			set {
 				Interact(this, EventArgs.Empty);
 			}
 		}
+		//-------------------------------------------------------
 		private void DisplayButton_Load(object sender, EventArgs e) {
 			ControlBackColor = Color.Gray;
 			Interact += delegate {
@@ -99,6 +159,7 @@ namespace SongIllustrator {
 				rightClick = false;
 			}
 		}
+		//-------------------------------------------------------
 		public void Reset() {
 			ControlBackColor = Color.Gray;
 			/*if (port != null) {
@@ -110,14 +171,14 @@ namespace SongIllustrator {
 				_canSendMessage = true;
 			}*/
 		}
-
+		//-------------------------------------------------------
 		/// <summary>
 		/// Cycles the buttons color.
 		/// </summary>
 		public void ChangeColor() {
 			switch (_colorCount++) {
 				case 0:
-					ControlBackColor = Color.Red;
+					_button.ControlBackColor = Color.Red;
 					break;
 				case 1:
 					ControlBackColor = Color.Orange;
@@ -136,26 +197,27 @@ namespace SongIllustrator {
 				_colorCount = 0;
 			}
 		}
+		//-------------------------------------------------------
 		private void DisplayButton_DoubleClick(object sender, EventArgs e) {
 			//ControlBackColor = Color.Gray;
 		}
-
+		//-------------------------------------------------------
 		//private void DisplayButton_MouseDown(object sender, MouseEventArgs e) {
-		//  //if (e.Button == MouseButtons.Left) {
-		//  //  if (string.IsNullOrEmpty(DisplayText)) {
-		//  //    mouseFollow.Start();
-		//  //    cursorLocation = e.ControlLocation;
-		//  //  }
-		//  //}
-		//  //if (e.Button == MouseButtons.Right) {
-		//  //  buttons = new List<MacroButton>();
-		//  //  foreach (MacroButton button in this.ParentControl.FormControls) {
-		//  //    if (button.ControlBackColor == this.ControlBackColor) {
-		//  //      buttons.Add(button);
-		//  //    }
-		//  //  }
-		//  //  rightClick = true;
-		//  //}
+		//  if (e.Button == MouseButtons.Left) {
+		//    if (string.IsNullOrEmpty(DisplayText)) {
+		//      mouseFollow.Start();
+		//      cursorLocation = e.ControlLocation;
+		//    }
+		//  }
+		//  if (e.Button == MouseButtons.Right) {
+		//    buttons = new List<MacroButton>();
+		//    foreach (MacroButton _button in this.ParentControl.ViewItems) {
+		//      if (_button.ControlBackColor == this.ControlBackColor) {
+		//        buttons.Add(_button);
+		//      }
+		//    }
+		//    rightClick = true;
+		//  }
 		//}
 
 		//private void DisplayButton_MouseUp(object sender, MouseEventArgs e) {
@@ -164,16 +226,31 @@ namespace SongIllustrator {
 		//  //}
 		//}
 
-		private void mouseFollow_Tick(object sender, EventArgs e) {
-			//ControlLocation cursorPosition = ControlLocationToClient(new ControlLocation(Cursor.Position.X, Cursor.Position.Y));
-			//foreach (MacroButton button in this.ParentControl.FormControls) {
-			//  ControlLocation buttonLocation = button.ControlLocation;
-			//  if (cursorPosition.X + this.ControlLocation.X < buttonLocation.X + button.ControlWidth && cursorPosition.X + this.ControlLocation.X > buttonLocation.X && cursorPosition.Y + this.ControlLocation.Y < buttonLocation.Y + button.Height && cursorPosition.Y + this.ControlLocation.Y > buttonLocation.Y) {
-			//    button.ControlBackColor = this.ControlBackColor;
-			//    button._colorCount = _colorCount;
-			//    ControlLocation i = button.ControlLocation;
-			//  }
-			//}
+		private void MouseFollow(object blah) {
+			if (_mouseDown) {
+				if (_button != null) {
+					ControlLocation location = (this.ParentControl as IFormView).ControlLocation;
+					ControlLocation cursorPosition = new ControlLocation(_factory.GetCursorPosition().X - location.X, _factory.GetCursorPosition().Y - location.Y);
+					foreach (IView button in (_parent as IFormView).ViewList.Values) {
+						if (button != null) {
+							try {
+								//if (button.GetType() == typeof(IButtonView)) {
+								ControlLocation buttonLocation = button.ControlLocation;
+								if (cursorPosition.X <= buttonLocation.X + button.ControlSize.Width && cursorPosition.X >= buttonLocation.X && cursorPosition.Y <= buttonLocation.Y + button.ControlSize.Height && cursorPosition.Y >= buttonLocation.Y) {
+									(button.ParentControl as MacroButton)._colorCount = _colorCount;
+									button.ControlBackColor = this.ControlBackColor;
+									ControlLocation i = button.ControlLocation;
+								}
+								//}
+							} catch {
+							}
+						}
+					}
+				}
+			} else if (_mouseRightUp) {
+
+			}
+			timer = timer;
 		}
 
 		//private void DisplayButton_KeyDown(object sender, EventArgs e) {
@@ -227,7 +304,7 @@ namespace SongIllustrator {
 				port.SendCommand(message);
 				//..............
 				sysMessage[0] = 240;
-				sysMessage[1] =  2;
+				sysMessage[1] = 2;
 				port.SendCommand(sysMessage);
 				//..............
 				message[0] = 144;
@@ -246,7 +323,7 @@ namespace SongIllustrator {
 		/// </summary>
 		/// <param name="_lastMessage">The last MIDI message sent.</param>
 		/// <param name="message">The current MIDI message to send.</param>
-		/// <returns>Whether nor not the messages match.</returns>
+		/// <returns>Whether or not the messages match.</returns>
 		private bool CompareMessage(byte[] _lastMessage, byte[] message) {
 			return _lastMessage[0] == message[0] && _lastMessage[1] == message[1] && _lastMessage[2] == message[2];
 		}
@@ -262,43 +339,57 @@ namespace SongIllustrator {
 				port.SendCommand(message);
 			}
 		}
-		public bool CheckEqualColor(Color a, Color b) {
-			return (a.A == b.A && a.R == b.R && a.G == b.G && a.B == b.B);
+		public bool CheckEqualColor(Color colourA, Color b) {
+			if (b.A == 255 && b.R == 255 && b.G == 255) {
+				object test = new object();
+			}
+			object col = colourA;
+			lock (col) {
+				Color a = (Color) col;
+				return (ToleratedCompare(a.R, b.R, 20) && ToleratedCompare(a.G, b.G, 20) && ToleratedCompare(a.B, b.B, 20));
+			}
+		}
+		public bool ToleratedCompare(int a, int b, int tolerance) {
+			return (a == b);
 		}
 		bool hitAlready = false;
 		private void DisplayButton_BackColorChanged(object sender, EventArgs e) {
-			if (!CheckEqualColor(lastColour, ControlBackColor)) {
-				if (CheckEqualColor(ControlBackColor, Color.Red)) {
-					_colorCount = 0;
-					SendMessage();
-				} else if (CheckEqualColor(ControlBackColor, Color.Orange)) {
-					_colorCount = 1;
-					SendMessage();
-				} else if (CheckEqualColor(ControlBackColor, Color.Green)) {
-					_colorCount = 2;
-					SendMessage();
-				} else if (CheckEqualColor(ControlBackColor, Color.Yellow)) {
-					_colorCount = 3;
-					SendMessage();
-				} else if (CheckEqualColor(ControlBackColor, Color.Aqua) || CheckEqualColor(ControlBackColor, Color.Blue)) {
-					_colorCount = 2;
-					hitAlready = true;
-					SendMessage();
-				} else if (CheckEqualColor(ControlBackColor, Color.Black) || CheckEqualColor(ControlBackColor, Color.Gray) || CheckEqualColor(ControlBackColor, Color.Purple)) {
-					_colorCount = 4;
-					hitAlready = true;
-					Reset();
-					SendOff();
+			lock (_button) {
+				if (!CheckEqualColor(lastColour, ControlBackColor)) {
+					if (CheckEqualColor(ControlBackColor, Color.Red)) {
+						_colorCount = 0;
+						SendMessage();
+					} else if (CheckEqualColor(_button.ControlBackColor, Color.Orange)) {
+						_colorCount = 1;
+						SendMessage();
+					} else if (CheckEqualColor(_button.ControlBackColor, Color.Green)) {
+						_colorCount = 2;
+						SendMessage();
+					} else if (CheckEqualColor(_button.ControlBackColor, Color.Yellow)) {
+						_colorCount = 3;
+						SendMessage();
+					} else if (CheckEqualColor(_button.ControlBackColor, Color.Gray)) {
+						_colorCount = 4;
+						hitAlready = true;
+						Reset();
+						SendOff();
+					} else {
+						Color color = _button.ControlBackColor;
+					}
 				}
 			}
 		}
 
 		public Color ControlBackColor {
-			get;
-			set;
+			get {
+				return _button.ControlBackColor;
+			}
+			set {
+				_button.ControlBackColor = value;
+			}
 		}
 
-		#region FormControl Members
+		#region IView Members
 
 		public event EventHandler Click;
 
@@ -323,43 +414,43 @@ namespace SongIllustrator {
 			}
 		}
 
-		public FormControl ParentControl {
+		public IView ParentControl {
 			get {
-				throw new NotImplementedException();
+				return _parent;
 			}
 			set {
-				throw new NotImplementedException();
+				_parent = value;
 			}
 		}
 
 		public string Name {
 			get {
-				return _name;
+				return _button.Name;
 			}
 			set {
-				_name = value;
+				_button.Name = value;
 			}
 		}
 
 		public ControlSize ControlSize {
 			get {
-				return _controlSize;
+				return _button.ControlSize;
 			}
 			set {
-				_controlSize = value;
+				_button.ControlSize = value;
 			}
 		}
 
 		public ControlLocation ControlLocation {
 			get {
-				return _controlLocation;
+				return _button.ControlLocation;
 			}
 			set {
-				_controlLocation = value;
+				_button.ControlLocation = value;
 			}
 		}
 
-		public List<FormControl> FormControls {
+		public List<IView> FormControls {
 			get {
 				throw new NotImplementedException();
 			}
@@ -370,10 +461,10 @@ namespace SongIllustrator {
 
 		public bool Visible {
 			get {
-				throw new NotImplementedException();
+				return _button.Visible;
 			}
 			set {
-				throw new NotImplementedException();
+				_button.Visible = true;
 			}
 		}
 
@@ -392,10 +483,10 @@ namespace SongIllustrator {
 
 		public bool Enabled {
 			get {
-				throw new NotImplementedException();
+				return _button.Enabled;
 			}
 			set {
-				throw new NotImplementedException();
+				_button.Enabled = value;
 			}
 		}
 
@@ -428,16 +519,16 @@ namespace SongIllustrator {
 
 		public string Text {
 			get {
-				throw new NotImplementedException();
+				return _button.Text;
 			}
 			set {
-				throw new NotImplementedException();
+				_button.Text = value;
 			}
 		}
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 
 		public int ControlWidth {
@@ -460,7 +551,7 @@ namespace SongIllustrator {
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 
 		public event EventHandler BackColorChanged;
@@ -469,59 +560,90 @@ namespace SongIllustrator {
 		private string _name;
 		private int _tabIndex;
 		private EventHandler Loading;
+		private ControlFactory.IFactory _factory;
+
+		public MacroButton(ControlFactory.IFactory _factory) {
+			// TODO: Complete member initialization
+			this._factory = _factory;
+			Button = _factory.BuildButton();
+			_button.ParentControl = this;
+			_button.Visible = true;
+			_button.ControlBackColor = Color.Gray;
+		}
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
-		EventHandler FormControl.Click {
-			get {
+
+		#endregion
+
+		#region IView Members
+
+
+		public void AddControl(IView control) {
+			throw new NotImplementedException();
+		}
+
+		public void RemoveControl(IView control) {
+			throw new NotImplementedException();
+		}
+
+		public void RemoveControl(int index) {
+			throw new NotImplementedException();
+		}
+
+		#endregion
+
+		#region IView Members
+
+
+		event EventHandler IView.Load {
+			add {
 				throw new NotImplementedException();
 			}
-			set {
+			remove {
 				throw new NotImplementedException();
 			}
 		}
 
-		EventHandler FormControl.RightClicked {
-			get {
+		event EventHandler IView.Shown {
+			add {
 				throw new NotImplementedException();
 			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.KeyDown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
+			remove {
 				throw new NotImplementedException();
 			}
 		}
 
-		EventHandler FormControl.KeyUp {
-			get {
+		event EventHandler IView.DoubleClick {
+			add {
 				throw new NotImplementedException();
 			}
-			set {
+			remove {
 				throw new NotImplementedException();
 			}
 		}
 
-		EventHandler FormControl.Resized {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
+		#endregion
+
+		#region IView Members
+
+
+		public event EventHandler MouseLeftUp;
+
+		public event EventHandler MouseRightUp;
+
+		public event EventHandler MouseLeftDown;
+
+		public event EventHandler MouseRightDown;
+		private IView _parent;
+		private bool _mouseDown;
+		private bool _mouseRightUp;
 
 		#endregion
 	}

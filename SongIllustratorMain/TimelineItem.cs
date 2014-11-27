@@ -7,7 +7,7 @@ using System.Net.Mime;
 using System.IO;
 
 namespace SongIllustrator {
-	public partial class TimelineItem : FormControl {
+	public partial class TimelineItem : IView {
 		public TimelineItem() {
 			InitializeComponent();
 		}
@@ -27,7 +27,9 @@ namespace SongIllustrator {
 				_FormControlKeyDown = value;
 			}
 		}
-
+		public void ClickEvent(EventHandler item) {
+			Click += item;
+		}
 		public bool Checked {
 			get {
 				return _checked;
@@ -67,10 +69,6 @@ namespace SongIllustrator {
 			set {
 				_frame = value;
 			}
-		}
-		public void ClickEvent(EventHandler value) {
-			imageIdentifier.Click += value;
-			Click += value;
 		}
 		private void TimelineItem_Load(object sender, EventArgs e) {
 			if (_frame != null) {
@@ -134,12 +132,7 @@ namespace SongIllustrator {
 		//  Focus();
 		//}
 
-		public ControlLocation ControlLocation {
-			get;
-			set;
-		}
-
-		#region FormControl Members
+		#region IView Members
 
 		public event EventHandler Click;
 
@@ -150,6 +143,8 @@ namespace SongIllustrator {
 		public event EventHandler KeyUp;
 
 		public event EventHandler Resized;
+
+		public event EventHandler BackColorChanged;
 
 		public void Initialize() {
 			throw new NotImplementedException();
@@ -164,7 +159,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		public FormControl ParentControl {
+		public IView ParentControl {
 			get {
 				throw new NotImplementedException();
 			}
@@ -191,13 +186,43 @@ namespace SongIllustrator {
 			}
 		}
 
-		public List<FormControl> FormControls {
+		public ControlLocation ControlLocation {
 			get {
 				throw new NotImplementedException();
 			}
 			set {
 				throw new NotImplementedException();
 			}
+		}
+
+		public int ControlWidth {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public int ControlHeight {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public void AddControl(IView control) {
+			throw new NotImplementedException();
+		}
+
+		public void RemoveControl(IView control) {
+			throw new NotImplementedException();
+		}
+
+		public void RemoveControl(int index) {
+			throw new NotImplementedException();
 		}
 
 		public bool Visible {
@@ -209,7 +234,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		void FormControl.Dispose(bool dispose) {
+		void IView.Dispose(bool dispose) {
 			throw new NotImplementedException();
 		}
 
@@ -231,32 +256,11 @@ namespace SongIllustrator {
 			}
 		}
 
-		public EventHandler Load {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
+		public event EventHandler Load;
 
-		public EventHandler Shown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
+		public event EventHandler Shown;
 
-		public EventHandler DoubleClick {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
+		public event EventHandler DoubleClick;
 
 		public string Text {
 			get {
@@ -266,30 +270,6 @@ namespace SongIllustrator {
 				throw new NotImplementedException();
 			}
 		}
-		public int ControlWidth {
-			get;
-			set;
-		}
-		#endregion
-
-		#region FormControl Members
-
-
-		public int ControlHeight {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		#endregion
-
-		#region FormControl Members
-
-
-		public event EventHandler BackColorChanged;
 
 		public Color ControlBackColor {
 			get {
@@ -302,56 +282,16 @@ namespace SongIllustrator {
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
-		#endregion
 
-		#region FormControl Members
+		public event EventHandler MouseLeftUp;
 
-		EventHandler FormControl.Click {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
+		public event EventHandler MouseRightUp;
 
-		EventHandler FormControl.RightClicked {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
+		public event EventHandler MouseLeftDown;
 
-		EventHandler FormControl.KeyDown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.KeyUp {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.Resized {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
+		public event EventHandler MouseRightDown;
 
 		#endregion
 	}

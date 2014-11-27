@@ -643,7 +643,7 @@ namespace SongIllustrator {
 		/// <filterpriority>1</filterpriority>
 		public static Color Gray {
 			get {
-				return new Color(KnownColor.Gray);
+				return FromArgb(255, 128, 128, 128);
 			}
 		}
 		/// <summary>
@@ -655,7 +655,8 @@ namespace SongIllustrator {
 		/// <filterpriority>1</filterpriority>
 		public static Color Green {
 			get {
-				return new Color(KnownColor.Green);
+				return FromArgb(255, 0, 128, 0);
+				;
 			}
 		}
 		/// <summary>
@@ -1231,8 +1232,17 @@ namespace SongIllustrator {
 		/// <filterpriority>1</filterpriority>
 		public static Color Orange {
 			get {
-				return new Color(KnownColor.Orange);
+				return FromArgb(255, 255, 165, 0);
 			}
+		}
+		public static bool CheckEqualColor(Color a, Color b) {
+			if (b.A == 255 && b.R == 255 && b.G == 255) {
+				object test = new object();
+			}
+			return (ToleratedCompare(a.R, b.R, 20) && ToleratedCompare(a.G, b.G, 20) && ToleratedCompare(a.B, b.B, 20));
+		}
+		public static bool ToleratedCompare(int a, int b, int tolerance) {
+			return (a == b);
 		}
 		/// <summary>
 		///               Gets a system-defined color.
@@ -1399,7 +1409,7 @@ namespace SongIllustrator {
 		/// <filterpriority>1</filterpriority>
 		public static Color Red {
 			get {
-				return new Color(KnownColor.Red);
+				return FromArgb(255, 255, 0, 0);
 			}
 		}
 		/// <summary>
@@ -1699,7 +1709,7 @@ namespace SongIllustrator {
 		/// <filterpriority>1</filterpriority>
 		public static Color Yellow {
 			get {
-				return new Color(KnownColor.Yellow);
+				return FromArgb(255, 255, 255, 0);
 			}
 		}
 		/// <summary>

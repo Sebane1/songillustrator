@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace SongIllustrator {
-	public class ControlLocation {
+	public struct ControlLocation {
 		public ControlLocation(int x, int y) {
 			_x = x;
 			_y = y;

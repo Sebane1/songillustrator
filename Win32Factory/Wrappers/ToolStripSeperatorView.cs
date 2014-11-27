@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using SongIllustrator;
+using System.Drawing;
 
 namespace Win32Factory.Wrappers {
-	public class ToolStripSeparatorWrapper : ToolStripSeparator, MenuItemSeperator{
-		#region MenuItemView Members
+	public class ToolStripSeparatorWrapper : ControlWrapper, IMenuItemSeperator{
+		#region IMenuItemView Members
 
 
 		public string Caption {
@@ -18,7 +19,7 @@ namespace Win32Factory.Wrappers {
 			}
 		}
 
-		public List<MenuItemView> MenuItems {
+		public List<IMenuItemView> MenuItems {
 			get {
 				throw new NotImplementedException();
 			}
@@ -35,13 +36,65 @@ namespace Win32Factory.Wrappers {
 				throw new NotImplementedException();
 			}
 		}
+		#endregion
 
-		public new ControlSize Size {
+		#region IContainerView Members
+
+		public Dictionary<int, IView> ViewList {
 			get {
-				return new ControlSize(0, 0);
+				throw new NotImplementedException();
+			}
+		}
+
+		public void Clear() {
+			throw new NotImplementedException();
+		}
+
+		public void Add(IView item) {
+			throw new NotImplementedException();
+		}
+
+		public void Remove(IView item) {
+			throw new NotImplementedException();
+		}
+
+		public void Remove(int index) {
+			throw new NotImplementedException();
+		}
+
+		public int Count {
+			get {
+				throw new NotImplementedException();
 			}
 			set {
-				object text = value;
+				throw new NotImplementedException();
+			}
+		}
+
+		#endregion
+
+		#region IContainerView Members
+
+
+		public void AddRange(IView[] items) {
+			throw new NotImplementedException();
+		}
+
+		public void AddRange(List<IView> items) {
+			throw new NotImplementedException();
+		}
+
+		#endregion
+
+		#region IMenuItemView Members
+
+
+		public ControlSize Size {
+			get {
+				return new ControlSize(this.Control.Width, this.Control.Height);
+			}
+			set {
+				this.Control.Size = new Size(value.Width, value.Height);
 			}
 		}
 

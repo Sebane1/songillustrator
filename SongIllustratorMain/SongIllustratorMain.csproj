@@ -39,14 +39,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlertButtons.cs" />
-    <Compile Include="AlertView.cs" />
     <Compile Include="MilliStopWatch.cs" />
-    <Compile Include="TypeOFAlert.cs" />
     <Compile Include="FigurePainter.cs" />
-    <Compile Include="BaseForm.cs" />
-    <Compile Include="BaseForm.Designer.cs">
-      <DependentUpon>BaseForm.cs</DependentUpon>
+    <Compile Include="MainForm.cs" />
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LaunchPad.cs" />
     <Compile Include="LightPad.cs" />
@@ -54,10 +51,6 @@
     <Compile Include="MidiWriter.cs" />
     <Compile Include="NoteIdentifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShowDisplay.cs" />
-    <Compile Include="ShowDisplay.Designer.cs">
-      <DependentUpon>ShowDisplay.cs</DependentUpon>
-    </Compile>
     <Compile Include="SongIO.cs" />
     <Compile Include="Timeline.cs" />
     <Compile Include="TimelineItem.cs" />
@@ -74,10 +67,6 @@
     <Compile Include="MacroButton.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ShowDisplay.resx">
-      <DependentUpon>ShowDisplay.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="TimelineItem.resx">
       <DependentUpon>TimelineItem.cs</DependentUpon>
       <SubType>Designer</SubType>

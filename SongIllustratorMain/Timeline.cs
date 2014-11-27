@@ -5,13 +5,15 @@ using System.Data;
 using System.Text;
 
 namespace SongIllustrator {
-	public partial class Timeline : FormControl {
+	public partial class Timeline : IView {
+		//-------------------------------------------------------
 		private void Timeline_Load(object sender, EventArgs e) {
 
 		}
+		//-------------------------------------------------------
 		public void UpdateTimeline() {
 			FormControls.Clear();
-			BaseForm form = (BaseForm) this.ParentControl.ParentControl.ParentControl;
+			MainForm form = (MainForm) this.ParentControl.ParentControl.ParentControl;
 			foreach (Launchpad padData in form.LaunchPads) {
 				if (padData.FrameData.Count > 0) {
 					decimal maxMilliseconds = padData.FrameData[padData.FrameData.Count - 1].TimeStamp;
@@ -24,7 +26,7 @@ namespace SongIllustrator {
 						button.ControlLocation = new ControlLocation((int) frame.TimeStamp, 0);
 						decimal buttonWidth = frame.TimeStamp - padData.FrameData[i > 0 ? i - 1 : i].TimeStamp;
 						if (FormControls.Count > 0) {
-							//panel1.FormControls[i > 0 ? i - 1 : i].ControlWidth = (int) buttonWidth;
+							//panel1.ViewItems[i > 0 ? i - 1 : i].ControlWidth = (int) buttonWidth;
 						}
 						button.ControlWidth = (int) 20;
 						button.Height = 20;
@@ -39,8 +41,8 @@ namespace SongIllustrator {
 									}
 								}
 							}
-							for (int y = 0; y < form.Canvas.FormControls.Count; y++) {
-								LightPad pad = (form.Canvas.FormControls[y] as LightPad);
+							for (int y = 0; y < form.ViewItems.Count; y++) {
+								LightPad pad = (form.ViewItems[y] as LightPad);
 								if (pad != null) {
 									pad.SetFrame(form.FrameList.SelectedIndex);
 									form.Timestamp = (form.FrameList.SelectedItem as FrameData).TimeStamp.ToString();
@@ -56,8 +58,8 @@ namespace SongIllustrator {
 				}
 			}
 		}
-
-		#region FormControl Members
+		//-------------------------------------------------------
+		#region IView Members
 
 		public event EventHandler Clicked;
 
@@ -73,7 +75,7 @@ namespace SongIllustrator {
 			throw new NotImplementedException();
 		}
 
-		public FormControl ParentControl {
+		public IView ParentControl {
 			get {
 				throw new NotImplementedException();
 			}
@@ -109,7 +111,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		public List<FormControl> FormControls {
+		public List<IView> FormControls {
 			get {
 				throw new NotImplementedException();
 			}
@@ -144,7 +146,7 @@ namespace SongIllustrator {
 		}
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 		public event EventHandler Click;
 
@@ -209,7 +211,7 @@ namespace SongIllustrator {
 			set;
 		}
 
-		#region FormControl Members
+		#region IView Members
 
 
 		public int ControlWidth {
@@ -232,7 +234,7 @@ namespace SongIllustrator {
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 
 		public event EventHandler BackColorChanged;
@@ -248,56 +250,73 @@ namespace SongIllustrator {
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
+		#endregion
 
-		EventHandler FormControl.Click {
-			get {
+		#region IView Members
+
+
+		public void AddControl(IView control) {
+			throw new NotImplementedException();
+		}
+
+		public void RemoveControl(IView control) {
+			throw new NotImplementedException();
+		}
+
+		public void RemoveControl(int index) {
+			throw new NotImplementedException();
+		}
+
+
+		#endregion
+
+		#region IView Members
+
+
+		event EventHandler IView.Load {
+			add {
 				throw new NotImplementedException();
 			}
-			set {
+			remove {
 				throw new NotImplementedException();
 			}
 		}
 
-		EventHandler FormControl.RightClicked {
-			get {
+		event EventHandler IView.Shown {
+			add {
 				throw new NotImplementedException();
 			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.KeyDown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
+			remove {
 				throw new NotImplementedException();
 			}
 		}
 
-		EventHandler FormControl.KeyUp {
-			get {
+		event EventHandler IView.DoubleClick {
+			add {
 				throw new NotImplementedException();
 			}
-			set {
+			remove {
 				throw new NotImplementedException();
 			}
 		}
 
-		EventHandler FormControl.Resized {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
+		#endregion
+
+		#region IView Members
+
+
+		public event EventHandler MouseLeftUp;
+
+		public event EventHandler MouseRightUp;
+
+		public event EventHandler MouseLeftDown;
+
+		public event EventHandler MouseRightDown;
 
 		#endregion
 	}

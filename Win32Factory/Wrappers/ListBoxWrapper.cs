@@ -6,255 +6,149 @@ using System.Windows.Forms;
 using System.Drawing;
 
 namespace Win32Factory.Wrappers {
-	public class ListBoxWrapper : ListBox, SongIllustrator.ArrayView {
+	public class ListBoxWrapper : ControlWrapper, IArrayView {
+		#region IArrayView Members
+		public ListBoxWrapper() {
+			CheckedListBox checkedListBox = new CheckedListBox();
+			checkedListBox.ItemCheck += new ItemCheckEventHandler(checkedListBox_ItemCheck);
+			checkedListBox.SelectedIndexChanged += delegate {
+				if (SelectedIndexChanged != null) {
+					SelectedIndexChanged(this, EventArgs.Empty);
+				}
+			};
+			checkedListBox.SelectedValueChanged += delegate {
+				if (SelectedValueChanged != null) {
+					//SelectedValueChanged(this, EventArgs.Empty);
+				}
+			};
+			this.Control = checkedListBox;
+		}
 
-		#region ArrayView Members
+		void checkedListBox_ItemCheck(object sender, ItemCheckEventArgs e) {
+			_checkedItems.Add((Control as CheckedListBox).Items[e.Index] as IArrayViewItem);
+			if (ItemCheck != null) {
+				ItemCheck(this, EventArgs.Empty);
+			}
+		}
 
-		public FrameData SelectedItem {
+		public List<IArrayViewItem> ControlItems {
+			get {
+				return _items;
+			}
+			set {
+				_items = value;
+			}
+		}
+
+		public List<IArrayViewItem> CheckedItems {
+			get {
+				return _checkedItems;
+			}
+			set {
+				_checkedItems = value;
+			}
+		}
+
+		public void SetItemChecked(int p, bool p_2) {
+			(Control as CheckedListBox).SetSelected(p, p_2);
+		}
+
+		#endregion
+
+		#region IView Members
+		public List<IView> FormControls {
 			get {
 				throw new NotImplementedException();
 			}
 			set {
 				throw new NotImplementedException();
+			}
+		}
+		#endregion
+
+		#region IArrayView Members
+
+		public event EventHandler ItemCheck;
+
+		public event EventHandler SelectedIndexChanged;
+
+		public event EventHandler SelectedValueChanged;
+		private List<IArrayViewItem> _items = new List<IArrayViewItem>();
+		private List<IArrayViewItem> _checkedItems = new List<IArrayViewItem>();
+
+		public FrameData SelectedItem {
+			get {
+				return (Control as CheckedListBox).SelectedItem as FrameData;
+			}
+			set {
+				(Control as CheckedListBox).SelectedItem = value;
 			}
 		}
 
 		public int SelectedIndex {
 			get {
-				throw new NotImplementedException();
+				return (Control as CheckedListBox).SelectedIndex;
 			}
 			set {
-				throw new NotImplementedException();
+				(Control as CheckedListBox).SelectedIndex = value;
 			}
-		}
-
-		public List<ArrayViewItem> ControlItems {
-			get {
-				List<ArrayViewItem> items = new List<ArrayViewItem>();
-				foreach (ArrayViewItem item in items) {
-					items.Add(item);
-				}
-				return items;
-			}
-			set {
-				Items.Add(value[Items.Count - 1].ToString());
-			}
-		}
-
-		public List<ArrayViewItem> CheckedItems {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public void SetItemChecked(int p, bool p_2) {
-			throw new NotImplementedException();
 		}
 
 		#endregion
 
-		#region FormControl Members
+		#region IArrayView Members
 
-		public EventHandler Click {
+
+		public void Add(IArrayViewItem item) {
+			_items.Add(item);
+			(Control as CheckedListBox).Items.Add(item);
+		}
+
+		public void Remove(IArrayViewItem item) {
+			(Control as CheckedListBox).Items.Remove(item);
+			_items.Remove(item);
+		}
+
+		public void Remove(int index) {
+			(Control as CheckedListBox).Items.Remove(index);
+			_items.RemoveAt(index);
+		}
+
+		#endregion
+
+		#region IArrayView Members
+
+
+		public void Clear() {
+			_items.Clear();
+			(Control as CheckedListBox).Items.Clear();
+			_checkedItems.Clear();
+		}
+
+		public void AddRange(IArrayViewItem[] items) {
+			foreach (IArrayViewItem item in items) {
+				Add(item);
+			}
+		}
+
+		public void AddRange(List<IArrayViewItem> items) {
+			AddRange(items.ToArray());
+		}
+
+		#endregion
+
+		#region IArrayView Members
+
+
+		public IView ContextMenu {
 			get {
-				return null;
+				return (Control as CheckedListBox).ContextMenu as IView;
 			}
 			set {
-				base.Click += value;
+				(Control as CheckedListBox).ContextMenu = (value as IContextMenuView) as ContextMenu;
 			}
 		}
 
-		public EventHandler RightClicked {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public EventHandler KeyDown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public EventHandler KeyUp {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public EventHandler Resized {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public void Initialize() {
-			throw new NotImplementedException();
-		}
-
-		public int TabIndex {
-			get {
-				return base.TabIndex;
-			}
-			set {
-				base.TabIndex = value;
-			}
-		}
-
-		public FormControl ParentControl {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public string Name {
-			get {
-				return base.Name;
-			}
-			set {
-				base.Name = value;
-			}
-		}
-
-		public ControlSize ControlSize {
-			get {
-				return new ControlSize(Size.Width, Size.Height);
-			}
-			set {
-				Size = new Size(value.Width, value.Height);
-			}
-		}
-
-		public ControlLocation ControlLocation {
-			get {
-				return new ControlLocation(Location.X, Location.Y);
-			}
-			set {
-				Location = new Point(value.X, value.Y);
-			}
-		}
-
-		//public event EventHandler BackColorChanged;
-
-		public int ControlWidth {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public int ControlHeight {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public List<FormControl> FormControls {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public bool Visible {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public void Dispose(bool dispose) {
-			throw new NotImplementedException();
-		}
-
-		public int Height {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public bool Enabled {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public EventHandler Load {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public EventHandler Shown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public EventHandler DoubleClick {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public string Text {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-		public SongIllustrator.Color ControlBackColor {
-			get {
-				return SongIllustrator.Color.FromArgb(BackColor.ToArgb());
-			}
-			set {
-				BackColor = System.Drawing.Color.FromArgb(value.ToArgb());
-			}
-		}
 		#endregion
 	}
 }

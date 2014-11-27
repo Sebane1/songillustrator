@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace SongIllustrator {
-	public class ControlSize {
+	public struct ControlSize {
 		private int _width;
 		private int _height;
 		public ControlSize(int width, int height) {

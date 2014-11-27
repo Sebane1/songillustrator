@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace SongIllustrator {
-	public interface TrackBarView : FormControl{
+	public interface ITrackBarView : IView{
 		int Value {
 			get;
 			set;

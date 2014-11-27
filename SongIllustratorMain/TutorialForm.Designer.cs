@@ -23,11 +23,11 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
-			//this.richTextBox1 = new RichTextBoxView();
-			//this.desciptionTextBox = new RichTextBoxView();
-			//this.previousImageButton = new ButtonView();
-			//this.nextImageButton = new ButtonView();
-			//this.visualPictureBox = newPictureView();
+			this.richTextBox1 = _factory.BuildRichTextBox();
+			this.desciptionTextBox = _factory.BuildRichTextBox();
+			this.previousImageButton = _factory.BuildButton();
+			this.nextImageButton = _factory.BuildButton();
+			this.visualPictureBox = _factory.BuildPictureView();
 			//this.textBox1 = new System.Windows.Forms.TextBox();
 			((System.ComponentModel.ISupportInitialize)(this.visualPictureBox)).BeginInit();
 			//this.SuspendLayout();
@@ -113,11 +113,11 @@
 
 		#endregion
 
-		private PictureView visualPictureBox;
-		private RichTextBoxView richTextBox1;
-		private RichTextBoxView desciptionTextBox;
-		private ButtonView previousImageButton;
-		private ButtonView nextImageButton;
-		private TextBoxView textBox1;
+		private IPictureView visualPictureBox;
+		private IRichTextBoxView richTextBox1;
+		private IRichTextBoxView desciptionTextBox;
+		private IButtonView previousImageButton;
+		private IButtonView nextImageButton;
+		private ITextBoxView textBox1;
 	}
 }

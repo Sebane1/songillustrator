@@ -3,30 +3,44 @@ using System.Collections.Generic;
 using System.Text;
 using SongIllustrator;
 using System.Timers;
+using MediaPlayerModuleBase;
 
 namespace ControlFactory {
-	public interface Factory {
-		ButtonView BuildButton();
-		TextBoxView BuildRichTextBox();
-		TextBoxView BuildTextBox();
-		FormControl BuildFormControl();
-		FormView BuildFormView();
-		LabelView BuildLabelView();
-		ArrayView BuildListView();
-		ArrayViewItem BuildListViewItem();
-		Menu BuildMenu();
-		ToolStripMenuView BuildToolStripMenu();
-		ContextMenuView BuildContextMenu();
-		MenuItemView BuildMenuItem();
-		MenuItemSeperator BuildMenuItemSeperator();
-		PictureView BuildPictureView();
+	public interface IFactory {
+		IButtonView BuildButton();
+		IRichTextBoxView BuildRichTextBox();
+		ITextBoxView BuildTextBox();
+		IView BuildFormControl();
+		IFormView BuildFormView();
+		ILabelView BuildLabelView();
+		IArrayView BuildListView();
+		IArrayViewItem BuildListViewItem();
+		IMenu BuildMenu();
+		IToolStripMenuView BuildToolStripMenu();
+		IContextMenuView BuildContextMenu();
+		IMenuItemView BuildMenuItem();
+		IMenuItemView BuildContextMenuItem();
+		IMenuItemSeperator BuildMenuItemSeperator();
+		IPictureView BuildPictureView();
 		SplitContainerView BuildSplitContainerView();
-		TextBoxView BuildTextBoxView();
-		TrackBarView BuildTrackBar();
+		ITextBoxView BuildTextBoxView();
+		ITrackBarView BuildTrackBar();
 
 
-		FormControl BuildPanel();
+		IPanelView BuildPanel();
 
 		//SongIllustrator.Timer BuildTimer();
+
+		IMessageBox BuildPopup();
+
+		OpenFileDialogView BuildOpenFileDialog();
+
+		SaveFileDialogView BuildSaveDialog();
+
+		IMediaPlayer BuildMediaPlayer(IFormView formView);
+
+		ControlSize MaxBounds();
+
+		ControlLocation GetCursorPosition();
 	}
 }

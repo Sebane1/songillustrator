@@ -4,27 +4,26 @@ using System.ComponentModel;
 using System.Data;
 using System.Text;
 using System.Threading;
+using ControlFactory;
 
 namespace SongIllustrator {
-	public partial class LightPad : FormControl {
-		//public LightPad() {
-		//  InitializeComponent();
-		//}
+	public partial class LightPad : IView {
+		public LightPad(IFactory factory, IFormView formView, ControlSize size, ControlLocation location) {
+			_factory = factory;
+			_formView = formView;
+			if (lightCanvas == null) {
+				lightCanvas = _factory.BuildPanel();
+			}
+			lightCanvas.ControlSize = size;
+			lightCanvas.ControlLocation = location;
+			Load += new EventHandler(LightPad_Load);
+		}
 		private Launchpad lightData = new Launchpad();
 		private bool passiveMode = false;
 		private bool _listenToMidi = true;
-		ShowDisplay _display;
 		public event EventHandler GotInteraction;
-		public ShowDisplay Display {
-			get {
-				return _display;
-			}
-			set {
-				_display = value;
-			}
-		}
-		FormControl lightCanvas;
-		public FormControl LightCanvas {
+		IPanelView lightCanvas;
+		public IPanelView LightCanvas {
 			get {
 				return lightCanvas;
 			}
@@ -55,9 +54,11 @@ namespace SongIllustrator {
 			}
 			set {
 				lightData = value;
-				if (lightData.Density * lightData.Density != lightCanvas.FormControls.Count) {
-					lightCanvas.FormControls.Clear();
-					GeneratePixels(lightData.Density);
+				if (lightData.Density * lightData.Density != lightCanvas.Count) {
+					lightCanvas.Clear();
+					if (_created) {
+						GeneratePixels(lightData.Density);
+					}
 				}
 			}
 		}
@@ -78,21 +79,25 @@ namespace SongIllustrator {
 		public int Index;
 		private void panel1_SizeChanged(object sender, EventArgs e) {
 			List<Color> colours = new List<Color>();
-			foreach (MacroButton button in lightCanvas.FormControls) {
+			foreach (MacroButton button in lightCanvas.ViewList.Values) {
 				colours.Add(button.ControlBackColor);
 			}
 			lightCanvas.ControlWidth = this.ControlWidth - 140;
 			GeneratePixels(lightData.Density);
 			for (int i = 0; i < colours.Count; i++) {
-				lightCanvas.FormControls[i].ControlBackColor = colours[i];
+				lightCanvas.ViewList[i].ControlBackColor = colours[i];
 			}
 		}
 		public void SetFrame(int frameIndex) {
 			if (frameIndex >= 0 && frameIndex < lightData.FrameData.Count) {
-				if (lightData.FrameData.Count > 0) {
-					FrameData frameData = lightData.FrameData[frameIndex];
-					for (int i = 0; i < frameData.Colours.Count; i++) {
-						lightCanvas.FormControls[i].ControlBackColor = frameData.Colours[i];
+				lock (lightData.FrameData) {
+					if (lightData.FrameData.Count > 0) {
+						FrameData frameData = lightData.FrameData[frameIndex];
+						for (int i = 0; i < frameData.Colours.Count; i++) {
+							if (!Color.CheckEqualColor(lightCanvas.ViewList[i].ControlBackColor, frameData.Colours[i])) {
+								lightCanvas.ViewList[i].ControlBackColor = frameData.Colours[i];
+							}
+						}
 					}
 				}
 			}
@@ -100,29 +105,51 @@ namespace SongIllustrator {
 
 		private void GeneratePixels(int pixels) {
 			if (pixels > 0) {
-				lightCanvas.FormControls.Clear();
+				lightCanvas.Clear();
 				int arrayPos = 0;
-				ControlSize buttonSize = new ControlSize(lightCanvas.ControlWidth / pixels, lightCanvas.Height / pixels);
+				ControlSize buttonSize = new ControlSize(lightCanvas.Height / pixels, lightCanvas.Height / pixels);
 				for (int heightProgression = 0; heightProgression < pixels; heightProgression++) {
 					for (int widthProgression = 0; widthProgression < pixels; widthProgression++) {
-						MacroButton button = new MacroButton();
+						MacroButton button = new MacroButton(_factory);
 						button.ArrayPos = arrayPos++;
+						button.ParentControl = _formView;
 						button.Port = lightData.Port;
-						button.ControlSize = buttonSize;
-						button.ControlLocation = new ControlLocation(buttonSize.Width * widthProgression, buttonSize.Height * heightProgression);
-						button.BackColorChanged += delegate {
+						button.Button.ControlSize = buttonSize;
+						button.Button.ControlLocation = new ControlLocation(lightCanvas.ControlLocation.X + buttonSize.Width * widthProgression + lightCanvas.ControlLocation.X, lightCanvas.ControlLocation.Y + buttonSize.Height * heightProgression + lightCanvas.ControlLocation.Y);
+						button.Button.BackColorChanged += delegate {
 							if (lightData.EditMode) {
 								GotInteraction(this, EventArgs.Empty);
 							}
 						};
-						lightCanvas.FormControls.Add(button);
+						//button.Button.Text = arrayPos.ToString();
+						button.Name = arrayPos.ToString() + DateTime.Now.Millisecond;
+						button.TabIndex = _formView.Count;
+						lightCanvas.Add(button);
+						_formView.Add(button.Button);
+						if (!_created) {
+							_created = true;
+						}
+					}
+				}
+			}
+		}
+		public void RescalePixels(int pixels) {
+			if (pixels > 0) {
+				int arrayPos = 0;
+				ControlSize buttonSize = new ControlSize(lightCanvas.Height / pixels, lightCanvas.Height / pixels);
+				for (int heightProgression = 0; heightProgression < pixels; heightProgression++) {
+					for (int widthProgression = 0; widthProgression < pixels; widthProgression++) {
+						MacroButton button = lightCanvas.ViewList[arrayPos++] as MacroButton;
+						button.ControlSize = buttonSize;
+						button.Button.ControlLocation = new ControlLocation(buttonSize.Width * widthProgression + lightCanvas.ControlLocation.X, buttonSize.Height * heightProgression + lightCanvas.ControlLocation.Y);
+						//button.Button.Text = arrayPos.ToString();
 					}
 				}
 			}
 		}
 		public void ReplaceFrame(int index) {
-			for (int i = 0; i < lightCanvas.FormControls.Count; i++) {
-				lightData.FrameData[index].Colours[i] = (lightCanvas.FormControls[i] as MacroButton).ControlBackColor;
+			for (int i = 0; i < lightCanvas.Count; i++) {
+				lightData.FrameData[index].Colours[i] = (lightCanvas.ViewList[i] as MacroButton).Button.ControlBackColor;
 			}
 		}
 		private void MidiDataCoordinator() {
@@ -144,44 +171,40 @@ namespace SongIllustrator {
 								case 128:
 									MacroButton button;
 									if (notePos >= 0) {
-										try {
-											button = !_display.Visible ? lightCanvas.FormControls[notePos] as MacroButton : (_display.FormControls[Index] as LightPad).FormControls[notePos] as MacroButton;
-										} catch {
-											button = lightCanvas.FormControls[notePos] as MacroButton;
+										button = lightCanvas.ViewList[notePos] as MacroButton;
+										lock (button) {
+											button.Reset();
+											button.CanSendMessage = true;
 										}
-										button.Reset();
-										button.CanSendMessage = true;
 									}
 									break;
 								case 144:
 									if (notePos >= 0) {
-										try {
-											button = !_display.Visible ? lightCanvas.FormControls[notePos] as MacroButton : (_display.FormControls[Index] as LightPad).FormControls[notePos] as MacroButton;
-										} catch {
-											button = lightCanvas.FormControls[notePos] as MacroButton;
-										}
+										button = lightCanvas.ViewList[notePos] as MacroButton;
 										if (button != null) {
-											switch (velocity) {
-												case 7:
-													if (!button.CheckEqualColor(button.ControlBackColor, Color.Red)) {
-														button.ControlBackColor = Color.Red;
-													}
-													break;
-												case 83:
-													if (!button.CheckEqualColor(button.ControlBackColor, Color.Orange)) {
-														button.ControlBackColor = Color.Orange;
-													}
-													break;
-												case 124:
-													if (!button.CheckEqualColor(button.ControlBackColor, Color.Green)) {
-														button.ControlBackColor = Color.Green;
-													}
-													break;
-												case 127:
-													if (!button.CheckEqualColor(button.ControlBackColor, Color.Yellow)) {
-														button.ControlBackColor = Color.Yellow;
-													}
-													break;
+											lock (button) {
+												switch (VelocityRange(velocity)) {
+													case 7:
+														if (!button.CheckEqualColor(button.ControlBackColor, Color.Red)) {
+															button.Button.ControlBackColor = Color.Red;
+														}
+														break;
+													case 83:
+														if (!button.CheckEqualColor(button.ControlBackColor, Color.Orange)) {
+															button.Button.ControlBackColor = Color.Orange;
+														}
+														break;
+													case 124:
+														if (!button.CheckEqualColor(button.ControlBackColor, Color.Green)) {
+															button.Button.ControlBackColor = Color.Green;
+														}
+														break;
+													case 127:
+														if (!button.CheckEqualColor(button.ControlBackColor, Color.Yellow)) {
+															button.Button.ControlBackColor = Color.Yellow;
+														}
+														break;
+												}
 											}
 										}
 									}
@@ -205,7 +228,24 @@ namespace SongIllustrator {
 			}
 		}
 
+		private int VelocityRange(int velocity) {
+			if (velocity <= 7) {
+				return 7;
+			}
+			if (velocity > 7 & velocity <= 83) {
+				return 83;
+			}
+			if (velocity > 83 && velocity <= 124) {
+				return 7;
+			}
+			if (velocity > 124 && 124 <= 127) {
+				return 7;
+			}
+			return -1;
+		}
+
 		private void LightPad_Load(object sender, EventArgs e) {
+			GeneratePixels(8);
 			if (lightData.Thread == null) {
 				lightData.Thread = new Thread(MidiDataCoordinator);
 				lightData.Thread.IsBackground = true;
@@ -222,7 +262,7 @@ namespace SongIllustrator {
 			set;
 		}
 
-		#region FormControl Members
+		#region IView Members
 
 		public event EventHandler Clicked;
 
@@ -249,32 +289,32 @@ namespace SongIllustrator {
 
 		public ControlSize ControlSize {
 			get {
-				throw new NotImplementedException();
+				return lightCanvas.ControlSize;
 			}
 			set {
-				throw new NotImplementedException();
+				lightCanvas.ControlSize = value;
 			}
 		}
 
 		public ControlLocation ControlLocation {
 			get {
-				throw new NotImplementedException();
+				return lightCanvas.ControlLocation;
 			}
 			set {
-				throw new NotImplementedException();
+				lightCanvas.ControlLocation = value;
 			}
 		}
 
-		public List<FormControl> FormControls {
+		public Dictionary<int, IView> ViewItems {
 			get {
-				throw new NotImplementedException();
+				return lightCanvas.ViewList;
 			}
 			set {
-				throw new NotImplementedException();
+				object dummy = value;
 			}
 		}
 
-		void FormControl.Dispose(bool dispose) {
+		void IView.Dispose(bool dispose) {
 			throw new NotImplementedException();
 		}
 
@@ -289,7 +329,7 @@ namespace SongIllustrator {
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 		public event EventHandler Click;
 
@@ -302,7 +342,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		public FormControl ParentControl {
+		public IView ParentControl {
 			get {
 				throw new NotImplementedException();
 			}
@@ -329,14 +369,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		public EventHandler Load {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
+		public event EventHandler Load;
 
 		public EventHandler Shown {
 			get {
@@ -367,7 +400,7 @@ namespace SongIllustrator {
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 
 		public int ControlHeight {
@@ -381,10 +414,13 @@ namespace SongIllustrator {
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 
 		public event EventHandler BackColorChanged;
+		private IFactory _factory;
+		private IFormView _formView;
+		private bool _created;
 
 		public Color ControlBackColor {
 			get {
@@ -397,56 +433,86 @@ namespace SongIllustrator {
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
-		EventHandler FormControl.Click {
-			get {
+
+		#endregion
+
+		#region IView Members
+
+
+		public void AddControl(IView control) {
+			throw new NotImplementedException();
+		}
+
+		public void RemoveControl(IView control) {
+			throw new NotImplementedException();
+		}
+
+		public void RemoveControl(int index) {
+			throw new NotImplementedException();
+		}
+
+		event EventHandler IView.Load {
+			add {
 				throw new NotImplementedException();
 			}
-			set {
+			remove {
 				throw new NotImplementedException();
 			}
 		}
 
-		EventHandler FormControl.RightClicked {
-			get {
+		event EventHandler IView.Shown {
+			add {
 				throw new NotImplementedException();
 			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.KeyDown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
+			remove {
 				throw new NotImplementedException();
 			}
 		}
 
-		EventHandler FormControl.KeyUp {
-			get {
+		event EventHandler IView.DoubleClick {
+			add {
 				throw new NotImplementedException();
 			}
-			set {
+			remove {
 				throw new NotImplementedException();
 			}
 		}
 
-		EventHandler FormControl.Resized {
+		#endregion
+
+		public bool Trigger {
 			get {
-				throw new NotImplementedException();
+				return false;
 			}
 			set {
-				throw new NotImplementedException();
+				Load(this, EventArgs.Empty);
+			}
+
+		}
+
+		internal void Destroy() {
+			for (int i = lightCanvas.Count - 1; i > -1; i--) {
+				_formView.Remove((lightCanvas.ViewList[i] as MacroButton).Button);
+				lightCanvas.Remove(lightCanvas.ViewList[i]);
 			}
 		}
+
+		#region IView Members
+
+
+		public event EventHandler MouseLeftUp;
+
+		public event EventHandler MouseRightUp;
+
+		public event EventHandler MouseLeftDown;
+
+		public event EventHandler MouseRightDown;
 
 		#endregion
 	}

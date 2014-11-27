@@ -41,19 +41,21 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="StopWatchWithOffset.cs" />
     <Compile Include="WindowsMediaPlayer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MediaPlayerModuleBase\MediaPlayerModuleBase.csproj">
-      <Project>{42EA643A-6513-4A91-AF16-EBAE9068CE87}</Project>
-      <Name>MediaPlayerModuleBase</Name>
+    <ProjectReference Include="..\ControlFactory\ControlFactory.csproj">
+      <Project>{484CAA88-578D-46B9-85E9-70CADC8616CD}</Project>
+      <Name>ControlFactory</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

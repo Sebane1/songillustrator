@@ -6,121 +6,36 @@ using SongIllustrator;
 using System.Drawing;
 
 namespace Win32Factory.Wrappers {
-	public class ToolStripMenuWrapper : ToolStrip, ToolStripMenuView {
-		#region Menu Members
-
-		public List<SongIllustrator.MenuItemView> Items {
-			get {
-				List<SongIllustrator.MenuItemView> list = new List<MenuItemView>();
-				foreach (MenuItemView view in base.Items) {
-					list.Add(view);
+	public class ToolStripMenuWrapper : ControlWrapper, IToolStripMenuView {
+		MenuStrip _menuStrip;
+		#region IMenu Members
+		public ToolStripMenuWrapper() {
+			_menuStrip = new MenuStrip();
+			if (this.Control != null) {
+				this.Control.Dispose();
+			}
+			this.Control = _menuStrip;
+			_menuStrip.ItemAdded += delegate {
+				if (ItemAdded != null) {
+					ItemAdded(this, EventArgs.Empty);
 				}
-				return list;
-			}
-			set {
-				base.Items.Add(value[base.Items.Count].ToString());
-			}
+			};
+			_menuStrip.ItemClicked += delegate {
+				if (ItemClicked != null) {
+					ItemClicked(this, EventArgs.Empty);
+				}
+			};
+				_menuStrip.ItemRemoved += delegate {
+					if (ItemRemoved != null) {
+						ItemRemoved(this, EventArgs.Empty);
+					}
+				};
 		}
-
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
-		public new EventHandler Click {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public EventHandler RightClicked {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public new EventHandler KeyDown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public new EventHandler KeyUp {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public EventHandler Resized {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public void Initialize() {
-			throw new NotImplementedException();
-		}
-
-		public FormControl ParentControl {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public ControlSize ControlSize {
-			get {
-				return new ControlSize(Size.Width, Size.Height);
-			}
-			set {
-				Size = new Size(value.Width, value.Height);
-			}
-		}
-
-		public ControlLocation ControlLocation {
-			get {
-				return new ControlLocation(Location.X, Location.Y);
-			}
-			set {
-				Location = new Point(value.X, value.Y);
-			}
-		}
-
-		public int ControlWidth {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public int ControlHeight {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public List<FormControl> FormControls {
+		public List<IView> FormControls {
 			get {
 				throw new NotImplementedException();
 			}
@@ -132,25 +47,6 @@ namespace Win32Factory.Wrappers {
 		public new void Dispose(bool dispose) {
 			throw new NotImplementedException();
 		}
-
-		public EventHandler Load {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public EventHandler Shown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
 		public new EventHandler DoubleClick {
 			get {
 				throw new NotImplementedException();
@@ -159,12 +55,79 @@ namespace Win32Factory.Wrappers {
 				throw new NotImplementedException();
 			}
 		}
-		public SongIllustrator.Color ControlBackColor {
+
+		#endregion
+
+		#region IToolStripMenuView Members
+
+		public event EventHandler ItemAdded;
+
+		public event EventHandler ItemRemoved;
+
+		public event EventHandler ItemClicked;
+		private List<IMenuItemView> _items = new List<IMenuItemView>();
+		private Dictionary<int, IView> _viewList = new Dictionary<int, IView>();
+
+		#endregion
+
+		#region IMenu Members
+		#endregion
+
+		#region IMenu Members
+
+
+		public List<IMenuItemView> Items {
 			get {
-				return SongIllustrator.Color.FromArgb(BackColor.ToArgb());
+				return _items;
 			}
 			set {
-				BackColor = System.Drawing.Color.FromArgb(value.ToArgb());
+				_items = value;
+			}
+		}
+
+		#endregion
+
+		#region IContainerView Members
+
+		public Dictionary<int, IView> ViewList {
+			get {
+				return _viewList;
+			}
+		}
+
+		public void Clear() {
+			_viewList.Clear();
+		}
+
+		public void Add(IView item) {
+			_viewList.Add(_viewList.Count, item);
+			_menuStrip.Items.Add((item as ToolStripMenuItemWrapper).MenuItem);
+		}
+
+		public void Remove(IView item) {
+			//viewList.Remove(item);
+		}
+
+		public void Remove(int index) {
+			_viewList.Remove(index);
+		}
+
+		public void AddRange(IView[] items) {
+			foreach (IView view in items) {
+				Add(view);
+			}
+		}
+
+		public void AddRange(List<IView> items) {
+			AddRange(items.ToArray());
+		}
+
+		public int Count {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
 			}
 		}
 

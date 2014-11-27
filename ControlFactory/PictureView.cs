@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 
 namespace SongIllustrator {
-	public interface PictureView : FormControl {
+	public interface IPictureView : IView {
 		Stream Image {
 			get;
 			set;

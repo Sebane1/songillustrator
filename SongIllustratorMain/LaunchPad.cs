@@ -98,8 +98,8 @@ namespace SongIllustrator {
 					data.TimeStamp = currentCount + increment;
 				} catch (FormatException) {
 				}
-				foreach (MacroButton button in lightPad.LightCanvas.FormControls) {
-					data.Colours.Add(button.ControlBackColor);
+				foreach (MacroButton button in lightPad.LightCanvas.ViewList.Values) {
+					data.Colours.Add(button.Button.ControlBackColor);
 				}
 				data.Index = FrameData.Count;
 				FrameData.Add(data);
@@ -179,5 +179,27 @@ namespace SongIllustrator {
 				_frameData.Add(data);
 			}
 		}
+
+		#region IContainerView Members
+
+		public List<IView> ViewList {
+			get {
+				throw new NotImplementedException();
+			}
+		}
+
+		public void Clear() {
+			throw new NotImplementedException();
+		}
+
+		public void Add() {
+			throw new NotImplementedException();
+		}
+
+		public void Remove() {
+			throw new NotImplementedException();
+		}
+
+		#endregion
 	}
 }

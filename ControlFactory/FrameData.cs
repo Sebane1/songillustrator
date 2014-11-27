@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 namespace SongIllustrator
 {
-    public class FrameData : ArrayViewItem
+    public class FrameData : IArrayViewItem
     {
         List<Color> _colours = new List<Color>();
         decimal _timeStamp;
@@ -47,7 +47,7 @@ namespace SongIllustrator
 					return "Frame " + Index;
 				}
 
-				#region MenuItemView Members
+				#region IMenuItemView Members
 
 				public string Name {
 					get {
@@ -67,7 +67,7 @@ namespace SongIllustrator
 					}
 				}
 
-				public List<MenuItemView> MenuItems {
+				public List<IMenuItemView> MenuItems {
 					get {
 						throw new NotImplementedException();
 					}

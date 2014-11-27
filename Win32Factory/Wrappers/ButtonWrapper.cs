@@ -4,166 +4,40 @@ using System.Text;
 using System.Windows.Forms;
 using SongIllustrator;
 using System.Drawing;
+using System.IO;
 
 namespace Win32Factory.Wrappers {
-	public class ButtonWrapper : Button, ButtonView {
-		private EventHandler Loading;
-
-		#region FormControl Members
-
-		public void Initialize() {
-			//throw new NotImplementedException();
+	public class ButtonWrapper : ControlWrapper, IButtonView {
+		//-------------------------------------------------------
+		public ButtonWrapper() {
+			Button button = new Button();
+			button.FlatStyle = FlatStyle.Flat;
+			button.BackColor = System.Drawing.Color.Gray;
+			button.BackgroundImageLayout = ImageLayout.Stretch;
+			try {
+				button.BackgroundImage = new Bitmap(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bevel.png"));
+			} catch {
+			}
+			Click += delegate {
+				//MessageBox.Show(button.Name + " " + button.Text + " " + button.TabIndex + " " + button.TabIndex);
+			};
+			_button = button;
+			this.Control = button;
 		}
+		//-------------------------------------------------------
+		private Button _button;
 
-		public FormControl ParentControl {
+		#region IButtonView Members
+
+		public SongIllustrator.Color ForeColor {
 			get {
-				return this.Parent as FormControl;
+				return SongIllustrator.Color.FromArgb(_button.ForeColor.ToArgb());
 			}
 			set {
-				this.Parent = value as Control;
+				_button.ForeColor = System.Drawing.Color.FromArgb(value.ToArgb());
 			}
 		}
-
-		public ControlSize ControlSize {
-			get {
-				return new ControlSize(Size.Width, Size.Height);
-			}
-			set {
-				Size = new Size(value.Width, value.Height);
-			}
-		}
-
-		public ControlLocation ControlLocation {
-			get {
-				return new ControlLocation(Location.X, Location.Y);
-			}
-			set {
-				Location = new Point(value.X, value.Y);
-			}
-		}
-
-		public int ControlHeight {
-			get {
-				return Height;
-			}
-			set {
-				Height = value;
-			}
-		}
-
-		public List<FormControl> FormControls {
-			get {
-				return FormControls;
-			}
-			set {
-				FormControls = value;
-			}
-		}
-
-		public new void Dispose(bool dispose) {
-			Dispose(dispose);
-		}
-
-		public EventHandler Load {
-			get {
-				return this.Loading;
-			}
-			set {
-				this.Loading += value;
-			}
-		}
-
-		public EventHandler Shown {
-			get {
-				return this.Shown;
-			}
-			set {
-				this.Shown = value;
-			}
-		}
-
-
-		#endregion
-
-		#region FormControl Members
-
-
-		public int ControlWidth {
-			get {
-				return Width;
-			}
-			set {
-				Width = value;
-			}
-		}
-
-		public SongIllustrator.Color ControlBackColor {
-			get {
-				return SongIllustrator.Color.FromArgb(BackColor.ToArgb());
-			}
-			set {
-				BackColor = System.Drawing.Color.FromArgb(value.ToArgb());
-			}
-		}
-
-		#endregion
-
-		#region FormControl Members
-
-		public new EventHandler Click {
-			get {
-				return null;
-			}
-			set {
-				base.Click += value;
-			}
-		}
-
-		EventHandler FormControl.RightClicked {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public new EventHandler KeyDown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public new EventHandler KeyUp {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.Resized {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public new EventHandler DoubleClick {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
+		//-------------------------------------------------------
 		#endregion
 	}
 }

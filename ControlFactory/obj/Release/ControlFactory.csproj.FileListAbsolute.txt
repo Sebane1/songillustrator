@@ -1,5 +1,5 @@
-F:\Documents\Visual Studio 2010\Projects\SongIllustrator\ControlFactory\obj\Release\ControlFactory.csprojResolveAssemblyReference.cache
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\ControlFactory\bin\Release\Factory.dll
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\ControlFactory\bin\Release\Factory.pdb
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\ControlFactory\obj\Release\Factory.dll
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\ControlFactory\obj\Release\Factory.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\ControlFactory\obj\Release\ControlFactory.csprojResolveAssemblyReference.cache

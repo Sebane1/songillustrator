@@ -5,12 +5,12 @@
 //using System.Text;
 
 //namespace SongIllustrator {
-//  public interface FigurePainter : FormControl {
+//  public interface FigurePainter : IView {
 //    private List<TutorialFigure> _tutorialFigures = new List<TutorialFigure>();
 //    private List<ControlSize> _sizes = new List<ControlSize>();
 //    private List<ControlLocation> _locations = new List<ControlLocation>();
 //    private int _currentFigure = 0;
-//    public BaseForm Creator;
+//    public MainForm Creator;
 //    public List<TutorialFigure> TutorialFigures {
 //      get {
 //        return _tutorialFigures;
@@ -32,13 +32,13 @@
 //        _sizes.Add(size);
 //      }
 //      while (_locations.Count < figure.FormControlToFocus.Count) {
-//        FormControl.ControlLocation = _locations.Count > 1 ? _locations[0] : new ControlLocation();
+//        IView.ControlLocation = _locations.Count > 1 ? _locations[0] : new ControlLocation();
 //        _locations.Add(location);
 //      }
 //      for (int i = 0; i < figure.FormControlToFocus.Count; i++) {
 //        ControlSize size = _sizes[i];
 //        ControlLocationFormControlLocation= _locations[i];
-//        FormControl FormControlToFocus = figure.FormControlToFocus[i];
+//        IView FormControlToFocus = figure.FormControlToFocus[i];
 //        this.Refresh();
 //        if ((size.Height >= FormControlToFocus.Height - 5 && size.Height <= FormControlToFocus.Height) || (size.Height <= FormControlToFocus.Height + 5 && size.Height >= FormControlToFocus.Height)) {
 //          size.Height = FormControlToFocus.Height;
@@ -110,7 +110,7 @@
 //      }
 //    }
 
-//    private ControlLocation GetAbsolutePosition(FormControl FormControlToFocus) {
+//    private ControlLocation GetAbsolutePosition(IView FormControlToFocus) {
 //      if (FormControlToFocus.ParentControl != null) {
 //        ControlLocation absolute = GetAbsolutePosition(FormControlToFocus);
 //        return new ControlLocation(FormControlToFocus.ControlLocation.X + absolute.X, FormControlToFocus.ControlLocation.Y + absolute.Y);

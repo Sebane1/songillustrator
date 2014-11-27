@@ -30,7 +30,7 @@ namespace SongIllustrator {
 			get;
 			set;
 		}
-		FormControl ParentControl {
+		IView ParentControl {
 			get;
 			set;
 		}

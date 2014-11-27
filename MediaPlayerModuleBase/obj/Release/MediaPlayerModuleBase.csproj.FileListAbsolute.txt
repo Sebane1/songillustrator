@@ -5,3 +5,6 @@ F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MediaPlayerModuleBase\o
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MediaPlayerModuleBase\obj\Release\MediaPlayerModuleBase.csproj.GenerateResource.Cache
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MediaPlayerModuleBase\obj\Release\MediaPlayerModuleBase.dll
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MediaPlayerModuleBase\obj\Release\MediaPlayerModuleBase.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MediaPlayerModuleBase\obj\Release\MediaPlayerModuleBase.csprojResolveAssemblyReference.cache
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MediaPlayerModuleBase\bin\Release\Factory.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\MediaPlayerModuleBase\bin\Release\Factory.pdb

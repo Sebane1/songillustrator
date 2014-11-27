@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace SongIllustrator {
-	public class MilliStopWatch : Timer {
+	public class MilliStopWatch{
 		int _elapsed;
 
 		public int Elapsed {
@@ -38,7 +38,7 @@ namespace SongIllustrator {
 			throw new NotImplementedException();
 		}
 
-		#region FormControl Members
+		#region IView Members
 
 		public event EventHandler Click;
 
@@ -63,7 +63,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		public FormControl ParentControl {
+		public IView ParentControl {
 			get {
 				throw new NotImplementedException();
 			}
@@ -99,7 +99,7 @@ namespace SongIllustrator {
 			}
 		}
 
-		public List<FormControl> FormControls {
+		public List<IView> FormControls {
 			get {
 				throw new NotImplementedException();
 			}
@@ -184,31 +184,13 @@ namespace SongIllustrator {
 		#region Timer Members
 
 
-		void Timer.Stop() {
-			throw new NotImplementedException();
-		}
-
-		void Timer.Start() {
-			throw new NotImplementedException();
-		}
-
 		#endregion
 
 		#region Timer Members
 
-
-		event EventHandler Timer.Tick {
-			add {
-				throw new NotImplementedException();
-			}
-			remove {
-				throw new NotImplementedException();
-			}
-		}
-
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 
 		public int ControlWidth {
@@ -231,7 +213,7 @@ namespace SongIllustrator {
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 
 		public event EventHandler BackColorChanged;
@@ -247,238 +229,11 @@ namespace SongIllustrator {
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 
 
 		#endregion
 
-		#region Timer Members
-
-		int Timer.Interval {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		#endregion
-
-		#region FormControl Members
-
-
-		void FormControl.Initialize() {
-			throw new NotImplementedException();
-		}
-
-		int FormControl.TabIndex {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		FormControl FormControl.ParentControl {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		string FormControl.Name {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		ControlSize FormControl.ControlSize {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		ControlLocation FormControl.ControlLocation {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		event EventHandler FormControl.BackColorChanged {
-			add {
-				throw new NotImplementedException();
-			}
-			remove {
-				throw new NotImplementedException();
-			}
-		}
-
-		int FormControl.ControlWidth {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		int FormControl.ControlHeight {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		List<FormControl> FormControl.FormControls {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		bool FormControl.Visible {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		void FormControl.Dispose(bool dispose) {
-			throw new NotImplementedException();
-		}
-
-		int FormControl.Height {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		bool FormControl.Enabled {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.Load {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.Shown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.DoubleClick {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		string FormControl.Text {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		Color FormControl.ControlBackColor {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		#endregion
-
-		#region FormControl Members
-
-		EventHandler FormControl.Click {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.RightClicked {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.KeyDown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.KeyUp {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.Resized {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		#endregion
 	}
 }

@@ -3,34 +3,24 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace SongIllustrator {
-	public interface FormControl {
+	public interface IView {
 
-		EventHandler Click {
-			get;
-			set;
-		}
-		EventHandler RightClicked {
-			get;
-			set;
-		}
-		EventHandler KeyDown {
-			get;
-			set;
-		}
-		EventHandler KeyUp {
-			get;
-			set;
-		}
-		EventHandler Resized {
-			get;
-			set;
-		}
+		event EventHandler Click;
+		event EventHandler RightClicked;
+		event EventHandler MouseLeftUp;
+		event EventHandler MouseRightUp;
+		event EventHandler MouseLeftDown;
+		event EventHandler MouseRightDown;
+		event EventHandler KeyDown;
+		event EventHandler KeyUp;
+		event EventHandler Resized;
+		event EventHandler BackColorChanged;
 		void Initialize();
 		int TabIndex {
 			get;
 			set;
 		}
-		FormControl ParentControl {
+		IView ParentControl {
 			get;
 			set;
 		}
@@ -46,7 +36,7 @@ namespace SongIllustrator {
 			get;
 			set;
 		}
-		event EventHandler BackColorChanged;
+
 		int ControlWidth {
 			get;
 			set;
@@ -55,10 +45,9 @@ namespace SongIllustrator {
 			get;
 			set;
 		}
-		List<FormControl> FormControls {
-			get;
-			set;
-		}
+		void AddControl(IView control);
+		void RemoveControl(IView control);
+		void RemoveControl(int index);
 		bool Visible {
 			get;
 			set;
@@ -76,20 +65,11 @@ namespace SongIllustrator {
 		}
 
 
-		System.EventHandler Load {
-			get;
-			set;
-		}
+		event System.EventHandler Load;
 
-		System.EventHandler Shown {
-			get;
-			set;
-		}
+		event System.EventHandler Shown;
 
-		System.EventHandler DoubleClick {
-			get;
-			set;
-		}
+		event System.EventHandler DoubleClick;
 
 		string Text {
 			get;

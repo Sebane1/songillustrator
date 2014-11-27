@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows.Forms;
-using System.Drawing;
+using SongIllustrator;
 
-namespace MediaPlayerModuleBase {
-	public interface MediaPlayer{
+namespace SongIllustrator {
+	public interface IMediaPlayer : IView {
 		event EventHandler Stopped;
 		event EventHandler Paused;
 		event EventHandler Playing;
 		event EventHandler DonePlaying;
 		event EventHandler Ready;
-		OperatingSystem SupportedOS {
+	 MediaPlayerModuleBase.OperatingSystem SupportedOS {
 			get;
 		}
 
@@ -42,7 +41,7 @@ namespace MediaPlayerModuleBase {
 		/// Initiates the media player object with its associated operating system.
 		/// </summary>
 		/// <param name="supportedOS"></param>
-		//public MediaPlayer(Control mediaPlayer, OperatingSystem supportedOS) {
+		//public IMediaPlayer(IView mediaPlayer, OperatingSystem supportedOS) {
 		//  _mediaPlayerControl = mediaPlayer;
 		//  _supportedOS = supportedOS;
 		//}

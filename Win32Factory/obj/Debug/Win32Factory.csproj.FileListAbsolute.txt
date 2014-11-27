@@ -1,0 +1,9 @@
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\Win32Factory\obj\Debug\Win32Factory.csprojResolveAssemblyReference.cache
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\Win32Factory\bin\Debug\Factory.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\Win32Factory\bin\Debug\MediaPlayerModuleBase.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\Win32Factory\bin\Debug\Factory.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\Win32Factory\bin\Debug\MediaPlayerModuleBase.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\Win32Factory\bin\Debug\Win32.Factory.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\Win32Factory\bin\Debug\Win32.Factory.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\Win32Factory\obj\Debug\Win32.Factory.dll
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\Win32Factory\obj\Debug\Win32.Factory.pdb

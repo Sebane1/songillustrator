@@ -36,19 +36,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlertButtons.cs" />
+    <Compile Include="AlertView.cs" />
     <Compile Include="ContextMenu.cs" />
     <Compile Include="ControlLocation.cs" />
     <Compile Include="ControlSize.cs" />
-    <Compile Include="FormControl.cs" />
+    <Compile Include="DummyFactory.cs" />
+    <Compile Include="FactoryLoader.cs" />
+    <Compile Include="IContainerView.cs" />
+    <Compile Include="IMacroButtonView.cs" />
+    <Compile Include="IMessageBox.cs" />
+    <Compile Include="IPanelView.cs" />
+    <Compile Include="IView.cs" />
     <Compile Include="FormControlContainer.cs" />
     <Compile Include="FormView.cs" />
     <Compile Include="LabelView.cs" />
     <Compile Include="ListView.cs" />
     <Compile Include="ListViewItem.cs" />
+    <Compile Include="MediaPlayer.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="MenuItem.cs" />
     <Compile Include="MenuItemSeperator.cs" />
     <Compile Include="OpenFileDialog.cs" />
+    <Compile Include="OperatingSystem.cs" />
     <Compile Include="PictureView.cs" />
     <Compile Include="PopupResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -56,13 +66,13 @@
     <Compile Include="SaveFileDialog.cs" />
     <Compile Include="SplitContainerView.cs" />
     <Compile Include="TextBoxView.cs" />
-    <Compile Include="Timer.cs" />
     <Compile Include="ToolStripMenu.cs" />
     <Compile Include="TrackBar.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="FrameData.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Factory.cs" />
+    <Compile Include="TypeOFAlert.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

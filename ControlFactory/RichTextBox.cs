@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace SongIllustrator {
-	public interface RichTextBoxView : FormControl {
+	public interface IRichTextBoxView : IView {
 		string Text {
 			get;
 			set;

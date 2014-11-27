@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace SongIllustrator {
-	public interface Menu : FormControl {
-		List<MenuItemView> Items {
-			get;
-			set;
-		}
+	public interface IMenu : IView, IContainerView {
+		event EventHandler ItemAdded;
+		event EventHandler ItemRemoved;
+		event EventHandler ItemClicked;
 	}
 }

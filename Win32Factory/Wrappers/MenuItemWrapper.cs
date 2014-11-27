@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows.Forms;
 using SongIllustrator;
+using System.Windows.Forms;
 
 namespace Win32Factory.Wrappers {
-	public class ContextMenuWrapper : ContextMenu, IContextMenuView {
-		public ContextMenuWrapper() {
-			//ContextMenu menu = new ContextMenu();
-			//this.Control = menu as IView;
+	public class MenuItemWrapper : IMenuItemView {
+		MenuItem _menuItem;
+		public MenuItemWrapper(){
+			MenuItem = new MenuItem();
 		}
-		#region IMenu Members
 
-		#endregion
+		#region IMenuItemView Members
 
-		#region IView Members
-		public List<IView> FormControls {
+		public string Caption {
 			get {
 				throw new NotImplementedException();
 			}
@@ -24,33 +22,12 @@ namespace Win32Factory.Wrappers {
 			}
 		}
 
-		public new void Dispose(bool dispose) {
-			throw new NotImplementedException();
-		}
-
-		#endregion
-
-		#region IMenu Members
-
-		public event EventHandler ItemAdded;
-
-		public event EventHandler ItemRemoved;
-
-		public event EventHandler ItemClicked;
-		private List<IMenuItemView> _items = new List<IMenuItemView>();
-		private Dictionary<int, IView> _viewList = new Dictionary<int, IView>();
-
-		#endregion
-
-		#region IMenu Members
-
-
-		public List<IMenuItemView> Items {
+		public ControlSize Size {
 			get {
-				return _items;
+				return _size;
 			}
 			set {
-				_items = value;
+				_size = value;
 			}
 		}
 
@@ -60,35 +37,34 @@ namespace Win32Factory.Wrappers {
 
 		public Dictionary<int, IView> ViewList {
 			get {
-				return _viewList;
+				throw new NotImplementedException();
 			}
 		}
 
 		public void Clear() {
-			_viewList.Clear();
+			throw new NotImplementedException();
 		}
 
 		public void Add(IView item) {
-			_viewList.Add(_viewList.Count, item);
-			MenuItems.Add((item as MenuItemWrapper).MenuItem);
+			throw new NotImplementedException();
 		}
 
 		public void Remove(IView item) {
-			//_viewList.Remove(item);
+			throw new NotImplementedException();
 		}
 
 		public void Remove(int index) {
-			_viewList.Remove(index);
+			throw new NotImplementedException();
 		}
 
 		public void AddRange(IView[] items) {
-			foreach (IView view in items) {
-				Add(view);
-			}
+			
 		}
+
 		public void AddRange(List<IView> items) {
-			AddRange(items.ToArray());
+			
 		}
+
 		public int Count {
 			get {
 				throw new NotImplementedException();
@@ -97,10 +73,6 @@ namespace Win32Factory.Wrappers {
 				throw new NotImplementedException();
 			}
 		}
-
-		#endregion
-
-		#region IContainerView Members
 
 		#endregion
 
@@ -148,21 +120,30 @@ namespace Win32Factory.Wrappers {
 			}
 		}
 
-		public ControlSize ControlSize {
+		public string Name {
 			get {
-				return _controlSize;
+				return _menuItem.Name;
 			}
 			set {
-				_controlSize = value;
+				_menuItem.Name = value;
+			}
+		}
+
+		public ControlSize ControlSize {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
 			}
 		}
 
 		public ControlLocation ControlLocation {
 			get {
-				return _controlLocation;
+				throw new NotImplementedException();
 			}
 			set {
-				_controlLocation = value;
+				throw new NotImplementedException();
 			}
 		}
 
@@ -205,6 +186,10 @@ namespace Win32Factory.Wrappers {
 			}
 		}
 
+		public void Dispose(bool dispose) {
+			throw new NotImplementedException();
+		}
+
 		public int Height {
 			get {
 				throw new NotImplementedException();
@@ -228,17 +213,14 @@ namespace Win32Factory.Wrappers {
 		public event EventHandler Shown;
 
 		public event EventHandler DoubleClick;
-		private IView _control;
-		private ControlSize _controlSize;
-		private ControlLocation _controlLocation;
-		private string _name;
+		private SongIllustrator.ControlSize _size;
 
 		public string Text {
 			get {
-				throw new NotImplementedException();
+				return _menuItem.Text;
 			}
 			set {
-				throw new NotImplementedException();
+				_menuItem.Text = value;
 			}
 		}
 
@@ -253,44 +235,18 @@ namespace Win32Factory.Wrappers {
 
 		#endregion
 
-		#region IContextMenuView Members
-
-		IView Control {
+		public MenuItem MenuItem {
 			get {
-				return _control;
+				return _menuItem;
 			}
 			set {
-				_control = value;
+				_menuItem = value;
+				_menuItem.Click += delegate {
+					if (Click != null) {
+						Click(this, EventArgs.Empty);
+					}
+				};
 			}
 		}
-
-		#endregion
-
-		#region IView Members
-
-
-		public string Name {
-			get {
-				return _name;
-			}
-			set {
-				_name = value;
-			}
-		}
-
-		#endregion
-
-		#region IContextMenuView Members
-
-		IView IContextMenuView.Control {
-			get {
-				return _control;
-			}
-			set {
-				_control = value;
-			}
-		}
-
-		#endregion
 	}
 }

@@ -6,70 +6,18 @@ using SongIllustrator;
 using System.Drawing;
 
 namespace Win32Factory.Wrappers {
-	public class TextBoxWrapper : TextBox, TextBoxView {
-
-		#region TextBoxView Members
+	public class TextBoxWrapper : ControlWrapper, ITextBoxView {
+		public TextBoxWrapper() {
+			this.Control = new TextBox();
+		}
+		#region ITextBoxView Members
 
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
-
-		public event EventHandler RightClicked;
-
-		public event EventHandler Resized;
-
-		public void Initialize() {
-			throw new NotImplementedException();
-		}
-
-		public FormControl ParentControl {
-			get {
-				return Parent as FormControl;
-			}
-			set {
-				Parent = value as Control;
-			}
-		}
-
-		public ControlSize ControlSize {
-			get {
-				return new ControlSize(Size.Width, Size.Height);
-			}
-			set {
-				Size = new Size(value.Width, value.Height);
-			}
-		}
-
-		public ControlLocation ControlLocation {
-			get {
-				return new ControlLocation(Location.X, Location.Y);
-			}
-			set {
-				Location = new Point(value.X, value.Y);
-			}
-		}
-
-		public int ControlWidth {
-			get {
-				return Width;
-			}
-			set {
-				Width = value;
-			}
-		}
-
-		public int ControlHeight {
-			get {
-				return Height;
-			}
-			set {
-				Height = value;
-			}
-		}
-
-		public List<FormControl> FormControls {
+		public List<IView> FormControls {
 			get {
 				return FormControls;
 			}
@@ -82,74 +30,16 @@ namespace Win32Factory.Wrappers {
 			Dispose(dispose);
 		}
 
-		public event EventHandler Load;
-
-		public event EventHandler Shown;
-
-		public SongIllustrator.Color ControlBackColor {
-			get {
-				return SongIllustrator.Color.FromArgb(BackColor.ToArgb());
-			}
-			set {
-				BackColor = System.Drawing.Color.FromArgb(value.ToArgb());
-			}
-		}
 
 		#endregion
 
-		#region TextBoxView Members
-
-		public new EventHandler TextChanged {
-			get {
-				return null;
-			}
-			set {
-				base.TextChanged += value;
-			}
-		}
+		#region ITextBoxView Members
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 		public new EventHandler Click {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.RightClicked {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-
-		EventHandler FormControl.Resized {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.Load {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		EventHandler FormControl.Shown {
 			get {
 				throw new NotImplementedException();
 			}
@@ -169,12 +59,12 @@ namespace Win32Factory.Wrappers {
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 
 		#endregion
 
-		#region FormControl Members
+		#region IView Members
 
 
 		public new EventHandler KeyDown {
@@ -194,6 +84,52 @@ namespace Win32Factory.Wrappers {
 				throw new NotImplementedException();
 			}
 		}
+
+		#endregion
+
+		#region IView Members
+
+		#endregion
+
+		#region ITextBoxView Members
+
+
+		public bool ReadOnly {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public bool Multiline {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public bool HideSelection {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		#endregion
+
+		#region ITextBoxView Members
+
+		public event EventHandler TextChanged;
+
+		#endregion
+
+		#region ITextBoxView Members
 
 		#endregion
 	}

@@ -6,20 +6,11 @@ using SongIllustrator;
 using System.Drawing;
 
 namespace Win32Factory.Wrappers {
-	public class SplitContainerWrapper : SplitContainer, SplitContainerView {
+	public class SplitContainerWrapper : ControlWrapper, SplitContainerView {
 
-		#region FormControl Members
+		#region IView Members
 
 		public new EventHandler Click {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public EventHandler RightClicked {
 			get {
 				throw new NotImplementedException();
 			}
@@ -59,7 +50,7 @@ namespace Win32Factory.Wrappers {
 			throw new NotImplementedException();
 		}
 
-		public FormControl ParentControl {
+		public IView ParentControl {
 			get {
 				throw new NotImplementedException();
 			}
@@ -68,63 +59,6 @@ namespace Win32Factory.Wrappers {
 			}
 		}
 
-		public ControlSize ControlSize {
-			get {
-				return new ControlSize(Size.Width, Size.Height);
-			}
-			set {
-				Size = new Size(value.Width, value.Height);
-			}
-		}
-
-		public ControlLocation ControlLocation {
-			get {
-				return new ControlLocation(Location.X, Location.Y);
-			}
-			set {
-				Location = new Point(value.X, value.Y);
-			}
-		}
-
-		public int ControlWidth {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public int ControlHeight {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public new void Dispose(bool dispose) {
-			throw new NotImplementedException();
-		}
-
-		public EventHandler Load {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public EventHandler Shown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
 
 		public new EventHandler DoubleClick {
 			get {
@@ -134,13 +68,53 @@ namespace Win32Factory.Wrappers {
 				throw new NotImplementedException();
 			}
 		}
+		#endregion
 
-		public SongIllustrator.Color ControlBackColor {
+		#region SplitContainerView Members
+
+		public int SplitterDistance {
 			get {
-				return SongIllustrator.Color.FromArgb(BackColor.ToArgb());
+				throw new NotImplementedException();
 			}
 			set {
-				BackColor = System.Drawing.Color.FromArgb(value.ToArgb());
+				throw new NotImplementedException();
+			}
+		}
+
+		#endregion
+
+		#region FormControlContainer Members
+
+
+		public new EventHandler Load {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public new EventHandler Shown {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		#endregion
+
+		#region FormControlContainer Members
+
+
+		public new EventHandler RightClicked {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
 			}
 		}
 

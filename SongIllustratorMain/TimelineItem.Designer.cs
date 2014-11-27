@@ -47,7 +47,7 @@
 			//this.AutoScaleDimensions = new ControlSizeF(6F, 13F);
 			//this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			//this.ControlBackColor = SystemColors.ActiveCaption;
-			//this.FormControls.Add(this.imageIdentifier);
+			//this.ViewItems.Add(this.imageIdentifier);
 			//this.Name = "TimelineItem";
 			//this.ControlSize = new ControlSize(153, 116);
 			//this.Load += new System.EventHandler(this.TimelineItem_Load);
@@ -66,6 +66,6 @@
 
 		#endregion
 
-		private PictureView imageIdentifier;
+		private IPictureView imageIdentifier;
 	}
 }

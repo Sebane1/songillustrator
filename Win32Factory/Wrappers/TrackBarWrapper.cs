@@ -6,149 +6,56 @@ using System.Windows.Forms;
 using System.Drawing;
 
 namespace Win32Factory.Wrappers {
-	public class TrackBarWrapper : TrackBar, TrackBarView {
-		#region FormControl Members
+	public class TrackBarWrapper : ControlWrapper, ITrackBarView {
+		public TrackBarWrapper() {
+			this.Control = new TrackBar();
+			_trackbar = (Control as TrackBar);
+		}
+		TrackBar _trackbar;
+		#region ITrackBarView Members
 
-		public new EventHandler Click {
+		public int Value {
 			get {
-				throw new NotImplementedException();
+				return _trackbar.Value;
 			}
 			set {
-				throw new NotImplementedException();
+				_trackbar.Value = value;
 			}
 		}
 
-		public EventHandler RightClicked {
+		public int LargeChange {
 			get {
-				throw new NotImplementedException();
+				return _trackbar.LargeChange;
 			}
 			set {
-				throw new NotImplementedException();
+				_trackbar.LargeChange = value;
 			}
 		}
 
-		public new EventHandler KeyDown {
+		public int Maximum {
 			get {
-				throw new NotImplementedException();
+				return _trackbar.Maximum;
 			}
 			set {
-				throw new NotImplementedException();
+				_trackbar.Maximum = value;
 			}
 		}
 
-		public new EventHandler KeyUp {
+		public int SmallChange {
 			get {
-				throw new NotImplementedException();
+				return _trackbar.SmallChange;
 			}
 			set {
-				throw new NotImplementedException();
+				_trackbar.SmallChange = value;
 			}
 		}
 
-		public EventHandler Resized {
+		public int Minimum {
 			get {
-				throw new NotImplementedException();
+				return _trackbar.Minimum;
 			}
 			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public void Initialize() {
-			throw new NotImplementedException();
-		}
-
-		public FormControl ParentControl {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public ControlSize ControlSize {
-			get {
-				return new ControlSize(Size.Width, Size.Height);
-			}
-			set {
-				Size = new Size(value.Width, value.Height);
-			}
-		}
-
-		public ControlLocation ControlLocation {
-			get {
-				return new ControlLocation(Location.X, Location.Y);
-			}
-			set {
-				Location = new Point(value.X, value.Y);
-			}
-		}
-
-		public int ControlWidth {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public int ControlHeight {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public List<FormControl> FormControls {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public new void Dispose(bool dispose) {
-			throw new NotImplementedException();
-		}
-
-		public EventHandler Load {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public EventHandler Shown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public new EventHandler DoubleClick {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public SongIllustrator.Color ControlBackColor {
-			get {
-				return SongIllustrator.Color.FromArgb(BackColor.ToArgb());
-			}
-			set {
-				BackColor = System.Drawing.Color.FromArgb(value.ToArgb());
+				_trackbar.Minimum = value;
 			}
 		}
 

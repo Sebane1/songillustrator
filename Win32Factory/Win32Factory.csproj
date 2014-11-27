@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Win32Factory</RootNamespace>
-    <AssemblyName>Win32Factory</AssemblyName>
+    <AssemblyName>Win32.Factory</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\SongIllustrator\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -38,57 +38,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Wrappers\MediaPlayerWrapper.cs" />
+    <Compile Include="Wrappers\MenuItemWrapper.cs" />
+    <Compile Include="Wrappers\MessageBoxWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win32Factory.cs" />
-    <Compile Include="Wrappers\ButtonWrapper.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Wrappers\ControlWrapper.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Wrappers\FormView.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Wrappers\LabelWrapper.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Wrappers\ButtonWrapper.cs" />
+    <Compile Include="Wrappers\ControlWrapper.cs" />
+    <Compile Include="Wrappers\FormWrapper.cs" />
+    <Compile Include="Wrappers\LabelWrapper.cs" />
+    <Compile Include="Wrappers\MacroButtonWrapper.cs" />
     <Compile Include="Wrappers\OpenFileDialogWrapper.cs" />
-    <Compile Include="Wrappers\PictureBoxWrapper.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Wrappers\RichTextBoxWrapper.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Wrappers\PanelWrapper.cs" />
+    <Compile Include="Wrappers\PictureBoxWrapper.cs" />
+    <Compile Include="Wrappers\RichTextBoxWrapper.cs" />
     <Compile Include="Wrappers\SaveDialogWrapper.cs" />
-    <Compile Include="Wrappers\SplitContainerWrapper.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Wrappers\ToolStripSeperatorView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Wrappers\ListBoxWrapper.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Wrappers\TextBoxWrapper.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Wrappers\SplitContainerWrapper.cs" />
+    <Compile Include="Wrappers\ToolStripSeperatorView.cs" />
+    <Compile Include="Wrappers\ListBoxWrapper.cs" />
+    <Compile Include="Wrappers\TextBoxWrapper.cs" />
     <Compile Include="Wrappers\ContextMenuWrapper.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Wrappers\ToolStripMenuItemWrapper.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Wrappers\ToolStripMenuWrapper.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Wrappers\TrackBarWrapper.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Wrappers\ToolStripMenuItemWrapper.cs" />
+    <Compile Include="Wrappers\ToolStripMenuWrapper.cs" />
+    <Compile Include="Wrappers\TrackBarWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ControlFactory\ControlFactory.csproj">
       <Project>{484CAA88-578D-46B9-85E9-70CADC8616CD}</Project>
       <Name>ControlFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MediaPlayerModuleBase\MediaPlayerModuleBase.csproj">
+      <Project>{42EA643A-6513-4A91-AF16-EBAE9068CE87}</Project>
+      <Name>MediaPlayerModuleBase</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

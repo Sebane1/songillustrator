@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Reflection;
+using ControlFactory;
+using SongIllustrator;
 
 namespace MediaPlayerModuleBase {
 	public class MediaPlayerLoader {
-		public static MediaPlayer LoadMediaPlayer(string name) {
+		public static IMediaPlayer LoadMediaPlayer(IFactory factory, IFormView formView) {
 			OperatingSystem os = OperatingSystem.None;
 			switch (Environment.OSVersion.Platform) {
 				case PlatformID.Win32Windows:
@@ -27,19 +29,19 @@ namespace MediaPlayerModuleBase {
 				in Directory.GetFiles(modulesPath, "*.Player.dll", SearchOption.TopDirectoryOnly)) {
 				var assembly = Assembly.Load(AssemblyName.GetAssemblyName(moduleFileName));
 				foreach (var type in assembly.GetTypes()) {
-					if (typeof(MediaPlayer).IsAssignableFrom(type)) {
+					if (typeof(IMediaPlayer).IsAssignableFrom(type)) {
 						try {
-							var moduleInstance = (MediaPlayer) Activator.CreateInstance(type);
+							var moduleInstance = (IMediaPlayer) Activator.CreateInstance(type);
 							if (moduleInstance.SupportedOS == os) {
 								return moduleInstance;
 							}
 						} catch {
-							return new WavPlayerControl();
+							return new WavPlayerControl(factory, formView);
 						}
 					}
 				}
 			}
-			return new WavPlayerControl();
+			return new WavPlayerControl(factory,formView);
 		}
 	}
 }

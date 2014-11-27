@@ -1,5 +1,4 @@
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Debug\SongIllustratorMain.csprojResolveAssemblyReference.cache
-F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Debug\SongIllustrator.ShowDisplay.resources
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Debug\SongIllustrator.TimelineItem.resources
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Debug\SongIllustrator.TutorialForm.resources
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Debug\SongIllustratorMain.csproj.GenerateResource.Cache

@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using MediaPlayerModuleBase;
 using AxWMPLib;
+using MediaPlayerModuleBase;
+using System.Diagnostics;
+using SongIllustrator;
+using System.Drawing;
 
 namespace WindowsMediaPlayer {
-	public class WindowsMediaPlayer : AxWindowsMediaPlayer, MediaPlayer {
+	public class WindowsMediaPlayer : AxWindowsMediaPlayer, IMediaPlayer {
 		public WindowsMediaPlayer(){
 			PlayStateChange += new _WMPOCXEvents_PlayStateChangeEventHandler(_player_PlayStateChange);
 		}
-
 		void _player_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e) {
 			if (e.newState == 3) {
 				Playing(this, EventArgs.Empty);
@@ -36,7 +38,7 @@ namespace WindowsMediaPlayer {
 			}
 		}
 
-		#region MediaPlayer Members
+		#region IMediaPlayer Members
 
 		public event EventHandler Stopped;
 
@@ -52,10 +54,15 @@ namespace WindowsMediaPlayer {
 				return MediaPlayerModuleBase.OperatingSystem.Windows;
 			}
 		}
-
+		int failCount = 0;
 		public double CurrentPosition {
 			get {
-				return Ctlcontrols.currentPosition;
+				try {
+					return Ctlcontrols.currentPosition;
+				} catch {
+					failCount++;
+					return 0;
+				}
 			}
 			set {
 				Ctlcontrols.currentPosition = value;
@@ -76,7 +83,111 @@ namespace WindowsMediaPlayer {
 
 		#endregion
 
-		#region MediaPlayer Members
+		#region IMediaPlayer Members
+		#endregion
+
+		#region IView Members
+
+
+		public event EventHandler RightClicked;
+
+		public new event EventHandler KeyDown;
+
+		public new event EventHandler KeyUp;
+
+		public event EventHandler Resized;
+
+		public void Initialize() {
+			throw new NotImplementedException();
+		}
+
+		public SongIllustrator.IView ParentControl {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public SongIllustrator.ControlSize ControlSize {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public SongIllustrator.ControlLocation ControlLocation {
+			get {
+				return new ControlLocation(Location.X, Location.Y);
+			}
+			set {
+				Location = new Point(value.X, value.Y);
+			}
+		}
+
+		public int ControlWidth {
+			get {
+				return Width;
+			}
+			set {
+				Width = value;
+			}
+		}
+
+		public int ControlHeight {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
+		}
+
+		public void AddControl(SongIllustrator.IView control) {
+			throw new NotImplementedException();
+		}
+
+		public void RemoveControl(SongIllustrator.IView control) {
+			throw new NotImplementedException();
+		}
+
+		public void RemoveControl(int index) {
+			throw new NotImplementedException();
+		}
+
+		public new void Dispose(bool dispose) {
+			throw new NotImplementedException();
+		}
+
+		public event EventHandler Load;
+
+		public event EventHandler Shown;
+
+		public SongIllustrator.Color ControlBackColor {
+			get {
+				return SongIllustrator.Color.Chartreuse;
+			}
+			set {
+				object p = value;
+			}
+		}
+
+		#endregion
+
+		#region IView Members
+
+
+		public event EventHandler MouseLeftUp;
+
+		public event EventHandler MouseRightUp;
+
+		public event EventHandler MouseLeftDown;
+
+		public event EventHandler MouseRightDown;
+
 		#endregion
 	}
 }

@@ -6,151 +6,248 @@ using SongIllustrator;
 using System.Drawing;
 
 namespace Win32Factory.Wrappers {
-	public class ControlWrapper : Control, FormControl{
-		#region FormControl Members
-
-		public new EventHandler Click {
+	public class ControlWrapper : IView {
+		#region IView Members
+		private Control _control = new Control();
+		//-------------------------------------------------------
+		public Control Control {
 			get {
-				throw new NotImplementedException();
+				return _control;
 			}
 			set {
-				throw new NotImplementedException();
+				if (value != null) {
+					_control = value;
+				}
+				_control.Click += delegate {
+					if (Click != null) {
+						Click(this, EventArgs.Empty);
+					}
+				};
+				_control.BackColorChanged += delegate {
+					if (BackColorChanged != null) {
+						BackColorChanged(this, EventArgs.Empty);
+					}
+				};
+				_control.MouseClick += delegate {
+					if (Click != null) {
+						//Click(this, EventArgs.Empty);
+					}
+				};
+				_control.MouseDoubleClick += delegate {
+					if (DoubleClick != null) {
+						DoubleClick(this, EventArgs.Empty);
+					}
+				};
+				_control.MouseDown += new MouseEventHandler(_control_MouseDown);
+				_control.MouseUp += new MouseEventHandler(_control_MouseUp);
+				_control.Visible = true;
 			}
 		}
-
-		public EventHandler RightClicked {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public new EventHandler KeyDown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
+		//-------------------------------------------------------
+		void _control_MouseUp(object sender, MouseEventArgs e) {
+			switch (e.Button) {
+				case MouseButtons.Left:
+					if (MouseLeftUp != null) {
+						MouseLeftUp(this, EventArgs.Empty);
+					}
+					break;
+				case MouseButtons.Right:
+					if (MouseRightUp != null) {
+						MouseRightUp(this, EventArgs.Empty);
+					}
+					break;
 			}
 		}
-
-		public new EventHandler KeyUp {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public EventHandler Resized {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
+		//-------------------------------------------------------
+		void _control_MouseDown(object sender, MouseEventArgs e) {
+			switch (e.Button) {
+				case MouseButtons.Left:
+					if (MouseLeftDown != null) {
+						MouseLeftDown(this, EventArgs.Empty);
+					}
+					break;
+				case MouseButtons.Right:
+					if (MouseRightDown != null) {
+						MouseRightDown(this, EventArgs.Empty);
+					}
+					break;
 			}
 		}
-
+		//-------------------------------------------------------
 		public void Initialize() {
 			throw new NotImplementedException();
 		}
-
-		public FormControl ParentControl {
+		//-------------------------------------------------------
+		public IView ParentControl {
 			get {
-				throw new NotImplementedException();
+				return _parent;
 			}
 			set {
-				throw new NotImplementedException();
+				_parent = value;
 			}
 		}
-
+		//-------------------------------------------------------
 		public ControlSize ControlSize {
 			get {
-				return new ControlSize(Size.Width, Size.Height);
+				return new ControlSize(_control.Width, _control.Height);
 			}
 			set {
-				Size = new Size(value.Width, value.Height);
+				_control.Size = new Size(value.Width, value.Height);
 			}
 		}
-
+		//-------------------------------------------------------
 		public ControlLocation ControlLocation {
 			get {
-				return new ControlLocation(Location.X, Location.Y);
+				return new ControlLocation(_control.Location.X, _control.Location.Y);
 			}
 			set {
-				Location = new Point(value.X, value.Y);
+				_control.Location = new Point(value.X, value.Y);
 			}
 		}
-
+		//-------------------------------------------------------
 		public int ControlWidth {
 			get {
-				throw new NotImplementedException();
+				return _control.Width;
 			}
 			set {
-				throw new NotImplementedException();
+				_control.Width = value;
 			}
 		}
-
+		//-------------------------------------------------------
 		public int ControlHeight {
 			get {
-				throw new NotImplementedException();
+				return _control.Height;
 			}
 			set {
-				throw new NotImplementedException();
+				_control.Height = value;
 			}
 		}
-
-		public List<FormControl> FormControls {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
+		//-------------------------------------------------------
+		public void Dispose(bool dispose) {
+			_control.Dispose();
 		}
-
-		public new void Dispose(bool dispose) {
-			throw new NotImplementedException();
-		}
-
-		public EventHandler Load {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public EventHandler Shown {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
-		public new EventHandler DoubleClick {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
+		//-------------------------------------------------------
 		public SongIllustrator.Color ControlBackColor {
 			get {
-				return SongIllustrator.Color.FromArgb(BackColor.ToArgb());
+				return SongIllustrator.Color.FromArgb(_control.BackColor.A, _control.BackColor.R, _control.BackColor.G, _control.BackColor.B);
 			}
 			set {
-				BackColor = System.Drawing.Color.FromArgb(value.ToArgb());
+				_control.BackColor = System.Drawing.Color.FromArgb(value.A, value.R, value.G, value.B);
 			}
 		}
+		//-------------------------------------------------------
+		#endregion
+
+		#region IView Members
+
+
+		public int TabIndex {
+			get {
+				return _control.TabIndex;
+			}
+			set {
+				_control.TabIndex = value;
+			}
+		}
+		//-------------------------------------------------------
+		public string Name {
+			get {
+				return _control.Name;
+			}
+			set {
+				_control.Name = value;
+			}
+		}
+		//-------------------------------------------------------
+		public event EventHandler BackColorChanged;
+
+		public bool Visible {
+			get {
+				return _control.Visible;
+			}
+			set {
+				_control.Visible = value;
+			}
+		}
+		//-------------------------------------------------------
+		public int Height {
+			get {
+				return _control.Height;
+			}
+			set {
+				_control.Height = value;
+			}
+		}
+		//-------------------------------------------------------
+		public bool Enabled {
+			get {
+				return _control.Enabled;
+			}
+			set {
+				_control.Enabled = value;
+			}
+		}
+		//-------------------------------------------------------
+		public virtual string Text {
+			get {
+				return _control.Text;
+			}
+			set {
+				_control.Text = value;
+			}
+		}
+		//-------------------------------------------------------
+		#endregion
+
+		#region IView Members
+
+
+		public void AddControl(IView control) {
+			_control.Controls.Add(control as Control);
+		}
+
+		public void RemoveControl(IView control) {
+			_control.Controls.Remove(control as Control);
+		}
+
+		public void RemoveControl(int index) {
+			_control.Controls.RemoveAt(index);
+		}
+
+
+		#endregion
+
+		#region IView Members
+
+		public event EventHandler Click;
+
+		public event EventHandler RightClicked;
+
+		public event EventHandler KeyDown;
+
+		public event EventHandler KeyUp;
+
+		public event EventHandler Resized;
+
+		public event EventHandler Load;
+
+		public event EventHandler Shown;
+
+		public event EventHandler DoubleClick;
+		private IView _parent;
+
+		#endregion
+
+		#region IView Members
+
+
+		public event EventHandler MouseLeftUp;
+
+		public event EventHandler MouseRightUp;
+
+		public event EventHandler MouseLeftDown;
+
+		public event EventHandler MouseRightDown;
 
 		#endregion
 	}
