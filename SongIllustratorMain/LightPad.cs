@@ -55,9 +55,15 @@ namespace SongIllustrator {
 			set {
 				lightData = value;
 				if (lightData.Density * lightData.Density != lightCanvas.Count) {
-					lightCanvas.Clear();
-					if (_created) {
-						GeneratePixels(lightData.Density);
+					if (lightCanvas.Count > 0) {
+						if (_created) {
+							RescalePixels(lightData.Density);
+						}
+					} else {
+						lightCanvas.Clear();
+						if (_created) {
+							GeneratePixels(lightData.Density);
+						}
 					}
 				}
 			}
@@ -115,7 +121,7 @@ namespace SongIllustrator {
 						button.ParentControl = _formView;
 						button.Port = lightData.Port;
 						button.Button.ControlSize = buttonSize;
-						button.Button.ControlLocation = new ControlLocation(lightCanvas.ControlLocation.X + buttonSize.Width * widthProgression + lightCanvas.ControlLocation.X, lightCanvas.ControlLocation.Y + buttonSize.Height * heightProgression + lightCanvas.ControlLocation.Y);
+						button.Button.ControlLocation = new ControlLocation(buttonSize.Width * widthProgression + lightCanvas.ControlLocation.X, buttonSize.Height * heightProgression + lightCanvas.ControlLocation.Y);
 						button.Button.BackColorChanged += delegate {
 							if (lightData.EditMode) {
 								GotInteraction(this, EventArgs.Empty);
@@ -148,15 +154,14 @@ namespace SongIllustrator {
 			}
 		}
 		public void ReplaceFrame(int index) {
-			for (int i = 0; i < lightCanvas.Count; i++) {
-				lightData.FrameData[index].Colours[i] = (lightCanvas.ViewList[i] as MacroButton).Button.ControlBackColor;
+			if (index > -1) {
+				for (int i = 0; i < lightCanvas.Count; i++) {
+					lightData.FrameData[index].Colours[i] = (lightCanvas.ViewList[i] as MacroButton).Button.ControlBackColor;
+				}
 			}
 		}
 		private void MidiDataCoordinator() {
 			while (true) {
-				if (!lightData.ListenToMidi) {
-					object test;
-				}
 				if (_listenToMidi) {
 					byte[] command = lightData.Port.ReceiveCommand();
 					if (command != null) {
@@ -236,10 +241,10 @@ namespace SongIllustrator {
 				return 83;
 			}
 			if (velocity > 83 && velocity <= 124) {
-				return 7;
+				return 124;
 			}
 			if (velocity > 124 && 124 <= 127) {
-				return 7;
+				return 127;
 			}
 			return -1;
 		}
@@ -500,6 +505,7 @@ namespace SongIllustrator {
 			for (int i = lightCanvas.Count - 1; i > -1; i--) {
 				_formView.Remove((lightCanvas.ViewList[i] as MacroButton).Button);
 				lightCanvas.Remove(lightCanvas.ViewList[i]);
+				lightCanvas.ViewList[i].Dispose(true);
 			}
 		}
 

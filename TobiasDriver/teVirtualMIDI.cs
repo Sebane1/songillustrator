@@ -247,13 +247,16 @@ namespace TobiasErichsen.teVirtualMIDI {
 
 
 		public override void ShutDown() {
+			try {
 
-			if ( !virtualMIDIShutdown( fInstance ) ) {
+				if (!virtualMIDIShutdown(fInstance)) {
 
-				int lastError = Marshal.GetLastWin32Error();
+					int lastError = Marshal.GetLastWin32Error();
 
-				TeVirtualMIDIException.ThrowExceptionForReasonCode(lastError);
+					TeVirtualMIDIException.ThrowExceptionForReasonCode(lastError);
 
+				}
+			} catch {
 			}
 
 		}

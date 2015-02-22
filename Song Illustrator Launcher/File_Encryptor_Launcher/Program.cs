@@ -10,11 +10,11 @@ namespace File_Encryptor_Launcher
 		private static string _recentFileLog = string.Concat(new string[]
 		{
 			Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-			"/",
+			"\\",
 			Application.CompanyName,
-			"/",
+			"\\",
 			Application.ProductName,
-			"/SongIllustrator.exe"
+			"\\SongIllustrator.exe"
 		});
 		public static string RecentFileLog
 		{

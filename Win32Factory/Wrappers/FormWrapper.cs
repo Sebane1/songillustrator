@@ -12,6 +12,11 @@ namespace Win32Factory.Wrappers {
 
 		public void ShowDialog() {
 			SetDoubleBuffered(_form);
+			_form.FormClosing += delegate {
+				if (Closing != null) {
+					Closing(this, EventArgs.Empty);
+				}
+			};
 			_form.FormBorderStyle = FormBorderStyle.FixedSingle;
 			_form.BackColor = System.Drawing.Color.Black;
 			_form.Click += delegate {
@@ -95,7 +100,7 @@ namespace Win32Factory.Wrappers {
 				_form.Controls.Add((control as ControlWrapper).Control);
 				_viewList.Add(_viewList.Count, control);
 			} catch {
-			
+
 			}
 			//_form.Refresh();
 			_form.BringToFront();
@@ -283,6 +288,13 @@ namespace Win32Factory.Wrappers {
 		public event EventHandler MouseLeftDown;
 
 		public event EventHandler MouseRightDown;
+
+		#endregion
+
+		#region IFormView Members
+
+
+		public event EventHandler Closing;
 
 		#endregion
 	}

@@ -176,7 +176,10 @@ namespace SongIllustrator {
 		/// Cycles the buttons color.
 		/// </summary>
 		public void ChangeColor() {
-			switch (_colorCount++) {
+			if (_colorCount > 4) {
+				_colorCount = -1;
+			}
+			switch (++_colorCount) {
 				case 0:
 					_button.ControlBackColor = Color.Red;
 					break;
@@ -191,41 +194,15 @@ namespace SongIllustrator {
 					break;
 				case 4:
 					ControlBackColor = Color.Gray;
+					_colorCount = -1;
 					break;
-			}
-			if (_colorCount > 4) {
-				_colorCount = 0;
 			}
 		}
 		//-------------------------------------------------------
 		private void DisplayButton_DoubleClick(object sender, EventArgs e) {
 			//ControlBackColor = Color.Gray;
 		}
-		//-------------------------------------------------------
-		//private void DisplayButton_MouseDown(object sender, MouseEventArgs e) {
-		//  if (e.Button == MouseButtons.Left) {
-		//    if (string.IsNullOrEmpty(DisplayText)) {
-		//      mouseFollow.Start();
-		//      cursorLocation = e.ControlLocation;
-		//    }
-		//  }
-		//  if (e.Button == MouseButtons.Right) {
-		//    buttons = new List<MacroButton>();
-		//    foreach (MacroButton _button in this.ParentControl.ViewItems) {
-		//      if (_button.ControlBackColor == this.ControlBackColor) {
-		//        buttons.Add(_button);
-		//      }
-		//    }
-		//    rightClick = true;
-		//  }
-		//}
-
-		//private void DisplayButton_MouseUp(object sender, MouseEventArgs e) {
-		//  //if (string.IsNullOrEmpty(DisplayText)) {
-		//  //  mouseFollow.Stop();
-		//  //}
-		//}
-
+		//--------------------------------------------
 		private void MouseFollow(object blah) {
 			if (_mouseDown) {
 				if (_button != null) {
@@ -252,26 +229,11 @@ namespace SongIllustrator {
 			}
 			timer = timer;
 		}
-
-		//private void DisplayButton_KeyDown(object sender, EventArgs e) {
-		//  if (e.KeyCode == Keys.Shift) {
-		//    shiftDown = true;
-		//  }
-		//}
-
-		//private void DisplayButton_KeyUp(object sender, EventArgs e) {
-		//  shiftDown = false;
-		//}
-
-		//private void DisplayButton_Paint(object sender, PaintEventArgs e) {
-		//  Graphics graphics = e.Graphics;
-		//  graphics.DrawString(_text, new Font(new FontFamily("Arial"), 12), Brushes.Black, new ControlLocationF(0, 0));
-		//}
+		//---------------------------------------------------
 		/// <summary>
 		/// Sends a MIDI on event for the associated note.
 		/// </summary>
 		public void SendMessage() {
-			//if (_canSendMessage) {
 			if (port != null) {
 				byte[] message = new byte[3];
 				byte[] sysMessage = new byte[2];
@@ -298,10 +260,12 @@ namespace SongIllustrator {
 				sysMessage[1] = 2;
 				port.SendCommand(sysMessage);
 				//..............
+				if(_lastMessage != null){
 				message[0] = 128;
-				message[1] = (byte) NoteIdentifier.GetIntFromNote(NoteIdentifier.GetNoteFromPosition(_index));
+				message[1] = _lastMessage[1];
 				message[2] = _lastVelocity;
 				port.SendCommand(message);
+				}
 				//..............
 				sysMessage[0] = 240;
 				sysMessage[1] = 2;
@@ -315,7 +279,6 @@ namespace SongIllustrator {
 				_lastMessage = message;
 				_lastVelocity = velocity;
 			}
-			//	}
 		}
 
 		/// <summary>
@@ -327,6 +290,7 @@ namespace SongIllustrator {
 		private bool CompareMessage(byte[] _lastMessage, byte[] message) {
 			return _lastMessage[0] == message[0] && _lastMessage[1] == message[1] && _lastMessage[2] == message[2];
 		}
+		//--------------------------------------------------------
 		/// <summary>
 		/// Sends a MIDI off event for the buttons associated note.
 		/// </summary>
@@ -339,6 +303,7 @@ namespace SongIllustrator {
 				port.SendCommand(message);
 			}
 		}
+		//--------------------------------------------------------
 		public bool CheckEqualColor(Color colourA, Color b) {
 			if (b.A == 255 && b.R == 255 && b.G == 255) {
 				object test = new object();
@@ -349,6 +314,7 @@ namespace SongIllustrator {
 				return (ToleratedCompare(a.R, b.R, 20) && ToleratedCompare(a.G, b.G, 20) && ToleratedCompare(a.B, b.B, 20));
 			}
 		}
+		//--------------------------------------------------------
 		public bool ToleratedCompare(int a, int b, int tolerance) {
 			return (a == b);
 		}
@@ -379,7 +345,7 @@ namespace SongIllustrator {
 				}
 			}
 		}
-
+		//--------------------------------------------------------
 		public Color ControlBackColor {
 			get {
 				return _button.ControlBackColor;
@@ -388,7 +354,7 @@ namespace SongIllustrator {
 				_button.ControlBackColor = value;
 			}
 		}
-
+		//--------------------------------------------------------
 		#region IView Members
 
 		public event EventHandler Click;
@@ -400,11 +366,11 @@ namespace SongIllustrator {
 		public event EventHandler KeyUp;
 
 		public event EventHandler Resized;
-
+		//--------------------------------------------------------
 		public void Initialize() {
 			throw new NotImplementedException();
 		}
-
+		//--------------------------------------------------------
 		public int TabIndex {
 			get {
 				return _tabIndex;
@@ -413,7 +379,7 @@ namespace SongIllustrator {
 				_tabIndex = value;
 			}
 		}
-
+		//--------------------------------------------------------
 		public IView ParentControl {
 			get {
 				return _parent;
@@ -422,7 +388,7 @@ namespace SongIllustrator {
 				_parent = value;
 			}
 		}
-
+		//--------------------------------------------------------
 		public string Name {
 			get {
 				return _button.Name;
@@ -469,7 +435,8 @@ namespace SongIllustrator {
 		}
 
 		public void Dispose(bool dispose) {
-			throw new NotImplementedException();
+			port = null;
+			_button.Dispose(true);
 		}
 
 		public int Height {

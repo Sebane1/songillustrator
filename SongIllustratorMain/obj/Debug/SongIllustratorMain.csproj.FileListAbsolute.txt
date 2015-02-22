@@ -1,7 +1,3 @@
-F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Debug\SongIllustratorMain.csprojResolveAssemblyReference.cache
-F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Debug\SongIllustrator.TimelineItem.resources
-F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Debug\SongIllustrator.TutorialForm.resources
-F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Debug\SongIllustratorMain.csproj.GenerateResource.Cache
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\bin\Debug\SongIllustratorCore.dll
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\bin\Debug\SongIllustratorCore.pdb
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\bin\Debug\Factory.dll
@@ -11,5 +7,9 @@ F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\bin
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\bin\Debug\MediaPlayerModuleBase.pdb
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\bin\Debug\MIDIDriverInterface.pdb
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\bin\Debug\Factory.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Debug\SongIllustratorMain.csprojResolveAssemblyReference.cache
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Debug\SongIllustrator.TimelineItem.resources
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Debug\SongIllustrator.TutorialForm.resources
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Debug\SongIllustratorMain.csproj.GenerateResource.Cache
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Debug\SongIllustratorCore.dll
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Debug\SongIllustratorCore.pdb
