@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SongIllustrator {
 	public abstract class MidiDriver {
-		private string _name;
+		private string _name = DateTime.Now.Ticks + "";
 
 		public string Name {
 			get {

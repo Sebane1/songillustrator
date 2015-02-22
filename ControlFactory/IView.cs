@@ -4,7 +4,6 @@ using System.Text;
 
 namespace SongIllustrator {
 	public interface IView {
-
 		event EventHandler Click;
 		event EventHandler RightClicked;
 		event EventHandler MouseLeftUp;

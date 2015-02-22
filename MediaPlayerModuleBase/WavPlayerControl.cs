@@ -45,8 +45,12 @@ namespace MediaPlayerModuleBase {
 			}
 			set {
 				if (!string.IsNullOrEmpty(value)) {
-					_player.Stream = new FileStream(value, FileMode.Open, FileAccess.Read);
-					Play();
+					if (File.Exists(value)) {
+						_player.Stream = new FileStream(value, FileMode.Open, FileAccess.Read);
+						Play();
+					} else {
+						Alert.Send("The song associated with this project is missing!", "Uh Oh", TypeOfAlert.Warning, AlertButtons.Ok,  _factory);
+					}
 				}
 			}
 		}

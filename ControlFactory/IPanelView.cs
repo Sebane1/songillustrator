@@ -4,5 +4,6 @@ using System.Text;
 
 namespace SongIllustrator {
 	public interface IPanelView : IView, IContainerView {
+
 	}
 }

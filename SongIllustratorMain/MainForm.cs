@@ -94,6 +94,17 @@ namespace SongIllustrator {
 				mediaPlayer.Playing += new EventHandler(axWindowsMediaPlayer1_Playing);
 				mediaPlayer.Ready += new EventHandler(axWindowsMediaPlayer1_Ready);
 				mediaPlayer.Stopped += new EventHandler(axWindowsMediaPlayer1_Stopped);
+				_formView.Closing += delegate {
+					foreach (Launchpad launchpad in launchPads) {
+						if (launchpad != null) {
+							launchpad.ListenToMidi = false;
+							if (launchpad.Port != null) {
+								launchpad.Port.ShutDown();
+							}
+						}
+					}
+					Process.GetCurrentProcess().Kill();
+				};
 				frameListBox.ContextMenu = contextMenuStrip1;
 				_formView.Add(mediaPlayer);
 				_timer = new Timer(new TimerCallback(CheckFrames), new object(), 1, 1);
@@ -253,6 +264,7 @@ namespace SongIllustrator {
 			if (frameListBox.ControlItems.Count > 0) {
 				pixelBar.Enabled = false;
 			}
+			frameListBox.CheckedItems.Clear();
 			//timeline1.UpdateTimeline();
 		}
 		//-------------------------------------------------------
@@ -366,10 +378,12 @@ namespace SongIllustrator {
 				if (newList.Count <= existingList.Count && i < newList.Count) {
 					newLaunchPad = newList[i];
 				} else if (newList.Count < existingList.Count && i >= newList.Count) {
-					existingLaunchPad.Port.ShutDown();
-					existingLaunchPad.Thread.Abort();
-					existingLaunchPad.Thread = null;
-					existingLaunchPad.Port = null;
+					if (existingLaunchPad.Port != null) {
+						existingLaunchPad.Port.ShutDown();
+						existingLaunchPad.Thread.Abort();
+						existingLaunchPad.Thread = null;
+						existingLaunchPad.Port = null;
+					}
 				}
 				if (newLaunchPad != null && existingLaunchPad != null) {
 					existingLaunchPad.FrameData.Clear();
@@ -693,7 +707,7 @@ namespace SongIllustrator {
 					heightProgression++;
 					widthProgression = 0;
 				}
-				lightPad.ControlLocation = new ControlLocation(widthHeight * widthProgression++, 13 + widthHeight * heightProgression);
+				lightPad.ControlLocation = new ControlLocation(widthHeight * widthProgression++, 33 + widthHeight * heightProgression);
 				canvas.Add(lightPad);
 				if (_overlayImage != null) {
 					CheckImage();
@@ -701,6 +715,7 @@ namespace SongIllustrator {
 				lightPad.Trigger = false;
 			}
 		}
+		//--------------------------------------------------------
 		public void RescalePads(List<Launchpad> lightDataList, IPanelView canvas) {
 			if (lightDataList.Count > _lowestDivisor * _lowestDivisor) {
 				_lowestDivisor++;
@@ -749,7 +764,6 @@ namespace SongIllustrator {
 			//Sync IButtonView.
 			_changed = true;
 			if (Alert.Send("Are you sure you want to syncronize frames? It will re-increment the selected frames based on a delay of " + textBox2.Text + ".", "Song Illustrator", TypeOfAlert.Warning, AlertButtons.YesNo, _factory) == PopupResult.Yes) {
-				int frameIndex = 0;
 				List<FrameData> frameTimes = new List<FrameData>();
 				foreach (FrameData item in frameListBox.CheckedItems) {
 					frameTimes.Add(item);

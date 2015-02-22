@@ -111,7 +111,9 @@ namespace Win32Factory.Wrappers {
 
 		public void Remove(int index) {
 			(Control as CheckedListBox).Items.Remove(index);
-			_items.RemoveAt(index);
+			if (index < _items.Count) {
+				_items.RemoveAt(index);
+			}
 		}
 
 		#endregion

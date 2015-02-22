@@ -48,15 +48,15 @@
     <WarningLevel>4</WarningLevel>
     <AssemblyName>SongIllustratorWin32</AssemblyName>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Launchpad_Editor_a0000.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Tokenizer">
-      <HintPath>..\..\SentenceParser\SentenceParser\bin\Debug\Tokenizer.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitmapOpacity.cs" />
@@ -85,6 +85,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <COMReference Include="IWshRuntimeLibrary">
+      <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
     <COMReference Include="stdole">
       <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
       <VersionMajor>2</VersionMajor>
@@ -112,12 +121,11 @@
       <Project>{D548698D-C2D1-46EF-996D-BE41F704A935}</Project>
       <Name>SongIllustratorMain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Win32Factory\Win32Factory.csproj">
-      <Project>{63D4744F-2ADB-43C1-A89E-827D82F3C697}</Project>
-      <Name>Win32Factory</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="bevel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Launchpad_Editor_a0000.ico" />
   </ItemGroup>
 </Project>

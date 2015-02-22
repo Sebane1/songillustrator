@@ -1,7 +1,3 @@
-F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Release\SongIllustratorMain.csprojResolveAssemblyReference.cache
-F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Release\SongIllustrator.TimelineItem.resources
-F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Release\SongIllustrator.TutorialForm.resources
-F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Release\SongIllustratorMain.csproj.GenerateResource.Cache
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\bin\Release\SongIllustratorCore.dll
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\bin\Release\SongIllustratorCore.pdb
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\bin\Release\Factory.dll
@@ -11,5 +7,9 @@ F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\bin
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\bin\Release\MediaPlayerModuleBase.pdb
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\bin\Release\MIDIDriverInterface.pdb
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\bin\Release\Factory.pdb
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Release\SongIllustratorMain.csprojResolveAssemblyReference.cache
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Release\SongIllustrator.TimelineItem.resources
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Release\SongIllustrator.TutorialForm.resources
+F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Release\SongIllustratorMain.csproj.GenerateResource.Cache
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Release\SongIllustratorCore.dll
 F:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\obj\Release\SongIllustratorCore.pdb

@@ -28,20 +28,20 @@ namespace MediaPlayerModuleBase {
 			foreach (var moduleFileName
 				in Directory.GetFiles(modulesPath, "*.Player.dll", SearchOption.TopDirectoryOnly)) {
 				var assembly = Assembly.Load(AssemblyName.GetAssemblyName(moduleFileName));
-				foreach (var type in assembly.GetTypes()) {
-					if (typeof(IMediaPlayer).IsAssignableFrom(type)) {
-						try {
+				try {
+					foreach (var type in assembly.GetTypes()) {
+						if (typeof(IMediaPlayer).IsAssignableFrom(type)) {
 							var moduleInstance = (IMediaPlayer) Activator.CreateInstance(type);
 							if (moduleInstance.SupportedOS == os) {
 								return moduleInstance;
 							}
-						} catch {
-							return new WavPlayerControl(factory, formView);
 						}
 					}
+				} catch {
+					return new WavPlayerControl(factory, formView);
 				}
 			}
-			return new WavPlayerControl(factory,formView);
+			return new WavPlayerControl(factory, formView);
 		}
 	}
 }
