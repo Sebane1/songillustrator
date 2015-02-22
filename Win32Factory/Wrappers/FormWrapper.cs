@@ -19,7 +19,7 @@ namespace Win32Factory.Wrappers {
 					Click(this, EventArgs.Empty);
 				}
 			};
-			_form.ShowDialog();
+			_form.Show();
 			_form.Refresh();
 		}
 		public static void SetDoubleBuffered(Control control) {

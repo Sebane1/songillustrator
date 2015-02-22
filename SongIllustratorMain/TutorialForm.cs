@@ -306,15 +306,6 @@ namespace SongIllustrator {
 			}
 		}
 
-		int IView.Height {
-			get {
-				throw new NotImplementedException();
-			}
-			set {
-				throw new NotImplementedException();
-			}
-		}
-
 		bool IView.Enabled {
 			get {
 				throw new NotImplementedException();

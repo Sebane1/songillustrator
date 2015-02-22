@@ -35,7 +35,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Tokenizer">
-      <HintPath>..\..\Learning Speech AI\Tokenizer\Tokenizer.dll</HintPath>
+      <HintPath>..\Tokenizer.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

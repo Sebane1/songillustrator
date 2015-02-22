@@ -19,10 +19,10 @@ namespace SongIllustrator
             if (args.Length > 0)
             {
                 //Application.Run(new Form(args[0]));
-							new MainForm(FactoryLoader.LoadFactory());
+				new MainForm(FactoryLoader.LoadFactory());
             }
             else {
-							new MainForm(FactoryLoader.LoadFactory());
+				new MainForm(FactoryLoader.LoadFactory());
                //Application.Run();
             }
         }

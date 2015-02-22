@@ -1,0 +1,13 @@
+/Users/sebastianlawe/songillustrator/SongIllustratorMain/obj/Debug/SongIllustrator.TimelineItem.resources
+/Users/sebastianlawe/songillustrator/SongIllustratorMain/obj/Debug/SongIllustrator.TutorialForm.resources
+/Users/sebastianlawe/songillustrator/SongIllustratorMain/bin/Debug/MediaPlayerModuleBase.dll
+/Users/sebastianlawe/songillustrator/SongIllustratorMain/bin/Debug/MediaPlayerModuleBase.dll.mdb
+/Users/sebastianlawe/songillustrator/SongIllustratorMain/bin/Debug/MIDIDriverInterface.dll
+/Users/sebastianlawe/songillustrator/SongIllustratorMain/bin/Debug/MIDIDriverInterface.dll.mdb
+/Users/sebastianlawe/songillustrator/SongIllustratorMain/bin/Debug/Factory.dll
+/Users/sebastianlawe/songillustrator/SongIllustratorMain/bin/Debug/Factory.dll.mdb
+/Users/sebastianlawe/songillustrator/SongIllustratorMain/bin/Debug/SongIllustratorCore.dll.mdb
+/Users/sebastianlawe/songillustrator/SongIllustratorMain/bin/Debug/SongIllustratorCore.dll
+/Users/sebastianlawe/songillustrator/SongIllustratorMain/obj/Debug/SongIllustratorCore.dll
+/Users/sebastianlawe/songillustrator/SongIllustratorMain/obj/Debug/SongIllustratorCore.dll.mdb
+/Users/sebastianlawe/songillustrator/SongIllustratorMain/bin/Debug/Tokenizer.dll

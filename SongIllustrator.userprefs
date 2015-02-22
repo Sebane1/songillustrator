@@ -1,20 +1,42 @@
-﻿<Properties>
+﻿<Properties MonoDevelop.MonoMac.LastXamMacNagTime="2015-02-22 9:51:18 PM">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|Mixed Platforms" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="ControlFactory\Factory.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="GTKFactory/Wrappers/ControlWrapper.cs">
     <Files>
-      <File FileName="Song Illustrator Launcher\File_Encryptor_Launcher\Program.cs" Line="1" Column="1" />
-      <File FileName="Song Illustrator Launcher\File_Encryptor_Launcher\Launcher.cs" Line="1" Column="1" />
-      <File FileName="MIDIDriverInterface\DummyDriver.cs" Line="1" Column="1" />
-      <File FileName="MIDIDriverInterface\MidiDriverLoader.cs" Line="1" Column="1" />
-      <File FileName="SongIllustrator\ImageSlicer.cs" Line="1" Column="1" />
-      <File FileName="ControlFactory\FormControl.cs" Line="84" Column="3" />
-      <File FileName="ControlFactory\ListView.cs" Line="7" Column="3" />
-      <File FileName="ControlFactory\Factory.cs" Line="22" Column="28" />
-      <File FileName="SongIllustratorMain\TutorialForm.Designer.cs" Line="119" Column="19" />
-      <File FileName="ControlFactory\Button.cs" Line="7" Column="1" />
-      <File FileName="SongIllustratorMain\SongIO.cs" Line="78" Column="31" />
-      <File FileName="ControlFactory\Color.cs" Line="69" Column="1" />
-      <File FileName="f:\Documents\Visual Studio 2010\Projects\SongIllustrator\SongIllustratorMain\ShowDisplay.Designer.cs" Line="41" Column="41" />
+      <File FileName="SongIllustrator/Properties/Program.cs" Line="1" Column="1" />
+      <File FileName="ControlFactory/FactoryLoader.cs" Line="1" Column="1" />
+      <File FileName="SongIllustratorMain/MainForm.cs" Line="1" Column="1" />
+      <File FileName="ControlFactory/ControlLocation.cs" Line="1" Column="1" />
+      <File FileName="ControlFactory/ControlSize.cs" Line="1" Column="1" />
+      <File FileName="SongIllustratorMain/MainForm.Designer.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/ButtonWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/ContextMenuWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/ControlWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/FormWrapper.cs" Line="1" Column="1" />
+      <File FileName="WindowsMediaPlayer/WindowsMediaPlayer.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/MediaPlayerWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/ListBoxWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/MacroButtonWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/MenuItemWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/OpenFileDialogWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/PanelWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/SaveDialogWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/TrackBarWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/MacOSXFactory.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/NSCheckedListBox.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/MessageBoxWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/PictureBoxWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/RichTextBoxWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/TextBoxWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/ToolStripMenuWrapper.cs" Line="1" Column="1" />
+      <File FileName="ControlFactory/IView.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/LabelWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/ToolStripMenuItemWrapper.cs" Line="1" Column="1" />
+      <File FileName="OSXFactory/Wrappers/ToolStripSeperatorView.cs" Line="1" Column="1" />
+      <File FileName="SongIllustratorOSX/Main.cs" Line="1" Column="1" />
+      <File FileName="GTKFactory/GTKFactory.cs" Line="1" Column="1" />
+      <File FileName="GTKFactory/Wrappers/ButtonWrapper.cs" Line="1" Column="1" />
+      <File FileName="GTKFactory/Wrappers/ContextMenuWrapper.cs" Line="1" Column="1" />
+      <File FileName="GTKFactory/Wrappers/ControlWrapper.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

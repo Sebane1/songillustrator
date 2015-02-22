@@ -54,11 +54,6 @@ namespace SongIllustrator {
 		}
 		void Dispose(bool dispose);
 
-		int Height {
-			get;
-			set;
-		}
-
 		bool Enabled {
 			get;
 			set;

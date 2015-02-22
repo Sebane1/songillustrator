@@ -160,7 +160,7 @@ namespace SongIllustrator {
 				// pixelBar
 				// 
 				//this.pixelBar.Anchor = ((AnchorStyles) ((AnchorStyles.Bottom | AnchorStyles.Right)));
-				this.pixelBar.LargeChange = 8;
+				/*this.pixelBar.LargeChange = 8;
 				this.pixelBar.ControlLocation = new ControlLocation(439, 4);
 				this.pixelBar.Maximum = 32;
 				this.pixelBar.Minimum = 8;
@@ -169,7 +169,7 @@ namespace SongIllustrator {
 				this.pixelBar.SmallChange = 8;
 				this.pixelBar.TabIndex = 80;
 				this.pixelBar.Value = 8;
-				this.pixelBar.Visible = false;
+				this.pixelBar.Visible = false;*/
 				// 
 				// splitContainer1
 				// 
@@ -485,7 +485,10 @@ namespace SongIllustrator {
 				// 
 				//this.shiftButton.Anchor = ((AnchorStyles) ((AnchorStyles.Bottom | AnchorStyles.Right)));
 				//this.shiftButton.ArrayPos = 0;
+				try{
 				this.shiftButton.ControlBackColor = Color.Gray;
+				}catch{
+				}
 				//this.shiftButton.BackgroundImage = ((Image) (resources.GetObject("shiftButton.BackgroundImage")));
 				//this.shiftButton.BackgroundImageLayout = ImageLayout.Stretch;
 				//this.shiftButton.CanSendMessage = true;
@@ -503,7 +506,10 @@ namespace SongIllustrator {
 				// 
 				//this.addFrameButton.Anchor = ((AnchorStyles) ((AnchorStyles.Bottom | AnchorStyles.Right)));
 				//this.addFrameButton.ArrayPos = 0;
+				try{
 				this.addFrameButton.ControlBackColor = Color.Gray;
+				}catch{
+				}
 				//this.addFrameButton.BackgroundImage = ((Image) (resources.GetObject("addFrameButton.BackgroundImage")));
 				//this.addFrameButton.BackgroundImageLayout = ImageLayout.Stretch;
 				//this.addFrameButton.CanSendMessage = true;

@@ -107,7 +107,7 @@ namespace SongIllustrator {
 			if (pixels > 0) {
 				lightCanvas.Clear();
 				int arrayPos = 0;
-				ControlSize buttonSize = new ControlSize(lightCanvas.Height / pixels, lightCanvas.Height / pixels);
+				ControlSize buttonSize = new ControlSize(lightCanvas.ControlHeight/ pixels, lightCanvas.ControlHeight / pixels);
 				for (int heightProgression = 0; heightProgression < pixels; heightProgression++) {
 					for (int widthProgression = 0; widthProgression < pixels; widthProgression++) {
 						MacroButton button = new MacroButton(_factory);
@@ -136,7 +136,7 @@ namespace SongIllustrator {
 		public void RescalePixels(int pixels) {
 			if (pixels > 0) {
 				int arrayPos = 0;
-				ControlSize buttonSize = new ControlSize(lightCanvas.Height / pixels, lightCanvas.Height / pixels);
+				ControlSize buttonSize = new ControlSize(lightCanvas.ControlHeight / pixels, lightCanvas.ControlHeight / pixels);
 				for (int heightProgression = 0; heightProgression < pixels; heightProgression++) {
 					for (int widthProgression = 0; widthProgression < pixels; widthProgression++) {
 						MacroButton button = lightCanvas.ViewList[arrayPos++] as MacroButton;

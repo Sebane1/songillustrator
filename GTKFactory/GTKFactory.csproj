@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">Mixed Platforms</Platform>
+    <ProjectGuid>{C4CEFEE9-061B-4A78-8ACF-15EEC0260953}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>GTKFactory</RootNamespace>
+    <AssemblyName>GTKFactory</AssemblyName>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Mixed Platforms' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Mixed Platforms' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="Mono.Posix" />
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="gtk-gui\gui.stetic">
+      <LogicalName>gui.stetic</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="gtk-gui\generated.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Wrappers\ButtonWrapper.cs" />
+    <Compile Include="Wrappers\ContextMenuWrapper.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Wrappers\ControlWrapper.cs" />
+    <Compile Include="Wrappers\FormWrapper.cs" />
+    <Compile Include="Wrappers\LabelWrapper.cs" />
+    <Compile Include="Wrappers\ListBoxWrapper.cs" />
+    <Compile Include="Wrappers\MacroButtonWrapper.cs" />
+    <Compile Include="Wrappers\MediaPlayerWrapper.cs" />
+    <Compile Include="Wrappers\MenuItemWrapper.cs" />
+    <Compile Include="Wrappers\MessageBoxWrapper.cs" />
+    <Compile Include="Wrappers\OpenFileDialogWrapper.cs" />
+    <Compile Include="Wrappers\PanelWrapper.cs" />
+    <Compile Include="Wrappers\PictureBoxWrapper.cs" />
+    <Compile Include="Wrappers\RichTextBoxWrapper.cs" />
+    <Compile Include="Wrappers\SaveDialogWrapper.cs" />
+    <Compile Include="Wrappers\SplitContainerWrapper.cs" />
+    <Compile Include="Wrappers\TextBoxWrapper.cs" />
+    <Compile Include="Wrappers\ToolStripMenuItemWrapper.cs" />
+    <Compile Include="Wrappers\ToolStripMenuWrapper.cs" />
+    <Compile Include="Wrappers\ToolStripSeperatorView.cs" />
+    <Compile Include="Wrappers\TrackBarWrapper.cs" />
+    <Compile Include="GTKFactory.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\ControlFactory\ControlFactory.csproj">
+      <Project>{484CAA88-578D-46B9-85E9-70CADC8616CD}</Project>
+      <Name>ControlFactory</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,8 @@
+/Users/sebastianlawe/songillustrator/Win32Factory/bin/Debug/Win32.Factory.dll.mdb
+/Users/sebastianlawe/songillustrator/Win32Factory/bin/Debug/Win32.Factory.dll
+/Users/sebastianlawe/songillustrator/Win32Factory/obj/Debug/Win32.Factory.dll
+/Users/sebastianlawe/songillustrator/Win32Factory/obj/Debug/Win32.Factory.dll.mdb
+/Users/sebastianlawe/songillustrator/Win32Factory/bin/Debug/Factory.dll
+/Users/sebastianlawe/songillustrator/Win32Factory/bin/Debug/Factory.dll.mdb
+/Users/sebastianlawe/songillustrator/Win32Factory/bin/Debug/MediaPlayerModuleBase.dll
+/Users/sebastianlawe/songillustrator/Win32Factory/bin/Debug/MediaPlayerModuleBase.dll.mdb

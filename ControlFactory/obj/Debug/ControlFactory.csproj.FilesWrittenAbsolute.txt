@@ -1,0 +1,4 @@
+/Users/sebastianlawe/songillustrator/ControlFactory/bin/Debug/Factory.dll.mdb
+/Users/sebastianlawe/songillustrator/ControlFactory/bin/Debug/Factory.dll
+/Users/sebastianlawe/songillustrator/ControlFactory/obj/Debug/Factory.dll
+/Users/sebastianlawe/songillustrator/ControlFactory/obj/Debug/Factory.dll.mdb

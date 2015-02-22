@@ -673,7 +673,7 @@ namespace SongIllustrator {
 			if (lightDataList.Count > _lowestDivisor * _lowestDivisor) {
 				_lowestDivisor++;
 			}
-			int widthHeight = canvas.Height / _lowestDivisor;
+			int widthHeight = canvas.ControlHeight / _lowestDivisor;
 			int widthProgression = 0;
 			int heightProgression = 0;
 			for (int i = 0; i < lightDataList.Count; i++) {
@@ -705,7 +705,7 @@ namespace SongIllustrator {
 			if (lightDataList.Count > _lowestDivisor * _lowestDivisor) {
 				_lowestDivisor++;
 			}
-			int widthHeight = canvas.Height / _lowestDivisor;
+			int widthHeight = canvas.ControlHeight / _lowestDivisor;
 			int widthProgression = 0;
 			int heightProgression = 0;
 			for (int i = 0; i < lightDataList.Count; i++) {

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{948B3504-5B70-4649-8FE4-BDE1FB46EC69};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D1BD343E-2C90-46BF-B96F-83E509775D88}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>OSXFactory</RootNamespace>
+    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+    <AssemblyName>OSX.Factory</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <UseSGen>false</UseSGen>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <LinkMode>SdkOnly</LinkMode>
+    <UseSGen>false</UseSGen>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <CodeSigningKey>Developer ID Application</CodeSigningKey>
+    <EnableCodeSigning>true</EnableCodeSigning>
+    <CreatePackage>true</CreatePackage>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\AppStore</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <LinkMode>SdkOnly</LinkMode>
+    <UseSGen>false</UseSGen>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
+    <CreatePackage>true</CreatePackage>
+    <CodeSigningKey>3rd Party Mac Developer Application</CodeSigningKey>
+    <EnableCodeSigning>true</EnableCodeSigning>
+    <EnablePackageSigning>true</EnablePackageSigning>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="MonoMac" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="MacOSXFactory.cs" />
+    <Compile Include="Wrappers\ButtonWrapper.cs" />
+    <Compile Include="Wrappers\ContextMenuWrapper.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Wrappers\ControlWrapper.cs" />
+    <Compile Include="Wrappers\FormWrapper.cs" />
+    <Compile Include="Wrappers\LabelWrapper.cs" />
+    <Compile Include="Wrappers\ListBoxWrapper.cs" />
+    <Compile Include="Wrappers\MacroButtonWrapper.cs" />
+    <Compile Include="Wrappers\MediaPlayerWrapper.cs" />
+    <Compile Include="Wrappers\MenuItemWrapper.cs" />
+    <Compile Include="Wrappers\MessageBoxWrapper.cs" />
+    <Compile Include="Wrappers\OpenFileDialogWrapper.cs" />
+    <Compile Include="Wrappers\PanelWrapper.cs" />
+    <Compile Include="Wrappers\PictureBoxWrapper.cs" />
+    <Compile Include="Wrappers\RichTextBoxWrapper.cs" />
+    <Compile Include="Wrappers\SaveDialogWrapper.cs" />
+    <Compile Include="Wrappers\TextBoxWrapper.cs" />
+    <Compile Include="Wrappers\ToolStripMenuItemWrapper.cs" />
+    <Compile Include="Wrappers\ToolStripMenuWrapper.cs" />
+    <Compile Include="Wrappers\ToolStripSeperatorView.cs" />
+    <Compile Include="Wrappers\TrackBarWrapper.cs" />
+    <Compile Include="NSCheckedListBox.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ControlFactory\ControlFactory.csproj">
+      <Project>{484CAA88-578D-46B9-85E9-70CADC8616CD}</Project>
+      <Name>ControlFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MediaPlayerModuleBase\MediaPlayerModuleBase.csproj">
+      <Project>{42EA643A-6513-4A91-AF16-EBAE9068CE87}</Project>
+      <Name>MediaPlayerModuleBase</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
